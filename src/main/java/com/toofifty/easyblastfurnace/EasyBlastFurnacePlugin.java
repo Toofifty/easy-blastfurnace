@@ -120,9 +120,11 @@ public class EasyBlastFurnacePlugin extends Plugin
         GameObject gameObject = event.getGameObject();
 
         switch (gameObject.getId()) {
+            case BANK_CHEST:
+                objectManager.add(gameObject);
+                break;
             case CONVEYOR_BELT:
             case BAR_DISPENSER:
-            case BANK_CHEST:
                 objectManager.add(gameObject);
                 isEnabled = true;
         }
@@ -136,7 +138,6 @@ public class EasyBlastFurnacePlugin extends Plugin
         switch (gameObject.getId()) {
             case CONVEYOR_BELT:
             case BAR_DISPENSER:
-            case BANK_CHEST:
                 if (config.clearMethodOnExit()) methodHandler.clear();
                 if (config.clearStatisticsOnExit()) statistics.clear();
                 isEnabled = false;
