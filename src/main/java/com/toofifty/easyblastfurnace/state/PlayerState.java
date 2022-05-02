@@ -46,7 +46,7 @@ public class PlayerState
 
     public boolean hasStamina()
     {
-        return client.getVar(Varbits.RUN_SLOWED_DEPLETION_ACTIVE) != 0;
+        return client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE) != 0;
     }
 
     public boolean needsStamina()

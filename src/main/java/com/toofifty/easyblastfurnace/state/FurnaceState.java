@@ -1,7 +1,7 @@
 package com.toofifty.easyblastfurnace.state;
 
+import com.toofifty.easyblastfurnace.utils.BarsOres;
 import net.runelite.api.Client;
-import net.runelite.client.plugins.blastfurnace.BarsOres;
 
 import javax.inject.Inject;
 import java.util.Arrays;
@@ -32,7 +32,7 @@ public class FurnaceState
     {
         Optional<BarsOres> varbit = Arrays.stream(BarsOres.values()).filter(e -> e.getItemID() == itemId).findFirst();
         assert varbit.isPresent();
-        return client.getVar(varbit.get().getVarbit());
+        return client.getVarbitValue(varbit.get().getVarbit());
     }
 
     public boolean has(int itemId)
