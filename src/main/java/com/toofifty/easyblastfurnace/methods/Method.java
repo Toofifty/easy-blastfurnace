@@ -21,8 +21,8 @@ public abstract class Method
     protected final MethodStep withdrawAdamantiteOre = new ItemStep(ItemID.ADAMANTITE_ORE, "Withdraw adamantite ore");
     protected final MethodStep withdrawRuniteOre = new ItemStep(ItemID.RUNITE_ORE, "Withdraw runite ore");
 
-    protected final MethodStep withdrawIceGloves = new ItemStep(ItemID.ICE_GLOVES, "Withdraw ice gloves");
-    protected final MethodStep equipIceGloves = new ItemStep(ItemID.ICE_GLOVES, "Equip ice gloves");
+    protected final MethodStep withdrawIceOrSmithsGloves = new ItemStep(ItemID.ICE_GLOVES, "Withdraw ice gloves or smiths gloves (i)");
+    protected final MethodStep equipIceOrSmithsGloves = new ItemStep(ItemID.ICE_GLOVES, "Equip ice gloves or smiths gloves (i)");
     protected final MethodStep withdrawGoldsmithGauntlets = new ItemStep(ItemID.GOLDSMITH_GAUNTLETS, "Withdraw goldsmith gauntlets");
     protected final MethodStep equipGoldsmithGauntlets = new ItemStep(ItemID.GOLDSMITH_GAUNTLETS, "Equip goldsmith gauntlets");
 
