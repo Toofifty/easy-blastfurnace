@@ -10,9 +10,11 @@ public class GoldBarMethod extends Method
     {
         // ensure player has both ice gloves & goldsmith gauntlets either in inventory or equipped
 
-        if (!state.getInventory().has(ItemID.ICE_GLOVES) &&
-            !state.getEquipment().equipped(ItemID.ICE_GLOVES)) {
-            return state.getBank().isOpen() ? withdrawIceGloves : openBank;
+        if ((!state.getInventory().has(ItemID.ICE_GLOVES) &&
+             !state.getEquipment().equipped(ItemID.ICE_GLOVES)) &&
+            (!state.getInventory().has(ItemID.SMITHS_GLOVES_I) &&
+             !state.getEquipment().equipped(ItemID.SMITHS_GLOVES_I))) {
+            return state.getBank().isOpen() ? withdrawIceOrSmithsGloves : openBank;
         }
 
         if (!state.getInventory().has(ItemID.GOLDSMITH_GAUNTLETS) &&
@@ -41,8 +43,9 @@ public class GoldBarMethod extends Method
         }
 
         if (state.getFurnace().has(ItemID.GOLD_BAR)) {
-            if (!state.getEquipment().equipped(ItemID.ICE_GLOVES)) {
-                return equipIceGloves;
+            if (!state.getEquipment().equipped(ItemID.ICE_GLOVES) ||
+                !state.getEquipment().equipped(ItemID.SMITHS_GLOVES_I)) {
+                return equipIceOrSmithsGloves;
             }
             return collectBars;
         }

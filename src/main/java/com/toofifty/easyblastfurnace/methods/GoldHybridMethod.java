@@ -13,9 +13,11 @@ abstract public class GoldHybridMethod extends MetalBarMethod
             return state.getBank().isOpen() ? withdrawCoalBag : openBank;
         }
 
-        if (!state.getInventory().has(ItemID.ICE_GLOVES) &&
-            !state.getEquipment().equipped(ItemID.ICE_GLOVES)) {
-            return state.getBank().isOpen() ? withdrawIceGloves : openBank;
+        if ((!state.getInventory().has(ItemID.ICE_GLOVES) &&
+             !state.getEquipment().equipped(ItemID.ICE_GLOVES)) &&
+            (!state.getInventory().has(ItemID.SMITHS_GLOVES_I) &&
+             !state.getEquipment().equipped(ItemID.SMITHS_GLOVES_I))) {
+            return state.getBank().isOpen() ? withdrawIceOrSmithsGloves : openBank;
         }
 
         if (!state.getInventory().has(ItemID.GOLDSMITH_GAUNTLETS) &&
@@ -23,7 +25,8 @@ abstract public class GoldHybridMethod extends MetalBarMethod
             return state.getBank().isOpen() ? withdrawGoldsmithGauntlets : openBank;
         }
 
-        if (!state.getEquipment().equipped(ItemID.ICE_GLOVES) &&
+        if ((!state.getEquipment().equipped(ItemID.ICE_GLOVES) &&
+             !state.getEquipment().equipped(ItemID.SMITHS_GLOVES_I)) &&
             !state.getEquipment().equipped(ItemID.GOLDSMITH_GAUNTLETS)) {
             return equipGoldsmithGauntlets;
         }
@@ -62,8 +65,9 @@ abstract public class GoldHybridMethod extends MetalBarMethod
 
         if (state.getFurnace().has(barItem()) ||
             state.getFurnace().has(ItemID.GOLD_BAR)) {
-            if (!state.getEquipment().equipped(ItemID.ICE_GLOVES)) {
-                return equipIceGloves;
+            if (!state.getEquipment().equipped(ItemID.ICE_GLOVES) ||
+                !state.getEquipment().equipped(ItemID.SMITHS_GLOVES_I)) {
+                return equipIceOrSmithsGloves;
             }
             return collectBars;
         }
