@@ -5,9 +5,9 @@ Helps you train at the blast furnace more efficiently
 ## Features
 
 - Supports multiple different methods
-  - Gold bars
-  - [Steel/Mithril/Adamant/Rune bars](https://oldschool.runescape.wiki/w/Blast_Furnace#Bar_Patterns)
-  - [Gold + metal bar hybrid](https://oldschool.runescape.wiki/w/Blast_Furnace#Hybrid_Method_(Gold/Mithril+))
+    - Gold bars
+    - [Steel/Mithril/Adamant/Rune bars](https://oldschool.runescape.wiki/w/Blast_Furnace#Bar_Patterns)
+    - [Gold + metal bar hybrid](https://oldschool.runescape.wiki/w/Blast_Furnace#Hybrid_Method_(Gold/Mithril+))
 - Shows next item/object to click
 - Shows coal bag contents
 - Prompts to drink a stamina dose when required
@@ -15,7 +15,7 @@ Helps you train at the blast furnace more efficiently
 
 ## Requirements
 
-- Ice gloves
+- Ice gloves or Smiths Gloves (i)
 - Goldsmith gauntlets (for gold bar & hybrid methods)
 - Coal bag (for metal bar & hybrid methods)
 - Stamina potions easily accessible in bank
@@ -25,14 +25,14 @@ Helps you train at the blast furnace more efficiently
 ### Recommended plugins
 
 * __Blast Furnace__ (Runelite) - __enable__
-  * Disable __Show conveyor belt clickbox__
-  * Disable __Show bar dispenser clickbox__
-  * Enable __Show coffer time remaining__
+    * Disable __Show conveyor belt clickbox__
+    * Disable __Show bar dispenser clickbox__
+    * Enable __Show coffer time remaining__
 * __Menu Entry Swapper__ (Runelite) - __enable__
-  * Item Swaps → __Bank Deposit Shift-Click__: Set to __Eat/Wield/Etc.__
-    * Allows you to use shift-click to fill your coal bag and drink stamina doses without closing the bank.
-  * Item Swaps → __Bank Withdraw Shift-Click__: Set to __Withdraw-All__
-    * Optional - you can also just change your default withdraw amount in the bank itself.
+    * Item Swaps → __Bank Deposit Shift-Click__: Set to __Eat/Wield/Etc.__
+        * Allows you to use shift-click to fill your coal bag and drink stamina doses without closing the bank.
+    * Item Swaps → __Bank Withdraw Shift-Click__: Set to __Withdraw-All__
+        * Optional - you can also just change your default withdraw amount in the bank itself.
 
 ### Setup
 
