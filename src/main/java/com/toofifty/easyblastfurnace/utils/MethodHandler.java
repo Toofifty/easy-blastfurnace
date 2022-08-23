@@ -31,6 +31,12 @@ public class MethodHandler
         if (method == null) return;
         if (!state.getPlayer().isOnBlastFurnaceWorld()) return;
 
+        if (config.addCoalBuffer()) {
+            method.coalOffset = 0;
+        } else {
+            method.coalOffset = 1;
+        }
+
         step = drinkStaminaMethod.next(state);
         if (step == null) step = method.next(state);
     }

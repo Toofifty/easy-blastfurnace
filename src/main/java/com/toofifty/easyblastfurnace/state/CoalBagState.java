@@ -7,7 +7,7 @@ import javax.inject.Inject;
 
 public class CoalBagState
 {
-    private static final int MAX_COAL = 27;
+    private static int MAX_COAL = 27;
     private static final int MIN_COAL = 0;
 
     @Inject
@@ -18,6 +18,11 @@ public class CoalBagState
 
     @Getter
     private int coal;
+
+    public void setMaxCoal(int quantity)
+    {
+        MAX_COAL = quantity;
+    }
 
     public void setCoal(int quantity)
     {

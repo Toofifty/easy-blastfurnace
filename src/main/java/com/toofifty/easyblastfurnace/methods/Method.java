@@ -23,8 +23,8 @@ public abstract class Method
 
     protected final MethodStep withdrawIceOrSmithsGloves = new ItemStep(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I, "Withdraw ice gloves or smiths gloves (i)");
     protected final MethodStep equipIceOrSmithsGloves = new ItemStep(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I, "Equip ice gloves or smiths gloves (i)");
-    protected final MethodStep withdrawGoldsmithGauntlets = new ItemStep(ItemID.GOLDSMITH_GAUNTLETS, "Withdraw goldsmith gauntlets");
-    protected final MethodStep equipGoldsmithGauntlets = new ItemStep(ItemID.GOLDSMITH_GAUNTLETS, "Equip goldsmith gauntlets");
+    protected final MethodStep withdrawGoldsmithGauntlets = new ItemStep(ItemID.GOLDSMITH_GAUNTLETS, "Withdraw goldsmith gauntlets or Smithing cape");
+    protected final MethodStep equipGoldsmithGauntlets = new ItemStep(ItemID.GOLDSMITH_GAUNTLETS, "Equip goldsmith gauntlets or Smithing cape");
 
     // objects
     protected final MethodStep depositInventory = new WidgetStep(WidgetInfo.BANK_DEPOSIT_INVENTORY, "Deposit inventory");
@@ -32,6 +32,8 @@ public abstract class Method
     protected final MethodStep openBank = new ObjectStep(EasyBlastFurnacePlugin.BANK_CHEST, "Open bank chest");
     protected final MethodStep collectBars = new ObjectStep(EasyBlastFurnacePlugin.BAR_DISPENSER, "Collect bars");
     protected final MethodStep waitForBars = new TileStep(EasyBlastFurnacePlugin.PICKUP_POSITION, "Wait for bars to smelt");
+
+    public int coalOffset = 1;
 
     abstract public MethodStep next(BlastFurnaceState state);
 

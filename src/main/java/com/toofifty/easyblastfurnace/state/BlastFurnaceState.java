@@ -47,6 +47,12 @@ public class BlastFurnaceState
             player.hasLoadedOres(false);
         }
 
+        if (equipment.equipped(ItemID.SMITHING_CAPE) || equipment.equipped(ItemID.SMITHING_CAPET)) {
+            coalBag.setMaxCoal(36);
+        } else {
+            coalBag.setMaxCoal(27);
+        }
+
         inventory.update();
         furnace.update();
     }

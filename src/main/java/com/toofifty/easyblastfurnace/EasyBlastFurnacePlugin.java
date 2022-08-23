@@ -35,7 +35,7 @@ public class EasyBlastFurnacePlugin extends Plugin
 
     public static final WorldPoint PICKUP_POSITION = new WorldPoint(1940, 4962, 0);
 
-    private static final Pattern COAL_FULL_MESSAGE = Pattern.compile("^The coal bag contains 27 pieces of coal.$");
+    private static final Pattern COAL_FULL_MESSAGE = Pattern.compile("^The coal bag is full.$");
     private static final Pattern COAL_EMPTY_MESSAGE = Pattern.compile("^The coal bag is now empty.$");
 
     private static final String FILL_ACTION = "Fill";

@@ -18,7 +18,11 @@ public class GoldBarMethod extends Method
         }
 
         if (!state.getInventory().has(ItemID.GOLDSMITH_GAUNTLETS) &&
-            !state.getEquipment().equipped(ItemID.GOLDSMITH_GAUNTLETS)) {
+            !state.getEquipment().equipped(ItemID.GOLDSMITH_GAUNTLETS) &&
+            !state.getInventory().has(ItemID.SMITHING_CAPE) &&
+            !state.getEquipment().equipped(ItemID.SMITHING_CAPE) &&
+            !state.getInventory().has(ItemID.SMITHING_CAPET) &&
+            !state.getEquipment().equipped(ItemID.SMITHING_CAPET)) {
             return state.getBank().isOpen() ? withdrawGoldsmithGauntlets : openBank;
         }
 
@@ -32,7 +36,9 @@ public class GoldBarMethod extends Method
         if (prerequisite != null) return prerequisite;
 
         if (state.getInventory().has(ItemID.GOLD_ORE)) {
-            if (!state.getEquipment().equipped(ItemID.GOLDSMITH_GAUNTLETS)) {
+            if (!state.getEquipment().equipped(ItemID.GOLDSMITH_GAUNTLETS) &&
+                !state.getEquipment().equipped(ItemID.SMITHING_CAPE) &&
+                !state.getEquipment().equipped(ItemID.SMITHING_CAPET)) {
                 return equipGoldsmithGauntlets;
             }
             return putOntoConveyorBelt;

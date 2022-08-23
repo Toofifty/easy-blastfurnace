@@ -54,7 +54,7 @@ abstract public class MetalBarMethod extends Method
         }
 
         if (state.getPlayer().isAtConveyorBelt() &&
-            state.getCoalBag().isFull()) {
+            !state.getCoalBag().isEmpty()) {
             return emptyCoalBag;
         }
 
@@ -79,7 +79,7 @@ abstract public class MetalBarMethod extends Method
                 return putOntoConveyorBelt;
             }
 
-            if (state.getFurnace().getQuantity(ItemID.COAL) < 27 * (coalPer() - 1)) {
+            if (state.getFurnace().getQuantity(ItemID.COAL) < 27 * (coalPer() - coalOffset)) {
                 return withdrawCoal;
             }
 

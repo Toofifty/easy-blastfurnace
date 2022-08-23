@@ -21,7 +21,11 @@ abstract public class GoldHybridMethod extends MetalBarMethod
         }
 
         if (!state.getInventory().has(ItemID.GOLDSMITH_GAUNTLETS) &&
-            !state.getEquipment().equipped(ItemID.GOLDSMITH_GAUNTLETS)) {
+            !state.getEquipment().equipped(ItemID.GOLDSMITH_GAUNTLETS) &&
+            !state.getInventory().has(ItemID.SMITHING_CAPE) &&
+            !state.getEquipment().equipped(ItemID.SMITHING_CAPE) &&
+            !state.getInventory().has(ItemID.SMITHING_CAPET) &&
+            !state.getEquipment().equipped(ItemID.SMITHING_CAPET)) {
             return state.getBank().isOpen() ? withdrawGoldsmithGauntlets : openBank;
         }
 
@@ -44,7 +48,9 @@ abstract public class GoldHybridMethod extends MetalBarMethod
         // then do one trip of metal bars
 
         if (state.getInventory().has(ItemID.GOLD_ORE) &&
-            !state.getEquipment().equipped(ItemID.GOLDSMITH_GAUNTLETS)) {
+            !state.getEquipment().equipped(ItemID.GOLDSMITH_GAUNTLETS) &&
+            !state.getEquipment().equipped(ItemID.SMITHING_CAPE) &&
+            !state.getEquipment().equipped(ItemID.SMITHING_CAPET)) {
             return equipGoldsmithGauntlets;
         }
 
@@ -87,7 +93,7 @@ abstract public class GoldHybridMethod extends MetalBarMethod
                 return putOntoConveyorBelt;
             }
 
-            if (state.getFurnace().getQuantity(ItemID.COAL) < 26 * (coalPer() - 1)) {
+            if (state.getFurnace().getQuantity(ItemID.COAL) < 26 * (coalPer() - coalOffset)) {
                 return withdrawGoldOre;
             }
 
