@@ -16,7 +16,7 @@ Helps you train at the blast furnace more efficiently
 ## Requirements
 
 - Ice gloves or Smiths Gloves (i)
-- Goldsmith gauntlets (for gold bar & hybrid methods)
+- Goldsmith gauntlets or Smithing cape (for gold bar & hybrid methods)
 - Coal bag (for metal bar & hybrid methods)
 - Stamina potions easily accessible in bank
 
