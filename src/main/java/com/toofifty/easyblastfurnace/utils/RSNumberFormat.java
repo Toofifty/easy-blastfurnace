@@ -12,7 +12,7 @@ public class RSNumberFormat
             return String.format("%,dK", number / 1000);
         }
 
-        return String.format("%,dM", number / 1000);
+        return String.format("%,dM", number / 1000000);
     }
 
     public static String format(double number)
