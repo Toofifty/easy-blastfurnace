@@ -1,5 +1,6 @@
 package com.toofifty.easyblastfurnace.state;
 
+import com.toofifty.easyblastfurnace.EasyBlastFurnaceConfig;
 import com.toofifty.easyblastfurnace.utils.BarsOres;
 import net.runelite.api.Client;
 
@@ -14,6 +15,9 @@ public class FurnaceState
     @Inject
     private Client client;
 
+    @Inject
+    private EasyBlastFurnaceConfig config;
+
     private final Map<Integer, Integer> previousQuantity = new HashMap<>();
 
     public void update()
@@ -26,6 +30,15 @@ public class FurnaceState
     public int getChange(int itemId)
     {
         return getQuantity(new int[]{itemId}) - previousQuantity.getOrDefault(itemId, 0);
+    }
+
+
+    public int getCoalOffset()
+    {
+        if (config.addCoalBuffer()) {
+            return 0;
+        }
+        return 1;
     }
 
     public int getQuantity(int[] itemIds)

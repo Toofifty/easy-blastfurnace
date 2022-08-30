@@ -74,7 +74,7 @@ abstract public class MetalBarMethod extends Method
                 return putOntoConveyorBelt;
             }
 
-            if (state.getFurnace().getQuantity(new int[]{ItemID.COAL}) < 27 * (coalPer() - coalOffset)) {
+            if (state.getFurnace().getQuantity(new int[]{ItemID.COAL}) < 27 * (coalPer() -  state.getFurnace().getCoalOffset())) {
                 return withdrawCoal;
             }
 
