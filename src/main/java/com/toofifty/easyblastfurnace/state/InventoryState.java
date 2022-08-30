@@ -44,7 +44,7 @@ public class InventoryState
 
     public int getChange(int itemId)
     {
-        return getQuantity(itemId) - getPreviousQuantity(itemId);
+        return getQuantity(new int[]{itemId}) - getPreviousQuantity(itemId);
     }
 
     public boolean hasChanged(int itemId)
@@ -52,17 +52,19 @@ public class InventoryState
         return getChange(itemId) != 0;
     }
 
-    public int getQuantity(int itemId)
+    public int getQuantity(int[] itemIds)
     {
         load();
+        int total = 0;
 
-        return inventory.count(itemId);
+        for (int itemId : itemIds) {
+            total += inventory.count(itemId);
+        }
+
+        return total;
     }
 
-    public boolean has(int itemId)
-    {
-        return getQuantity(itemId) > 0;
-    }
+    public boolean has(int[] itemIds) { return getQuantity(itemIds) > 0; }
 
     public int getFreeSlots()
     {
