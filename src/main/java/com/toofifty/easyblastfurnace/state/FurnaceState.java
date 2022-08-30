@@ -19,24 +19,27 @@ public class FurnaceState
     public void update()
     {
         for (BarsOres varbit : BarsOres.values()) {
-            previousQuantity.put(varbit.getItemID(), getQuantity(varbit.getItemID()));
+            previousQuantity.put(varbit.getItemID(), getQuantity(new int[]{varbit.getItemID()}));
         }
     }
 
     public int getChange(int itemId)
     {
-        return getQuantity(itemId) - previousQuantity.getOrDefault(itemId, 0);
+        return getQuantity(new int[]{itemId}) - previousQuantity.getOrDefault(itemId, 0);
     }
 
-    public int getQuantity(int itemId)
+    public int getQuantity(int[] itemIds)
     {
-        Optional<BarsOres> varbit = Arrays.stream(BarsOres.values()).filter(e -> e.getItemID() == itemId).findFirst();
-        assert varbit.isPresent();
-        return client.getVarbitValue(varbit.get().getVarbit());
+        int total = 0;
+
+        for (int itemId : itemIds) {
+            Optional<BarsOres> varbit = Arrays.stream(BarsOres.values()).filter(e -> e.getItemID() == itemId).findFirst();
+            assert varbit.isPresent();
+            total += client.getVarbitValue(varbit.get().getVarbit());
+        }
+
+        return total;
     }
 
-    public boolean has(int itemId)
-    {
-        return getQuantity(itemId) > 0;
-    }
+    public boolean has(int[] itemIds) { return getQuantity(itemIds) > 0; }
 }

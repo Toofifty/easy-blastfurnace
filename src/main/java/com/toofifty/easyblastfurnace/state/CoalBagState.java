@@ -56,6 +56,6 @@ public class CoalBagState
             return;
         }
 
-        setCoal(coal + inventory.getQuantity(ItemID.COAL));
+        setCoal(coal + inventory.getQuantity(new int[]{ItemID.COAL}));
     }
 }

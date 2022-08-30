@@ -22,20 +22,16 @@ abstract public class MetalBarMethod extends Method
 
     private MethodStep checkPrerequisite(BlastFurnaceState state)
     {
-        if (!state.getInventory().has(ItemID.COAL_BAG_12019) &&
-            !state.getInventory().has(ItemID.OPEN_COAL_BAG)) {
+        if (!state.getInventory().has(new int[]{ItemID.COAL_BAG_12019, ItemID.OPEN_COAL_BAG})) {
             return state.getBank().isOpen() ? withdrawCoalBag : openBank;
         }
 
-        if ((!state.getInventory().has(ItemID.ICE_GLOVES) &&
-             !state.getEquipment().equipped(ItemID.ICE_GLOVES)) &&
-            (!state.getInventory().has(ItemID.SMITHS_GLOVES_I) &&
-             !state.getEquipment().equipped(ItemID.SMITHS_GLOVES_I))) {
+        if (!state.getInventory().has(new int[]{ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I}) &&
+            !state.getEquipment().equipped(new int[]{ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I})) {
             return state.getBank().isOpen() ? withdrawIceOrSmithsGloves : openBank;
         }
 
-        if (state.getInventory().has(ItemID.ICE_GLOVES) ||
-            state.getInventory().has(ItemID.SMITHS_GLOVES_I)) {
+        if (state.getInventory().has(new int[]{ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I})) {
             return equipIceOrSmithsGloves;
         }
 
@@ -48,8 +44,7 @@ abstract public class MetalBarMethod extends Method
         MethodStep prerequisite = checkPrerequisite(state);
         if (prerequisite != null) return prerequisite;
 
-        if (state.getInventory().has(ItemID.COAL) ||
-            state.getInventory().has(oreItem())) {
+        if (state.getInventory().has(new int[]{ItemID.COAL, oreItem()})) {
             return putOntoConveyorBelt;
         }
 
@@ -62,12 +57,12 @@ abstract public class MetalBarMethod extends Method
             return waitForBars;
         }
 
-        if (state.getFurnace().has(barItem())) {
+        if (state.getFurnace().has(new int[]{barItem()})) {
             return collectBars;
         }
 
         if (state.getBank().isOpen()) {
-            if (state.getInventory().has(barItem())) {
+            if (state.getInventory().has(new int[]{barItem()})) {
                 return depositInventory;
             }
 
@@ -75,15 +70,15 @@ abstract public class MetalBarMethod extends Method
                 return fillCoalBag;
             }
 
-            if (state.getInventory().has(ItemID.COAL)) {
+            if (state.getInventory().has(new int[]{ItemID.COAL})) {
                 return putOntoConveyorBelt;
             }
 
-            if (state.getFurnace().getQuantity(ItemID.COAL) < 27 * (coalPer() - coalOffset)) {
+            if (state.getFurnace().getQuantity(new int[]{ItemID.COAL}) < 27 * (coalPer() - coalOffset)) {
                 return withdrawCoal;
             }
 
-            if (!state.getInventory().has(oreItem())) {
+            if (!state.getInventory().has(new int[]{oreItem()})) {
                 return withdrawOre();
             }
         }

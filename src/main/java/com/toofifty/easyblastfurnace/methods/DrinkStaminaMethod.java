@@ -23,10 +23,7 @@ public class DrinkStaminaMethod extends Method
     public MethodStep next(BlastFurnaceState state)
     {
         if (!state.getPlayer().needsStamina() &&
-            (state.getInventory().has(ItemID.VIAL) ||
-                state.getInventory().has(ItemID.STAMINA_POTION1) ||
-                state.getInventory().has(ItemID.STAMINA_POTION2) ||
-                state.getInventory().has(ItemID.STAMINA_POTION3))) {
+            (state.getInventory().has(new int[]{ItemID.VIAL, ItemID.STAMINA_POTION1, ItemID.STAMINA_POTION2, ItemID.STAMINA_POTION3}))) {
             return depositInventory;
         }
 
@@ -36,35 +33,35 @@ public class DrinkStaminaMethod extends Method
             return depositInventory;
         }
 
-        if (state.getInventory().has(ItemID.STAMINA_POTION1)) {
+        if (state.getInventory().has(new int[]{ItemID.STAMINA_POTION1})) {
             return drinkStaminaPotion1;
         }
 
-        if (state.getInventory().has(ItemID.STAMINA_POTION2)) {
+        if (state.getInventory().has(new int[]{ItemID.STAMINA_POTION2})) {
             return drinkStaminaPotion2;
         }
 
-        if (state.getInventory().has(ItemID.STAMINA_POTION3)) {
+        if (state.getInventory().has(new int[]{ItemID.STAMINA_POTION3})) {
             return drinkStaminaPotion3;
         }
 
-        if (state.getInventory().has(ItemID.STAMINA_POTION4)) {
+        if (state.getInventory().has(new int[]{ItemID.STAMINA_POTION4})) {
             return drinkStaminaPotion4;
         }
 
-        if (state.getBank().has(ItemID.STAMINA_POTION1)) {
+        if (state.getBank().has(new int[]{ItemID.STAMINA_POTION1})) {
             return withdrawStaminaPotion1;
         }
 
-        if (state.getBank().has(ItemID.STAMINA_POTION2)) {
+        if (state.getBank().has(new int[]{ItemID.STAMINA_POTION2})) {
             return withdrawStaminaPotion2;
         }
 
-        if (state.getBank().has(ItemID.STAMINA_POTION3)) {
+        if (state.getBank().has(new int[]{ItemID.STAMINA_POTION3})) {
             return withdrawStaminaPotion3;
         }
 
-        if (state.getBank().has(ItemID.STAMINA_POTION4)) {
+        if (state.getBank().has(new int[]{ItemID.STAMINA_POTION4})) {
             return withdrawStaminaPotion4;
         }
 

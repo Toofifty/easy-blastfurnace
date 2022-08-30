@@ -21,10 +21,15 @@ public class EquipmentState
         }
     }
 
-    public boolean equipped(int itemId)
+    public boolean equipped(int[] itemIds)
     {
         load();
+        int total = 0;
 
-        return equipment.count(itemId) > 0;
+        for (int itemId : itemIds) {
+            total += equipment.count(itemId);
+        }
+
+        return total > 0;
     }
 }
