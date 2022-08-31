@@ -46,6 +46,10 @@ public class PlayerState
 
     public boolean hasStamina()
     {
+        if (config.ignoreRemainingPotion()) {
+            return false;
+        }
+
         return client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE) != 0;
     }
 

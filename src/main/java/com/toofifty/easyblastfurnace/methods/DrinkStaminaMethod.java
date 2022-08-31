@@ -23,10 +23,7 @@ public class DrinkStaminaMethod extends Method
     public MethodStep next(BlastFurnaceState state)
     {
         if (!state.getPlayer().needsStamina() &&
-            (state.getInventory().has(ItemID.VIAL) ||
-                state.getInventory().has(ItemID.STAMINA_POTION1) ||
-                state.getInventory().has(ItemID.STAMINA_POTION2) ||
-                state.getInventory().has(ItemID.STAMINA_POTION3))) {
+            (state.getInventory().has(ItemID.VIAL, ItemID.STAMINA_POTION1, ItemID.STAMINA_POTION2, ItemID.STAMINA_POTION3))) {
             return depositInventory;
         }
 

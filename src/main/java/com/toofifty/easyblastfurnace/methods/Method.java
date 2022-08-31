@@ -25,6 +25,8 @@ public abstract class Method
     protected final MethodStep equipIceOrSmithsGloves = new ItemStep(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I, "Equip ice gloves or smiths gloves (i)");
     protected final MethodStep withdrawGoldsmithGauntlets = new ItemStep(ItemID.GOLDSMITH_GAUNTLETS, "Withdraw goldsmith gauntlets");
     protected final MethodStep equipGoldsmithGauntlets = new ItemStep(ItemID.GOLDSMITH_GAUNTLETS, "Equip goldsmith gauntlets");
+    protected final MethodStep withdrawSmithingCape = new ItemStep(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET, "Withdraw Smithing cape");
+    protected final MethodStep equipSmithingCape = new ItemStep(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET, "Equip Smithing cape");
 
     // objects
     protected final MethodStep depositInventory = new WidgetStep(WidgetInfo.BANK_DEPOSIT_INVENTORY, "Deposit inventory");

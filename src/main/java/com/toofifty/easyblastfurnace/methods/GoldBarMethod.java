@@ -10,15 +10,24 @@ public class GoldBarMethod extends Method
     {
         // ensure player has both ice gloves & goldsmith gauntlets either in inventory or equipped
 
-        if ((!state.getInventory().has(ItemID.ICE_GLOVES) &&
-             !state.getEquipment().equipped(ItemID.ICE_GLOVES)) &&
-            (!state.getInventory().has(ItemID.SMITHS_GLOVES_I) &&
-             !state.getEquipment().equipped(ItemID.SMITHS_GLOVES_I))) {
+        if (state.getInventory().has(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I) &&
+            !state.getEquipment().equipped(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I)) {
             return state.getBank().isOpen() ? withdrawIceOrSmithsGloves : openBank;
         }
 
+        if (state.getBank().has(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET) &&
+            !state.getInventory().has(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET) &&
+            !state.getEquipment().equipped(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET)) {
+            return state.getBank().isOpen() ? withdrawSmithingCape : openBank;
+        }
+
+        if (state.getInventory().has(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET) &&
+            !state.getEquipment().equipped(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET)) {
+            return equipSmithingCape;
+        }
+
         if (!state.getInventory().has(ItemID.GOLDSMITH_GAUNTLETS) &&
-            !state.getEquipment().equipped(ItemID.GOLDSMITH_GAUNTLETS)) {
+            !state.getEquipment().equipped(ItemID.GOLDSMITH_GAUNTLETS, ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET)) {
             return state.getBank().isOpen() ? withdrawGoldsmithGauntlets : openBank;
         }
 
@@ -32,9 +41,11 @@ public class GoldBarMethod extends Method
         if (prerequisite != null) return prerequisite;
 
         if (state.getInventory().has(ItemID.GOLD_ORE)) {
-            if (!state.getEquipment().equipped(ItemID.GOLDSMITH_GAUNTLETS)) {
+
+            if (!state.getEquipment().equipped(ItemID.GOLDSMITH_GAUNTLETS, ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET)) {
                 return equipGoldsmithGauntlets;
             }
+
             return putOntoConveyorBelt;
         }
 
@@ -43,8 +54,7 @@ public class GoldBarMethod extends Method
         }
 
         if (state.getFurnace().has(ItemID.GOLD_BAR)) {
-            if (!state.getEquipment().equipped(ItemID.ICE_GLOVES) ||
-                !state.getEquipment().equipped(ItemID.SMITHS_GLOVES_I)) {
+            if (!state.getEquipment().equipped(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I)) {
                 return equipIceOrSmithsGloves;
             }
             return collectBars;

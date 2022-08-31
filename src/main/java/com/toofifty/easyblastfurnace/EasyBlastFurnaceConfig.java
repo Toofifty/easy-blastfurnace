@@ -277,4 +277,23 @@ public interface EasyBlastFurnaceConfig extends Config
     {
         return 50;
     }
+
+    @ConfigItem(
+        position = 5,
+        keyName = "ignoreRemainingPotion",
+        name = "Ignore remaining stamina potion",
+        description = "Ignore the remaining stamina potion timer if the Low energy threshold has been reached."
+    )
+    default boolean ignoreRemainingPotion()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+        position = 6,
+        keyName = "addCoalBuffer",
+        name = "Add coal buffer",
+        description = "Ensure there is always more coal than needed in the furnace. This avoids stalls while bars are created."
+    )
+    default boolean addCoalBuffer() { return false; }
 }

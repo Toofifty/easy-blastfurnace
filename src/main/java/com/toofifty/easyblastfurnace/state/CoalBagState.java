@@ -7,7 +7,6 @@ import javax.inject.Inject;
 
 public class CoalBagState
 {
-    private static final int MAX_COAL = 27;
     private static final int MIN_COAL = 0;
 
     @Inject
@@ -19,9 +18,17 @@ public class CoalBagState
     @Getter
     private int coal;
 
+    @Getter
+    private int maxCoal = 27;
+
+    public void setMaxCoal(int quantity)
+    {
+        maxCoal = quantity;
+    }
+
     public void setCoal(int quantity)
     {
-        coal = Math.min(Math.max(quantity, MIN_COAL), MAX_COAL);
+        coal = Math.min(Math.max(quantity, MIN_COAL), maxCoal);
     }
 
     public boolean isEmpty()
@@ -31,7 +38,7 @@ public class CoalBagState
 
     public boolean isFull()
     {
-        return coal == MAX_COAL;
+        return coal == maxCoal;
     }
 
     public void empty()
@@ -47,7 +54,7 @@ public class CoalBagState
     public void fill()
     {
         if (bank.isOpen()) {
-            setCoal(MAX_COAL);
+            setCoal(maxCoal);
             return;
         }
 

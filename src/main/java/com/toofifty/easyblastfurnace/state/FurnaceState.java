@@ -1,5 +1,6 @@
 package com.toofifty.easyblastfurnace.state;
 
+import com.toofifty.easyblastfurnace.EasyBlastFurnaceConfig;
 import com.toofifty.easyblastfurnace.utils.BarsOres;
 import net.runelite.api.Client;
 
@@ -13,6 +14,9 @@ public class FurnaceState
 {
     @Inject
     private Client client;
+
+    @Inject
+    private EasyBlastFurnaceConfig config;
 
     private final Map<Integer, Integer> previousQuantity = new HashMap<>();
 
@@ -28,15 +32,27 @@ public class FurnaceState
         return getQuantity(itemId) - previousQuantity.getOrDefault(itemId, 0);
     }
 
-    public int getQuantity(int itemId)
+
+    public int getCoalOffset()
     {
-        Optional<BarsOres> varbit = Arrays.stream(BarsOres.values()).filter(e -> e.getItemID() == itemId).findFirst();
-        assert varbit.isPresent();
-        return client.getVarbitValue(varbit.get().getVarbit());
+        if (config.addCoalBuffer()) {
+            return 0;
+        }
+        return 1;
     }
 
-    public boolean has(int itemId)
+    public int getQuantity(int ...itemIds)
     {
-        return getQuantity(itemId) > 0;
+        int total = 0;
+
+        for (int itemId : itemIds) {
+            Optional<BarsOres> varbit = Arrays.stream(BarsOres.values()).filter(e -> e.getItemID() == itemId).findFirst();
+            assert varbit.isPresent();
+            total += client.getVarbitValue(varbit.get().getVarbit());
+        }
+
+        return total;
     }
+
+    public boolean has(int ...itemIds) { return getQuantity(itemIds) > 0; }
 }

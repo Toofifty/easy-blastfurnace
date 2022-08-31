@@ -22,20 +22,16 @@ abstract public class MetalBarMethod extends Method
 
     private MethodStep checkPrerequisite(BlastFurnaceState state)
     {
-        if (!state.getInventory().has(ItemID.COAL_BAG_12019) &&
-            !state.getInventory().has(ItemID.OPEN_COAL_BAG)) {
+        if (!state.getInventory().has(ItemID.COAL_BAG_12019, ItemID.OPEN_COAL_BAG)) {
             return state.getBank().isOpen() ? withdrawCoalBag : openBank;
         }
 
-        if ((!state.getInventory().has(ItemID.ICE_GLOVES) &&
-             !state.getEquipment().equipped(ItemID.ICE_GLOVES)) &&
-            (!state.getInventory().has(ItemID.SMITHS_GLOVES_I) &&
-             !state.getEquipment().equipped(ItemID.SMITHS_GLOVES_I))) {
+        if (!state.getInventory().has(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I) &&
+            !state.getEquipment().equipped(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I)) {
             return state.getBank().isOpen() ? withdrawIceOrSmithsGloves : openBank;
         }
 
-        if (state.getInventory().has(ItemID.ICE_GLOVES) ||
-            state.getInventory().has(ItemID.SMITHS_GLOVES_I)) {
+        if (state.getInventory().has(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I)) {
             return equipIceOrSmithsGloves;
         }
 
@@ -48,13 +44,12 @@ abstract public class MetalBarMethod extends Method
         MethodStep prerequisite = checkPrerequisite(state);
         if (prerequisite != null) return prerequisite;
 
-        if (state.getInventory().has(ItemID.COAL) ||
-            state.getInventory().has(oreItem())) {
+        if (state.getInventory().has(ItemID.COAL, oreItem())) {
             return putOntoConveyorBelt;
         }
 
         if (state.getPlayer().isAtConveyorBelt() &&
-            state.getCoalBag().isFull()) {
+            !state.getCoalBag().isEmpty()) {
             return emptyCoalBag;
         }
 
@@ -79,7 +74,7 @@ abstract public class MetalBarMethod extends Method
                 return putOntoConveyorBelt;
             }
 
-            if (state.getFurnace().getQuantity(ItemID.COAL) < 27 * (coalPer() - 1)) {
+            if (state.getFurnace().getQuantity(ItemID.COAL) < 27 * (coalPer() -  state.getFurnace().getCoalOffset())) {
                 return withdrawCoal;
             }
 
