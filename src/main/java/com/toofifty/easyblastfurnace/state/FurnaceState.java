@@ -23,13 +23,13 @@ public class FurnaceState
     public void update()
     {
         for (BarsOres varbit : BarsOres.values()) {
-            previousQuantity.put(varbit.getItemID(), getQuantity(new int[]{varbit.getItemID()}));
+            previousQuantity.put(varbit.getItemID(), getQuantity(varbit.getItemID()));
         }
     }
 
     public int getChange(int itemId)
     {
-        return getQuantity(new int[]{itemId}) - previousQuantity.getOrDefault(itemId, 0);
+        return getQuantity(itemId) - previousQuantity.getOrDefault(itemId, 0);
     }
 
 
@@ -41,7 +41,7 @@ public class FurnaceState
         return 1;
     }
 
-    public int getQuantity(int[] itemIds)
+    public int getQuantity(int ...itemIds)
     {
         int total = 0;
 
@@ -54,5 +54,5 @@ public class FurnaceState
         return total;
     }
 
-    public boolean has(int[] itemIds) { return getQuantity(itemIds) > 0; }
+    public boolean has(int ...itemIds) { return getQuantity(itemIds) > 0; }
 }

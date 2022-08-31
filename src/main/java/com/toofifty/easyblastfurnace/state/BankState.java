@@ -29,7 +29,7 @@ public class BankState
         return bankContainer != null && !bankContainer.isHidden();
     }
 
-    public int getQuantity(int[] itemIds)
+    public int getQuantity(int ...itemIds)
     {
         load();
         int total = 0;
@@ -41,5 +41,5 @@ public class BankState
         return total;
     }
 
-    public boolean has(int[] itemIds) { return getQuantity(itemIds) > 0; }
+    public boolean has(int ...itemIds) { return getQuantity(itemIds) > 0; }
 }

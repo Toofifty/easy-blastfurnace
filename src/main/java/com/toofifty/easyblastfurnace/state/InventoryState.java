@@ -44,7 +44,7 @@ public class InventoryState
 
     public int getChange(int itemId)
     {
-        return getQuantity(new int[]{itemId}) - getPreviousQuantity(itemId);
+        return getQuantity(itemId) - getPreviousQuantity(itemId);
     }
 
     public boolean hasChanged(int itemId)
@@ -52,7 +52,7 @@ public class InventoryState
         return getChange(itemId) != 0;
     }
 
-    public int getQuantity(int[] itemIds)
+    public int getQuantity(int ...itemIds)
     {
         load();
         int total = 0;
@@ -64,7 +64,7 @@ public class InventoryState
         return total;
     }
 
-    public boolean has(int[] itemIds) { return getQuantity(itemIds) > 0; }
+    public boolean has(int ...itemIds) { return getQuantity(itemIds) > 0; }
 
     public int getFreeSlots()
     {

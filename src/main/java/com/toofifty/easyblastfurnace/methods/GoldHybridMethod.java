@@ -8,27 +8,32 @@ abstract public class GoldHybridMethod extends MetalBarMethod
 {
     private MethodStep checkPrerequisite(BlastFurnaceState state)
     {
-        if (!state.getInventory().has(new int[]{ItemID.COAL_BAG_12019, ItemID.OPEN_COAL_BAG})) {
+        if (!state.getInventory().has(ItemID.COAL_BAG_12019, ItemID.OPEN_COAL_BAG)) {
             return state.getBank().isOpen() ? withdrawCoalBag : openBank;
         }
 
-        if (!state.getInventory().has(new int[]{ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I}) &&
-            !state.getEquipment().equipped(new int[]{ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I})) {
+        if (!state.getInventory().has(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I) &&
+            !state.getEquipment().equipped(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I)) {
             return state.getBank().isOpen() ? withdrawIceOrSmithsGloves : openBank;
         }
 
-        if (state.getBank().has(new int[]{ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET}) &&
-            !state.getInventory().has(new int[]{ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET}) &&
-            !state.getEquipment().equipped(new int[]{ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET})) {
+        if (state.getBank().has(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET) &&
+            !state.getInventory().has(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET) &&
+            !state.getEquipment().equipped(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET)) {
             return state.getBank().isOpen() ? withdrawSmithingCape : openBank;
         }
 
-        if (!state.getInventory().has(new int[]{ItemID.GOLDSMITH_GAUNTLETS}) &&
-            !state.getEquipment().equipped(new int[]{ItemID.GOLDSMITH_GAUNTLETS})) {
+        if (state.getInventory().has(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET) &&
+            !state.getEquipment().equipped(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET)) {
+            return equipSmithingCape;
+        }
+
+        if (!state.getInventory().has(ItemID.GOLDSMITH_GAUNTLETS) &&
+            !state.getEquipment().equipped(ItemID.GOLDSMITH_GAUNTLETS, ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET)) {
             return state.getBank().isOpen() ? withdrawGoldsmithGauntlets : openBank;
         }
 
-        if (!state.getEquipment().equipped(new int[]{ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I, ItemID.GOLDSMITH_GAUNTLETS, ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET})) {
+        if (!state.getEquipment().equipped(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I, ItemID.GOLDSMITH_GAUNTLETS, ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET)) {
             return equipGoldsmithGauntlets;
         }
 
@@ -44,17 +49,12 @@ abstract public class GoldHybridMethod extends MetalBarMethod
         // continue doing gold bars until enough coal has been deposited
         // then do one trip of metal bars
 
-        if (state.getInventory().has(new int[]{ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET}) &&
-            !state.getEquipment().equipped(new int[]{ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET})) {
-            return equipSmithingCape;
-        }
-
-        if (state.getInventory().has(new int[]{ItemID.GOLD_ORE}) &&
-            !state.getEquipment().equipped(new int[]{ItemID.GOLDSMITH_GAUNTLETS, ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET})) {
+        if (state.getInventory().has(ItemID.GOLD_ORE) &&
+            !state.getEquipment().equipped(ItemID.GOLDSMITH_GAUNTLETS, ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET)) {
             return equipGoldsmithGauntlets;
         }
 
-        if (state.getInventory().has(new int[]{ItemID.COAL, ItemID.GOLD_ORE, oreItem()})) {
+        if (state.getInventory().has(ItemID.COAL, ItemID.GOLD_ORE, oreItem())) {
             return putOntoConveyorBelt;
         }
 
@@ -67,15 +67,15 @@ abstract public class GoldHybridMethod extends MetalBarMethod
             return waitForBars;
         }
 
-        if (state.getFurnace().has(new int[]{barItem(), ItemID.GOLD_BAR})) {
-            if (!state.getEquipment().equipped(new int[]{ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I})) {
+        if (state.getFurnace().has(barItem(), ItemID.GOLD_BAR)) {
+            if (!state.getEquipment().equipped(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I)) {
                 return equipIceOrSmithsGloves;
             }
             return collectBars;
         }
 
         if (state.getBank().isOpen()) {
-            if (state.getInventory().has(new int[]{ItemID.GOLD_BAR, barItem()})) {
+            if (state.getInventory().has(ItemID.GOLD_BAR, barItem())) {
                 return depositInventory;
             }
 
@@ -83,15 +83,15 @@ abstract public class GoldHybridMethod extends MetalBarMethod
                 return state.getCoalBag().isEmpty() ? fillCoalBag : refillCoalBag;
             }
 
-            if (state.getInventory().has(new int[]{ItemID.GOLD_ORE, oreItem()})) {
+            if (state.getInventory().has(ItemID.GOLD_ORE, oreItem())) {
                 return putOntoConveyorBelt;
             }
 
-            if (state.getFurnace().getQuantity(new int[]{ItemID.COAL}) < 26 * (coalPer() - state.getFurnace().getCoalOffset())) {
+            if (state.getFurnace().getQuantity(ItemID.COAL) < 26 * (coalPer() - state.getFurnace().getCoalOffset())) {
                 return withdrawGoldOre;
             }
 
-            if (!state.getInventory().has(new int[]{oreItem()})) {
+            if (!state.getInventory().has(oreItem())) {
                 return withdrawOre();
             }
         }

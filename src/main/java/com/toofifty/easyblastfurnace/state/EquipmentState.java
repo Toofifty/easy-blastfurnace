@@ -21,7 +21,7 @@ public class EquipmentState
         }
     }
 
-    public boolean equipped(int[] itemIds)
+    public boolean equipped(int ...itemIds)
     {
         load();
         int total = 0;

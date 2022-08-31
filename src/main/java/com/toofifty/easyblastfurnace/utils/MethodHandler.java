@@ -43,7 +43,7 @@ public class MethodHandler
 
     private boolean inInventory(int itemId)
     {
-        return state.getInventory().has(new int[]{itemId});
+        return state.getInventory().has(itemId);
     }
 
     private Method getMethodFromInventory()
