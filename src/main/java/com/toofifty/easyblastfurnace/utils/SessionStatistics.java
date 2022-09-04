@@ -13,10 +13,9 @@ import net.runelite.api.ItemID;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+
 @Singleton
 public class SessionStatistics
 {
@@ -32,10 +31,6 @@ public class SessionStatistics
     @Getter
     private int staminaDoses = 0;
 
-    private Instant timeStarted;
-
-    private long barsPerHour = 0;
-
     private ItemContainer cachedBank;
 
     private final Map<Integer, Integer> outputs = new HashMap<>();
@@ -44,7 +39,6 @@ public class SessionStatistics
     {
         outputs.clear();
         staminaDoses = 0;
-        timeStarted = null;
     }
 
     public void drinkStamina()
@@ -58,7 +52,6 @@ public class SessionStatistics
         for (int itemId : outputs.keySet()) {
             actions += outputs.getOrDefault(itemId, 0);
         }
-        calculateBarsPerHour(actions);
         return actions;
     }
 
@@ -154,10 +147,6 @@ public class SessionStatistics
         return 0;
     }
 
-    public double getBarsPerHour() {
-        return barsPerHour;
-    }
-
     public void onFurnaceUpdate()
     {
         int[] bars = new int[]{
@@ -169,20 +158,6 @@ public class SessionStatistics
             if (diff > 0) {
                 outputs.put(barId, outputs.getOrDefault(barId, 0) + diff);
             }
-        }
-    }
-
-    private void calculateBarsPerHour(int totalBars)
-    {
-        Instant now = Instant.now();
-
-        if (timeStarted == null) timeStarted = now;
-
-        Duration timeSinceStart = Duration.between(timeStarted, now);
-
-        if (!timeSinceStart.isNegative() && ((double) timeSinceStart.toMillis() / 3600000) != 0L)
-        {
-            barsPerHour = (long) Math.floor(totalBars / ((double) timeSinceStart.toMillis() / 3600000));
         }
     }
 }

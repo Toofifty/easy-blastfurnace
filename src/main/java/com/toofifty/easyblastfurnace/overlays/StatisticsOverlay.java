@@ -57,13 +57,6 @@ public class StatisticsOverlay extends OverlayPanel
                 .build());
         }
 
-        if (config.showBarsPerHour()) {
-            panelComponent.getChildren().add(LineComponent.builder()
-                .left("Bars/hr:")
-                .right(RSNumberFormat.format(statistics.getBarsPerHour()))
-                .build());
-        }
-
         if (config.showXpBanked()) {
             panelComponent.getChildren().add(LineComponent.builder()
                 .left("XP banked:")

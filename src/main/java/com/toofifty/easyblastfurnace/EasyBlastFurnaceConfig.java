@@ -176,18 +176,6 @@ public interface EasyBlastFurnaceConfig extends Config
 
     @ConfigItem(
         position = 3,
-        keyName = "showBarsPerHour",
-        name = "Show bars/hr",
-        description = "Show amount of bars made per hour.",
-        section = statisticsOverlay
-    )
-    default boolean showBarsPerHour()
-    {
-        return true;
-    }
-
-    @ConfigItem(
-        position = 4,
         keyName = "showXpBanked",
         name = "Show XP banked",
         description = "Show amount of Smithing XP that can be gained from ores in the bank.",
