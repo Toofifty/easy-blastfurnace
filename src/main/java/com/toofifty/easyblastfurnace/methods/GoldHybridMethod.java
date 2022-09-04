@@ -87,7 +87,9 @@ abstract public class GoldHybridMethod extends MetalBarMethod
                 return putOntoConveyorBelt;
             }
 
-            if (state.getFurnace().getQuantity(ItemID.COAL) < 26 * (coalPer() - state.getFurnace().getCoalOffset())) {
+            int maxCoalInventory = state.getEquipment().equipped(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET) ? 27 : 26;
+
+            if (state.getFurnace().getQuantity(ItemID.COAL) < maxCoalInventory * (coalPer() - state.getFurnace().getCoalOffset())) {
                 return withdrawGoldOre;
             }
 
