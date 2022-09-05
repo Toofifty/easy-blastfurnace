@@ -24,7 +24,7 @@ public class SteelBarMethod extends MetalBarMethod
     }
 
     @Override
-    protected int coalPer()
+    public int coalPer()
     {
         return 1;
     }

@@ -24,7 +24,7 @@ public class RuniteBarMethod extends MetalBarMethod
     }
 
     @Override
-    protected int coalPer()
+    public int coalPer()
     {
         return 4;
     }

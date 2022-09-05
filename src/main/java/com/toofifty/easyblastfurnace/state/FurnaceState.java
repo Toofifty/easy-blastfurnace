@@ -3,6 +3,7 @@ package com.toofifty.easyblastfurnace.state;
 import com.toofifty.easyblastfurnace.EasyBlastFurnaceConfig;
 import com.toofifty.easyblastfurnace.utils.BarsOres;
 import net.runelite.api.Client;
+import net.runelite.api.ItemID;
 
 import javax.inject.Inject;
 import java.util.Arrays;
@@ -54,5 +55,12 @@ public class FurnaceState
         return total;
     }
 
-    public boolean has(int ...itemIds) { return getQuantity(itemIds) > 0; }
+    public boolean has(int ...itemIds) {
+        return getQuantity(itemIds) > 0;
+    }
+
+    public boolean isCoalRun(int coalPer) {
+        int coalInFurnace = getQuantity(ItemID.COAL);
+        return coalInFurnace < 27 * (coalPer - getCoalOffset());
+    }
 }

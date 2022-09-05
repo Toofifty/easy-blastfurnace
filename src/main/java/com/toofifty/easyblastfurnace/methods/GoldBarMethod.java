@@ -78,4 +78,10 @@ public class GoldBarMethod extends Method
     {
         return "Gold bars";
     }
+
+    @Override
+    public int coalPer()
+    {
+        return 0;
+    }
 }

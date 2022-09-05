@@ -48,7 +48,7 @@ public class CoalBagState
             return;
         }
 
-        setCoal(coal - inventory.getFreeSlots());
+        setCoal(coal - inventory.getFreeSlots(false));
     }
 
     public void fill()

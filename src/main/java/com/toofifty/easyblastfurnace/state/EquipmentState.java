@@ -5,7 +5,6 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
 
 import javax.inject.Inject;
-
 public class EquipmentState
 {
     @Inject
@@ -24,6 +23,8 @@ public class EquipmentState
     public boolean equipped(int ...itemIds)
     {
         load();
+        if (equipment == null) return false;
+
         int total = 0;
 
         for (int itemId : itemIds) {

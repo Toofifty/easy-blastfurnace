@@ -132,9 +132,41 @@ public interface EasyBlastFurnaceConfig extends Config
     }
 
     @ConfigSection(
+        name = "Stamina potions",
+        description = "Configure stamina potions",
+        position = 2
+    )
+    String staminaPotions = "staminaPotions";
+
+    @ConfigItem(
+        position = 0,
+        keyName = "staminaPotionEnable",
+        name = "Stamina potion management",
+        description = "Allow the plugin to handle stamina potions.",
+        section = staminaPotions
+    )
+    default boolean staminaPotionEnable()
+    {
+        return true;
+    }
+
+    @ConfigItem(
+        position = 1,
+        keyName = "requireStaminaThreshold",
+        name = "Low energy threshold",
+        description = "Run energy will be kept above this value. 0 - 50% recommended.",
+        section = staminaPotions
+    )
+    @Units(Units.PERCENT)
+    default int requireStaminaThreshold()
+    {
+        return 50;
+    }
+
+    @ConfigSection(
         name = "Statistics overlay",
         description = "Configure statistics overlay",
-        position = 2
+        position = 3
     )
     String statisticsOverlay = "statisticsOverlay";
 
@@ -199,7 +231,7 @@ public interface EasyBlastFurnaceConfig extends Config
     }
 
     @ConfigItem(
-        position = 4,
+        position = 5,
         keyName = "showXpGained",
         name = "Show XP gained",
         description = "Show amount of Smithing XP gained in the session.",
@@ -211,7 +243,7 @@ public interface EasyBlastFurnaceConfig extends Config
     }
 
     @ConfigItem(
-        position = 5,
+        position = 6,
         keyName = "showStaminaDoses",
         name = "Show stamina doses",
         description = "Show amount of stamina potion doses consumed in the session.",
@@ -225,7 +257,7 @@ public interface EasyBlastFurnaceConfig extends Config
     @ConfigSection(
         name = "Cleanup",
         description = "Configure auto-clearing plugin state",
-        position = 3,
+        position = 4,
         closedByDefault = true
     )
     String cleanup = "cleanup";
@@ -279,30 +311,7 @@ public interface EasyBlastFurnaceConfig extends Config
     }
 
     @ConfigItem(
-        position = 4,
-        keyName = "requireStaminaThreshold",
-        name = "Low energy threshold",
-        description = "Require a stamina dose when run energy is lower than this amount. Feature is disabled when set to 0."
-    )
-    @Units(Units.PERCENT)
-    default int requireStaminaThreshold()
-    {
-        return 50;
-    }
-
-    @ConfigItem(
         position = 5,
-        keyName = "ignoreRemainingPotion",
-        name = "Ignore remaining stamina potion",
-        description = "Ignore the remaining stamina potion timer if the Low energy threshold has been reached."
-    )
-    default boolean ignoreRemainingPotion()
-    {
-        return false;
-    }
-
-    @ConfigItem(
-        position = 6,
         keyName = "addCoalBuffer",
         name = "Add coal buffer",
         description = "Ensure there is always more coal than needed in the furnace. This avoids stalls while bars are created."

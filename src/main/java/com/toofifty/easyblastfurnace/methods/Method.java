@@ -35,7 +35,9 @@ public abstract class Method
     protected final MethodStep collectBars = new ObjectStep(EasyBlastFurnacePlugin.BAR_DISPENSER, "Collect bars");
     protected final MethodStep waitForBars = new TileStep(EasyBlastFurnacePlugin.PICKUP_POSITION, "Wait for bars to smelt");
 
-    abstract public MethodStep next(BlastFurnaceState state);
+    public abstract MethodStep next(BlastFurnaceState state);
 
-    abstract public String getName();
+    public abstract String getName();
+
+    public abstract int coalPer();
 }

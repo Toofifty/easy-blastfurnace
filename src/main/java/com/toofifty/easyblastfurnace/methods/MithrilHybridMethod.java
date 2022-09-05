@@ -24,7 +24,7 @@ public class MithrilHybridMethod extends GoldHybridMethod
     }
 
     @Override
-    protected int coalPer()
+    public int coalPer()
     {
         return 2;
     }

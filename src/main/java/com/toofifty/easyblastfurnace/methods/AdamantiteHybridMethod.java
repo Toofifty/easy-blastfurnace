@@ -24,7 +24,7 @@ public class AdamantiteHybridMethod extends GoldHybridMethod
     }
 
     @Override
-    protected int coalPer()
+    public int coalPer()
     {
         return 3;
     }
