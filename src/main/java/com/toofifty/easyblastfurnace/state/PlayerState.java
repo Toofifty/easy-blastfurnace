@@ -11,7 +11,9 @@ import net.runelite.api.ItemID;
 import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.runenergy.RunEnergyConfig;
 import net.runelite.client.util.RSTimeUnit;
+import net.runelite.client.config.ConfigManager;
 
 import javax.inject.Inject;
 import java.time.Duration;
@@ -47,6 +49,9 @@ public class PlayerState
     @Inject
     private MethodHandler methodHandler;
 
+    @Inject
+    private ConfigManager configManager;
+
     public boolean isAtConveyorBelt()
     {
         Player player = client.getLocalPlayer();
@@ -59,7 +64,7 @@ public class PlayerState
     public boolean hasEnoughEnergy()
     {
         if (!config.staminaPotionEnable()) {
-            return false;
+            return true;
         }
 
         // Calculate the amount of energy lost every tick for the next run, and highlight stamina potion when necessary.
@@ -77,6 +82,7 @@ public class PlayerState
         final Duration staminaDuration = Duration.of(10L * staminaPotionEffectVarb, RSTimeUnit.GAME_TICKS);
         double offset = staminaDuration.toMillis() == 0 ? 0 : 0.3; // Stamina effect reduces energy depletion to 30%
 
+        // todo: && configManager.getConfig(RunEnergyConfig.class).ringOfEnduranceCharges() >= 500 once Runelite accepts this PR: https://github.com/runelite/runelite/pull/15621.
         if (equipment.equipped(ItemID.RING_OF_ENDURANCE)) {
             lossRate *= 0.85; // Ring of Endurance passive effect reduces energy depletion to 85%
             lossRateOres *= 0.85;
@@ -99,7 +105,7 @@ public class PlayerState
             energyNeeded = lossRateOres * 9 + lossRate * 5 + lossRateBars * 4;
         }
 
-        return config.requireStaminaThreshold() > client.getEnergy() - energyNeeded;
+        return config.requireStaminaThreshold() < client.getEnergy() - energyNeeded;
     }
 
     public boolean isOnBlastFurnaceWorld()
