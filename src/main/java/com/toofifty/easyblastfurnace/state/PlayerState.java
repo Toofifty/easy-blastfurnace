@@ -16,6 +16,7 @@ import net.runelite.client.util.RSTimeUnit;
 
 import javax.inject.Inject;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 
 public class PlayerState
@@ -48,6 +49,8 @@ public class PlayerState
     @Inject
     private MethodHandler methodHandler;
 
+    private Instant staminaEndTime;
+
     public boolean isAtConveyorBelt()
     {
         Player player = client.getLocalPlayer();
@@ -76,19 +79,26 @@ public class PlayerState
         double lossRateOres = (Math.min(Math.max(effectiveWeight + nextOreWeight, 0), 64) / 100.0) + 0.64;
         double lossRateBars = (Math.min(Math.max(effectiveWeight + inventoryBarsWeight, 0), 64) / 100.0) + 0.64;
         final Duration staminaDuration = Duration.of(10L * staminaPotionEffectVarb, RSTimeUnit.GAME_TICKS);
-        double offset = staminaDuration.toMillis() == 0 ? 0 : 0.3; // Stamina effect reduces energy depletion to 30%
+        double offset = staminaDuration.isZero() ? 1 : 0.3; // Stamina effect reduces energy depletion to 30%
+
+        // This is so we can have an accurate count for the stamina timer during the potion's last 12 seconds.
+        if (staminaEndTime == null && !staminaDuration.isZero() && staminaDuration.toMillis() <= 12000) {
+            staminaEndTime = Instant.now().plus(staminaDuration);
+        } else if (staminaDuration.isZero() || staminaDuration.toMillis() > 12000) {
+            staminaEndTime = null;
+        }
+
+        // The closer our stamina potion is to finishing, the less lossRate reduction it will give.
+        long lastMillis = staminaEndTime != null ? Duration.between(Instant.now(), staminaEndTime).toMillis() : 0;
+        if (lastMillis > 0 && lastMillis <= 10800) {
+            offset = (0.7 - (0.7 * lastMillis / 10800)) + 0.3;
+        }
 
         // todo: && runEnergyPlugin.getRingOfEnduranceCharges() once Runelite accepts this PR: https://github.com/runelite/runelite/pull/15621.
         if (equipment.equipped(ItemID.RING_OF_ENDURANCE)) {
             lossRate *= 0.85; // Ring of Endurance passive effect reduces energy depletion to 85%
             lossRateOres *= 0.85;
             lossRateBars *= 0.85;
-        }
-
-        // The closer to 0 staminaDuration is, the closer to 1 the offset will be, i.e. very little lossRate reduction.
-        // The closer to 10800 staminaDuration is, the closer to 0.3 the offset will be. I'm bad at maths this is the best I could do.
-        if (staminaDuration.toMillis() < 10800) {
-            offset = (0.7 - (0.7 * staminaDuration.toMillis() / 10800)) + 0.3;
         }
 
         lossRate *= offset;
