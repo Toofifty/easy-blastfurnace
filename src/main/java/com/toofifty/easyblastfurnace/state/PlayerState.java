@@ -1,22 +1,15 @@
 package com.toofifty.easyblastfurnace.state;
 
 import com.toofifty.easyblastfurnace.EasyBlastFurnaceConfig;
-import com.toofifty.easyblastfurnace.methods.Method;
-import com.toofifty.easyblastfurnace.utils.MethodHandler;
+import com.toofifty.easyblastfurnace.utils.StaminaHelper;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.runelite.api.Client;
-import net.runelite.api.ItemID;
 import net.runelite.api.Player;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
-//import net.runelite.client.plugins.runenergy.RunEnergyPlugin;
-import net.runelite.client.util.RSTimeUnit;
 
 import javax.inject.Inject;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.Arrays;
 
 public class PlayerState
@@ -38,18 +31,7 @@ public class PlayerState
     private EasyBlastFurnaceConfig config;
 
     @Inject
-    private FurnaceState furnace;
-
-    @Inject
-    private EquipmentState equipment;
-
-    @Inject
-    private InventoryState inventory;
-
-    @Inject
-    private MethodHandler methodHandler;
-
-    private Instant staminaEndTime;
+    StaminaHelper staminaHelper;
 
     public boolean isAtConveyorBelt()
     {
@@ -66,52 +48,7 @@ public class PlayerState
             return true;
         }
 
-        // Calculate the amount of energy lost every tick for the next run, and highlight stamina potion when necessary.
-        // On a coal trip: 9 ticks with ore, 9 ticks without. 18 ticks or 10800 milliseconds.
-        // On a metal ore/gold/hybrid trip: 9 ticks with ore, 5 ticks without, 4 ticks with bars
-        Method method = methodHandler.getMethod();
-        int inventoryBarsWeight = (int) Math.round(inventory.getWeightOfBarsInInventory());
-        int nextOreWeight = (int) Math.round(inventory.getWeightOfNextOresInInventory());
-        int staminaPotionEffectVarb = client.getVarbitValue(Varbits.STAMINA_EFFECT);
-        final int effectiveWeight = client.getWeight() - inventoryBarsWeight;
-        double energyNeeded;
-        double lossRate = (Math.min(Math.max(effectiveWeight, 0), 64) / 100.0) + 0.64; // energy lost each tick
-        double lossRateOres = (Math.min(Math.max(effectiveWeight + nextOreWeight, 0), 64) / 100.0) + 0.64;
-        double lossRateBars = (Math.min(Math.max(effectiveWeight + inventoryBarsWeight, 0), 64) / 100.0) + 0.64;
-        final Duration staminaDuration = Duration.of(10L * staminaPotionEffectVarb, RSTimeUnit.GAME_TICKS);
-        double offset = staminaDuration.isZero() ? 1 : 0.3; // Stamina effect reduces energy depletion to 30%
-
-        // This is so we can have an accurate count for the stamina timer during the potion's last 12 seconds.
-        if (staminaEndTime == null && !staminaDuration.isZero() && staminaDuration.toMillis() <= 12000) {
-            staminaEndTime = Instant.now().plus(staminaDuration);
-        } else if (staminaDuration.isZero() || staminaDuration.toMillis() > 12000) {
-            staminaEndTime = null;
-        }
-
-        // The closer our stamina potion is to finishing, the less lossRate reduction it will give.
-        long lastMillis = staminaEndTime != null ? Duration.between(Instant.now(), staminaEndTime).toMillis() : 0;
-        if (lastMillis > 0 && lastMillis <= 10800) {
-            offset = (0.7 - (0.7 * lastMillis / 10800)) + 0.3;
-        }
-
-        // todo: && runEnergyPlugin.getRingOfEnduranceCharges() once Runelite accepts this PR: https://github.com/runelite/runelite/pull/15621.
-        if (equipment.equipped(ItemID.RING_OF_ENDURANCE)) {
-            lossRate *= 0.85; // Ring of Endurance passive effect reduces energy depletion to 85%
-            lossRateOres *= 0.85;
-            lossRateBars *= 0.85;
-        }
-
-        lossRate *= offset;
-        lossRateOres *= offset;
-        lossRateBars *= offset;
-
-        if (furnace.isCoalRun(method.coalPer())) {
-            energyNeeded = Math.ceil(lossRate * 9 + lossRateOres * 9);
-        } else {
-            energyNeeded = Math.ceil(lossRateOres * 9 + lossRate * 5 + lossRateBars * 4);
-        }
-
-        return (client.getEnergy() - energyNeeded) > config.requireStaminaThreshold();
+        return (client.getEnergy() - staminaHelper.getEnergyNeeded()) > config.requireStaminaThreshold();
     }
 
     public boolean isOnBlastFurnaceWorld()
