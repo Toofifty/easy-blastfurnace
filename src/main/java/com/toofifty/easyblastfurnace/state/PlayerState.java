@@ -48,7 +48,7 @@ public class PlayerState
             return true;
         }
 
-        return (client.getEnergy() - staminaHelper.getEnergyNeeded()) > config.requireStaminaThreshold();
+        return (client.getEnergy() - staminaHelper.getEnergyNeededForNextRun()) > config.requireStaminaThreshold();
     }
 
     public boolean isOnBlastFurnaceWorld()

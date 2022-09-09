@@ -63,20 +63,20 @@ public class InventoryState
 
     public boolean has(int ...itemIds) { return getQuantity(itemIds) > 0; }
 
-    public int getFreeSlots(boolean ignoreBars)
+    public int getFreeSlots(boolean ignoreBarsAndOres)
     {
         load();
 
         int freeSlots = 28;
-        int[] bars = new int[]{
-            ItemID.IRON_BAR, ItemID.STEEL_BAR, ItemID.MITHRIL_BAR,
-            ItemID.ADAMANTITE_BAR, ItemID.RUNITE_BAR, ItemID.GOLD_BAR
+        int[] barsAndOres = new int[]{
+            ItemID.IRON_BAR, ItemID.MITHRIL_BAR, ItemID.ADAMANTITE_BAR, ItemID.RUNITE_BAR, ItemID.GOLD_BAR, ItemID.STEEL_BAR,
+            ItemID.IRON_ORE, ItemID.MITHRIL_ORE, ItemID.ADAMANTITE_ORE, ItemID.RUNITE_ORE, ItemID.GOLD_ORE
         };
 
         for (Item item : inventory.getItems()) {
-            if (ignoreBars && IntStream.of(bars).noneMatch(id -> id == item.getId()) && item.getQuantity() > 0) {
+            if (ignoreBarsAndOres && IntStream.of(barsAndOres).noneMatch(id -> id == item.getId()) && item.getQuantity() > 0) {
                 freeSlots--;
-            } else if (!ignoreBars && item.getQuantity() > 0) {
+            } else if (!ignoreBarsAndOres && item.getQuantity() > 0) {
                 freeSlots--;
             }
         }

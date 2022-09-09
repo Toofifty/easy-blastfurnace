@@ -6,6 +6,7 @@ import com.toofifty.easyblastfurnace.methods.MetalBarMethod;
 import com.toofifty.easyblastfurnace.methods.Method;
 import com.toofifty.easyblastfurnace.state.BlastFurnaceState;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
@@ -17,6 +18,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+@Slf4j
 @Singleton
 public class SessionStatistics
 {
@@ -50,6 +52,7 @@ public class SessionStatistics
 
     public void drinkStamina()
     {
+        log.info("Energy before stamina dose: " + client.getEnergy());
         staminaDoses++;
     }
 

@@ -5,6 +5,7 @@ import com.toofifty.easyblastfurnace.state.BankState;
 import com.toofifty.easyblastfurnace.state.EquipmentState;
 import com.toofifty.easyblastfurnace.state.FurnaceState;
 import com.toofifty.easyblastfurnace.state.InventoryState;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;
@@ -13,7 +14,7 @@ import net.runelite.client.util.RSTimeUnit;
 import javax.inject.Inject;
 import java.time.Duration;
 import java.time.Instant;
-
+@Slf4j
 public class StaminaHelper {
 
     @Inject
@@ -35,20 +36,18 @@ public class StaminaHelper {
 
     private Instant staminaEndTime;
 
-    public double getEnergyNeeded() {
-        // Calculate the amount of energy lost every tick for the next run ahead of time.
-        // On a coal trip: 9 ticks with ore, 9 ticks without. 18 ticks or 10800 milliseconds.
+    public double getEnergyNeededForNextRun()
+    {
+        // 18 ticks or 10800 milliseconds minimum in one run.
         // On a metal ore/gold/hybrid trip: 9 ticks with ore, 5 ticks without, 4 ticks with bars.
         Method method = methodHandler.getMethod();
-        int inventoryBarsWeight = (int) Math.round(getWeightOfBarsInInventory());
-        int nextOreWeight = (int) Math.round(getWeightOfNextOresInInventory());
+        int weight = client.getWeight() - getInventoryBarWeight() - getInventoryOreWeight();
+        int nextOreWeight = (int) Math.round(getWeightOfNextOresInInventory()) + weight;
+        int nextBarWeight = (int) Math.round(getWeightOfNextBarsInInventory()) + weight;
         int staminaPotionEffectVarb = client.getVarbitValue(Varbits.STAMINA_EFFECT);
-        final int effectiveWeight = client.getWeight() - inventoryBarsWeight;
-        double lossRate = (Math.min(Math.max(effectiveWeight, 0), 64) / 100.0) + 0.64; // energy lost each tick
-        double lossRateOres = (Math.min(Math.max(effectiveWeight + nextOreWeight, 0), 64) / 100.0) + 0.64;
-        double lossRateBars = (Math.min(Math.max(effectiveWeight + inventoryBarsWeight, 0), 64) / 100.0) + 0.64;
         final Duration staminaDuration = Duration.of(10L * staminaPotionEffectVarb, RSTimeUnit.GAME_TICKS);
-        double offset = staminaDuration.isZero() ? 1 : 0.3; // Stamina effect reduces energy depletion to 30%
+
+        log.info("nextOreWeight: " + nextOreWeight + " | nextBarWeight: " + nextBarWeight);
 
         // This is so we can have an accurate count for the stamina timer during the potion's last 12 seconds.
         if (staminaEndTime == null && !staminaDuration.isZero() && staminaDuration.toMillis() <= 12000) {
@@ -57,73 +56,82 @@ public class StaminaHelper {
             staminaEndTime = null;
         }
 
-        // The closer our stamina potion is to finishing, the less lossRate reduction it will give.
+        if (furnace.isCoalRun(method.coalPer())) {
+            if (inventory.getFreeSlots(true) > 26) log.info("COAL: energy: " + client.getEnergy() + " | energyNeeded: " + (getLossRate(weight) * 9 + getLossRate(nextOreWeight) * 9));
+            return Math.round(getLossRate(weight) * 9 + getLossRate(nextOreWeight) * 9);
+        } else {
+            if (inventory.getFreeSlots(true) > 26) log.info("BARS: energy: " + client.getEnergy() + " | energyNeeded: " + (getLossRate(nextOreWeight) * 9 + getLossRate(weight) * 5 + getLossRate(nextBarWeight) * 4));
+            return Math.round(getLossRate(nextOreWeight) * 9 + getLossRate(weight) * 5 + getLossRate(nextBarWeight) * 4);
+        }
+    }
+
+    private double getLossRate(int weight)
+    {
+        double multiplier = 0.3; // Stamina effect reduces energy depletion to 30%
+
+        // The closer our stamina potion is to finishing, the less overall lossRate reduction it needs for the run.
         long lastMillis = staminaEndTime != null ? Duration.between(Instant.now(), staminaEndTime).toMillis() : 0;
-        if (lastMillis > 0 && lastMillis <= 10800) {
-            offset = (0.7 - (0.7 * lastMillis / 10800)) + 0.3;
+        if (lastMillis <= 10800) {
+            multiplier = 1 - (0.7 * Math.sqrt(lastMillis / 10800d)); // max 1, min 0.3
         }
 
         // todo: && runEnergyPlugin.getRingOfEnduranceCharges() once Runelite accepts this PR: https://github.com/runelite/runelite/pull/15621.
         if (equipment.equipped(ItemID.RING_OF_ENDURANCE)) {
-            lossRate *= 0.85; // Ring of Endurance passive effect reduces energy depletion to 85%
-            lossRateOres *= 0.85;
-            lossRateBars *= 0.85;
+            multiplier *= 0.85; // Ring of Endurance passive effect reduces energy depletion to 85%
         }
 
-        lossRate *= offset;
-        lossRateOres *= offset;
-        lossRateBars *= offset;
-
-        if (furnace.isCoalRun(method.coalPer())) {
-            return Math.ceil(lossRate * 9 + lossRateOres * 9);
-        } else {
-            return Math.ceil(lossRateOres * 9 + lossRate * 5 + lossRateBars * 4);
-        }
+        return ((Math.min(Math.max(weight, 0), 64) / 100.0) + 0.64) * multiplier;
     }
 
     private double getWeightOfNextOresInInventory()
     {
         Method method = methodHandler.getMethod();
-        String ores = method.getName().toLowerCase().replace(" bars", "");
+        String ore = method.getName().toUpperCase().replace("GOLD + ", "").replace("STEEL", "IRON").replace(" BARS", "_ORE");
         boolean isCoalRun = furnace.isCoalRun(method.coalPer());
-        double coalWeight = BarsOres.COAL.getWeight();
         int oreSlots = inventory.getFreeSlots(true);
-        double weight = 0;
 
         // Adjust free slots based on ore availability in bank
         if (isCoalRun) {
-            oreSlots = Math.min(oreSlots, bank.getQuantity(ores.equals("gold") ? ItemID.GOLD_ORE : ItemID.COAL));
+            oreSlots = Math.min(oreSlots, bank.getQuantity(method.getName().contains("Gold") ? ItemID.GOLD_ORE : ItemID.COAL));
+            return BarsOres.COAL.getWeight() * oreSlots;
+        } else {
+            oreSlots = Math.min(oreSlots, bank.getQuantity(BarsOres.valueOf(ore).getItemID()));
+            return BarsOres.valueOf(ore).getWeight() * oreSlots;
         }
-
-        // Get correct weight and number of ores.
-        switch(ores) {
-            case "gold":
-            case "steel":
-            case "runite":
-            case "gold + runite":
-                int itemId = ores.equals("runite") ? ItemID.RUNITE_ORE : ores.equals("steel") ? ItemID.IRON_ORE : ItemID.GOLD_ORE;
-                oreSlots = Math.min(oreSlots, bank.getQuantity(itemId));
-                weight = (coalWeight * oreSlots); // Ores are the same weight as coal, so coalWeight is always right.
-                break;
-            case "mithril":
-            case "gold + mithril":
-                if (!isCoalRun) oreSlots = Math.min(oreSlots, bank.getQuantity(ItemID.MITHRIL_ORE));
-                weight = (isCoalRun ? coalWeight : BarsOres.MITHRIL_ORE.getWeight()) * oreSlots;
-                break;
-            case "adamantite":
-            case "gold + adamantite":
-                if (!isCoalRun) oreSlots = Math.min(oreSlots, bank.getQuantity(ItemID.ADAMANTITE_ORE));
-                weight = (isCoalRun ? coalWeight : BarsOres.ADAMANTITE_ORE.getWeight()) * oreSlots;
-                break;
-        }
-        return weight;
     }
 
-    private double getWeightOfBarsInInventory() {
+    private double getWeightOfNextBarsInInventory()
+    {
+        Method method = methodHandler.getMethod();
+        String bar = method.getName().toUpperCase().replace("GOLD + ", "").replace(" BARS", "_BAR");
+        boolean isCoalRun = furnace.isCoalRun(method.coalPer());
+        int barSlots = inventory.getFreeSlots(true);
+
+        // Adjust free slots based on ore availability in bank
+        if (isCoalRun && method.getName().contains("Gold")) {
+            barSlots = Math.min(barSlots, bank.getQuantity(ItemID.GOLD_ORE));
+            return BarsOres.GOLD_BAR.getWeight() * barSlots;
+        } else if (isCoalRun) {
+            return 0;
+        } else {
+            barSlots = Math.min(barSlots, bank.getQuantity(BarsOres.valueOf(bar).getItemID()));
+            return BarsOres.valueOf(bar).getWeight() * barSlots;
+        }
+    }
+
+    private int getInventoryBarWeight() {
         double weight = 0;
         weight += inventory.getQuantity(ItemID.STEEL_BAR, ItemID.RUNITE_BAR, ItemID.GOLD_BAR) * BarsOres.GOLD_BAR.getWeight();
         weight += inventory.getQuantity(ItemID.ADAMANTITE_BAR, ItemID.IRON_BAR) * BarsOres.IRON_BAR.getWeight();
         weight += inventory.getQuantity(ItemID.MITHRIL_BAR) * BarsOres.MITHRIL_BAR.getWeight();
-        return weight;
+        return (int) Math.round(weight);
+    }
+
+    private int getInventoryOreWeight() {
+        double weight = 0;
+        weight += inventory.getQuantity(ItemID.IRON_ORE, ItemID.COAL, ItemID.RUNITE_ORE, ItemID.GOLD_ORE) * BarsOres.COAL.getWeight();
+        weight += inventory.getQuantity(ItemID.ADAMANTITE_ORE) * BarsOres.ADAMANTITE_ORE.getWeight();
+        weight += inventory.getQuantity(ItemID.MITHRIL_ORE) * BarsOres.MITHRIL_ORE.getWeight();
+        return (int) Math.round(weight);
     }
 }
