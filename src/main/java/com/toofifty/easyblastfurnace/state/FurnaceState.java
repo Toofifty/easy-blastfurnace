@@ -59,7 +59,7 @@ public class FurnaceState
         return getQuantity(itemIds) > 0;
     }
 
-    public boolean isCoalRun(int coalPer) {
+    public boolean isCoalRunNext(int coalPer) {
         int coalInFurnace = getQuantity(ItemID.COAL);
         return coalInFurnace < 27 * (coalPer - getCoalOffset());
     }
