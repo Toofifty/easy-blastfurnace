@@ -22,12 +22,13 @@ public class DrinkStaminaMethod extends Method
     @Override
     public MethodStep next(BlastFurnaceState state)
     {
-        if (state.getPlayer().hasEnoughEnergy() &&
+        boolean playerHasEnoughEnergy = state.getPlayer().hasEnoughEnergy();
+        if (playerHasEnoughEnergy &&
             (state.getInventory().has(ItemID.VIAL, ItemID.STAMINA_POTION1, ItemID.STAMINA_POTION2, ItemID.STAMINA_POTION3))) {
             return depositInventory;
         }
 
-        if (!state.getBank().isOpen() || state.getPlayer().hasEnoughEnergy()) return null;
+        if (!state.getBank().isOpen() || playerHasEnoughEnergy) return null;
 
         if (!state.getInventory().hasFreeSlots()) {
             return depositInventory;
