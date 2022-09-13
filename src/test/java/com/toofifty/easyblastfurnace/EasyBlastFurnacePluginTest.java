@@ -247,21 +247,18 @@ public class EasyBlastFurnacePluginTest {
         assertEquals(Strings.WAITFORBARS.getTxt(), methodHandler.getStep().getTooltip());
 
         when(client.getVarbitValue(BarsOres.valueOf(barName).getVarbit())).thenReturn(oreCount);
-        when(equipmentContainer.count(ItemID.ICE_GLOVES)).thenReturn(1);
-        if (isHybrid) {
-            when(inventoryContainer.count(ItemID.ICE_GLOVES)).thenReturn(1);
-            when(equipmentContainer.count(ItemID.ICE_GLOVES)).thenReturn(0);
-        }
-        easyBlastFurnacePlugin.onVarbitChanged(blastFurnaceChange);
 
         if (isHybrid) {
             // Equip Ice gloves - Inventory: 0 bars, empty coal bag
+            when(equipmentContainer.count(ItemID.ICE_GLOVES)).thenReturn(0);
+            easyBlastFurnacePlugin.onVarbitChanged(blastFurnaceChange);
             assertEquals(Strings.EQUIPICEORSMITHSGLOVES.getTxt(), methodHandler.getStep().getTooltip());
-
-        } else {
-            // Collect bars - Inventory: 0 bars, empty coal bag
-            assertEquals(Strings.COLLECTBARS.getTxt(), methodHandler.getStep().getTooltip());
         }
+
+        // Collect bars - Inventory: 0 bars, empty coal bag
+        when(equipmentContainer.count(ItemID.ICE_GLOVES)).thenReturn(1);
+        easyBlastFurnacePlugin.onVarbitChanged(blastFurnaceChange);
+        assertEquals(Strings.COLLECTBARS.getTxt(), methodHandler.getStep().getTooltip());
 
         depositBars(bar, barName, oreCount);
 
