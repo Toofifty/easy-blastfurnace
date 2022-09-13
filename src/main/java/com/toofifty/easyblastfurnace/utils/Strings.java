@@ -44,7 +44,18 @@ public enum Strings {
     // Actions
     FILL("Fill"),
     EMPTY("Empty"),
-    DRINK("Drink");
+    DRINK("Drink"),
+
+    // Stamina
+    WITHDRAW_STAMINA_POTION1("Withdraw stamina potion"),
+    WITHDRAW_STAMINA_POTION2("Withdraw stamina potion"),
+    WITHDRAW_STAMINA_POTION3("Withdraw stamina potion"),
+    WITHDRAW_STAMINA_POTION4("Withdraw stamina potion"),
+    DRINK_STAMINA_POTION1("Drink stamina potion"),
+    DRINK_STAMINA_POTION2("Drink stamina potion"),
+    DRINK_STAMINA_POTION3("Drink stamina potion"),
+    DRINK_STAMINA_POTION4("Drink stamina potion"),
+    GET_MORE_STAMINA_POTIONS("Get more stamina potions! Check settings to disable this");
 
 
     @Getter

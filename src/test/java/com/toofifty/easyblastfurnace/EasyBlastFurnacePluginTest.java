@@ -196,6 +196,66 @@ public class EasyBlastFurnacePluginTest {
         assertEquals(Strings.WITHDRAWGOLDORE.getTxt(), methodHandler.getStep().getTooltip());
     }
 
+    @Test
+    public void drinkStaminaMethod()
+    {
+        when(inventoryContainer.getItems()).thenReturn(new Item[]{new Item(ItemID.VIAL, 1), new Item(ItemID.GOLD_ORE, 1)});
+        when(inventoryContainer.count(ItemID.GOLD_ORE)).thenReturn(1);
+        when(equipmentContainer.count(ItemID.SMITHING_CAPE)).thenReturn(1);
+        when(equipmentContainer.count(ItemID.ICE_GLOVES)).thenReturn(1);
+
+        // Check ignoreRemainingPotion works
+        when(easyBlastFurnaceConfig.ignoreRemainingPotion()).thenReturn(true);
+        assertFalse(state.getPlayer().hasStamina());
+
+        // deposit inventory
+        when(easyBlastFurnaceConfig.ignoreRemainingPotion()).thenReturn(false);
+        when(easyBlastFurnaceConfig.requireStaminaThreshold()).thenReturn(50);
+        when(client.getEnergy()).thenReturn(51);
+        when(inventoryContainer.count(ItemID.VIAL)).thenReturn(1);
+        easyBlastFurnacePlugin.onItemContainerChanged(event);
+        assertEquals(Strings.DEPOSITINVENTORY.getTxt(), methodHandler.getStep().getTooltip());
+
+        // Second deposit Inventory
+        when(client.getEnergy()).thenReturn(49);
+        Item[] gold = new Item[28];
+        for (int i = 0; i < 28; i++) {
+            gold[i] = new Item(ItemID.GOLD_ORE, 1);
+        }
+        when(inventoryContainer.getItems()).thenReturn(gold);
+        easyBlastFurnacePlugin.onItemContainerChanged(event);
+        assertEquals(Strings.DEPOSITINVENTORY.getTxt(), methodHandler.getStep().getTooltip());
+
+        // drink/withdraw stamina potions
+        checkStaminaPotion(ItemID.STAMINA_POTION4, ItemID.STAMINA_POTION1, Strings.DRINK_STAMINA_POTION1.getTxt());
+        checkStaminaPotion(ItemID.STAMINA_POTION1, ItemID.STAMINA_POTION2, Strings.DRINK_STAMINA_POTION2.getTxt());
+        checkStaminaPotion(ItemID.STAMINA_POTION2, ItemID.STAMINA_POTION3, Strings.DRINK_STAMINA_POTION3.getTxt());
+        checkStaminaPotion(ItemID.STAMINA_POTION3, ItemID.STAMINA_POTION4, Strings.DRINK_STAMINA_POTION4.getTxt());
+        checkStaminaPotion(ItemID.STAMINA_POTION4, ItemID.STAMINA_POTION1, Strings.WITHDRAW_STAMINA_POTION1.getTxt());
+        checkStaminaPotion(ItemID.STAMINA_POTION1, ItemID.STAMINA_POTION2, Strings.WITHDRAW_STAMINA_POTION2.getTxt());
+        checkStaminaPotion(ItemID.STAMINA_POTION2, ItemID.STAMINA_POTION3, Strings.WITHDRAW_STAMINA_POTION3.getTxt());
+        checkStaminaPotion(ItemID.STAMINA_POTION3, ItemID.STAMINA_POTION4, Strings.WITHDRAW_STAMINA_POTION4.getTxt());
+
+        // getMoreStaminaPotions
+        when(bankContainer.count(ItemID.STAMINA_POTION4)).thenReturn(0);
+        easyBlastFurnacePlugin.onItemContainerChanged(event);
+        assertEquals(Strings.GET_MORE_STAMINA_POTIONS.getTxt(), methodHandler.getStep().getTooltip());
+    }
+
+    private void checkStaminaPotion(int staminaPotionA, int staminaPotionB, String methodStep)
+    {
+        when(inventoryContainer.getItems()).thenReturn(new Item[0]);
+        when(inventoryContainer.count(staminaPotionA)).thenReturn(0);
+        when(bankContainer.count(staminaPotionA)).thenReturn(0);
+        if (methodStep.toLowerCase().contains("withdraw")) {
+            when(bankContainer.count(staminaPotionB)).thenReturn(1);
+        } else {
+            when(inventoryContainer.count(staminaPotionB)).thenReturn(1);
+        }
+        easyBlastFurnacePlugin.onItemContainerChanged(event);
+        assertEquals(methodStep, methodHandler.getStep().getTooltip());
+    }
+
     private void metalMethods(int ore, int bar, String barName, String methodName)
     {
         boolean isHybrid = methodName.contains("HYBRID");

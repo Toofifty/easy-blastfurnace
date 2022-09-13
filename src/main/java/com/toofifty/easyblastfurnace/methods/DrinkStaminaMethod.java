@@ -8,17 +8,17 @@ import net.runelite.api.ItemID;
 
 public class DrinkStaminaMethod extends Method
 {
-    private final MethodStep withdrawStaminaPotion1 = new ItemStep(ItemID.STAMINA_POTION1, "Withdraw stamina potion");
-    private final MethodStep withdrawStaminaPotion2 = new ItemStep(ItemID.STAMINA_POTION2, "Withdraw stamina potion");
-    private final MethodStep withdrawStaminaPotion3 = new ItemStep(ItemID.STAMINA_POTION3, "Withdraw stamina potion");
-    private final MethodStep withdrawStaminaPotion4 = new ItemStep(ItemID.STAMINA_POTION4, "Withdraw stamina potion");
+    private final MethodStep withdrawStaminaPotion1 = new ItemStep(ItemID.STAMINA_POTION1, Strings.WITHDRAW_STAMINA_POTION1.getTxt());
+    private final MethodStep withdrawStaminaPotion2 = new ItemStep(ItemID.STAMINA_POTION2, Strings.WITHDRAW_STAMINA_POTION2.getTxt());
+    private final MethodStep withdrawStaminaPotion3 = new ItemStep(ItemID.STAMINA_POTION3, Strings.WITHDRAW_STAMINA_POTION3.getTxt());
+    private final MethodStep withdrawStaminaPotion4 = new ItemStep(ItemID.STAMINA_POTION4, Strings.WITHDRAW_STAMINA_POTION4.getTxt());
 
-    private final MethodStep drinkStaminaPotion1 = new ItemStep(ItemID.STAMINA_POTION1, "Drink stamina potion");
-    private final MethodStep drinkStaminaPotion2 = new ItemStep(ItemID.STAMINA_POTION2, "Drink stamina potion");
-    private final MethodStep drinkStaminaPotion3 = new ItemStep(ItemID.STAMINA_POTION3, "Drink stamina potion");
-    private final MethodStep drinkStaminaPotion4 = new ItemStep(ItemID.STAMINA_POTION4, "Drink stamina potion");
+    private final MethodStep drinkStaminaPotion1 = new ItemStep(ItemID.STAMINA_POTION1, Strings.DRINK_STAMINA_POTION1.getTxt());
+    private final MethodStep drinkStaminaPotion2 = new ItemStep(ItemID.STAMINA_POTION2, Strings.DRINK_STAMINA_POTION2.getTxt());
+    private final MethodStep drinkStaminaPotion3 = new ItemStep(ItemID.STAMINA_POTION3, Strings.DRINK_STAMINA_POTION3.getTxt());
+    private final MethodStep drinkStaminaPotion4 = new ItemStep(ItemID.STAMINA_POTION4, Strings.DRINK_STAMINA_POTION4.getTxt());
 
-    private final MethodStep getMoreStaminaPotions = new ItemStep(ItemID.COAL_BAG_12019, "Get more stamina potions! Check settings to disable this");
+    private final MethodStep getMoreStaminaPotions = new ItemStep(ItemID.COAL_BAG_12019, Strings.GET_MORE_STAMINA_POTIONS.getTxt());
 
     @Override
     public MethodStep next(BlastFurnaceState state)
