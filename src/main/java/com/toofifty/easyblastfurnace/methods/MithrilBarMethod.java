@@ -1,6 +1,7 @@
 package com.toofifty.easyblastfurnace.methods;
 
 import com.toofifty.easyblastfurnace.steps.MethodStep;
+import com.toofifty.easyblastfurnace.utils.Strings;
 import net.runelite.api.ItemID;
 
 public class MithrilBarMethod extends MetalBarMethod
@@ -32,6 +33,6 @@ public class MithrilBarMethod extends MetalBarMethod
     @Override
     public String getName()
     {
-        return "Mithril bars";
+        return Strings.MITHRIL.getTxt();
     }
 }

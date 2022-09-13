@@ -1,6 +1,7 @@
 package com.toofifty.easyblastfurnace.methods;
 
 import com.toofifty.easyblastfurnace.steps.MethodStep;
+import com.toofifty.easyblastfurnace.utils.Strings;
 import net.runelite.api.ItemID;
 
 public class RuniteBarMethod extends MetalBarMethod
@@ -32,6 +33,6 @@ public class RuniteBarMethod extends MetalBarMethod
     @Override
     public String getName()
     {
-        return "Runite bars";
+        return Strings.RUNITE.getTxt();
     }
 }

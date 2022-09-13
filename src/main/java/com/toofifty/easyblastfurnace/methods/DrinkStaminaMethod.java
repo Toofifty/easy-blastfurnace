@@ -3,6 +3,7 @@ package com.toofifty.easyblastfurnace.methods;
 import com.toofifty.easyblastfurnace.state.BlastFurnaceState;
 import com.toofifty.easyblastfurnace.steps.ItemStep;
 import com.toofifty.easyblastfurnace.steps.MethodStep;
+import com.toofifty.easyblastfurnace.utils.Strings;
 import net.runelite.api.ItemID;
 
 public class DrinkStaminaMethod extends Method
@@ -71,6 +72,6 @@ public class DrinkStaminaMethod extends Method
     @Override
     public String getName()
     {
-        return null;
+        return Strings.DRINKSTAMINA.getTxt();
     }
 }
