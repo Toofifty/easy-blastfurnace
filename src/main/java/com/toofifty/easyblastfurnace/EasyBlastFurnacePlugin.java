@@ -7,6 +7,7 @@ import com.toofifty.easyblastfurnace.state.BlastFurnaceState;
 import com.toofifty.easyblastfurnace.utils.MethodHandler;
 import com.toofifty.easyblastfurnace.utils.ObjectManager;
 import com.toofifty.easyblastfurnace.utils.SessionStatistics;
+import com.toofifty.easyblastfurnace.utils.Strings;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
@@ -35,12 +36,8 @@ public class EasyBlastFurnacePlugin extends Plugin
 
     public static final WorldPoint PICKUP_POSITION = new WorldPoint(1940, 4962, 0);
 
-    private static final Pattern COAL_FULL_MESSAGE = Pattern.compile("^The coal bag is full.$");
-    private static final Pattern COAL_EMPTY_MESSAGE = Pattern.compile("^The coal bag is now empty.$");
-
-    private static final String FILL_ACTION = "Fill";
-    private static final String EMPTY_ACTION = "Empty";
-    private static final String DRINK_ACTION = "Drink";
+    private static final Pattern COAL_FULL_MESSAGE = Pattern.compile(Strings.COAL_FULL.getTxt());
+    private static final Pattern COAL_EMPTY_MESSAGE = Pattern.compile(Strings.COAL_EMPTY.getTxt());
 
     @Inject
     private Client client;
@@ -205,9 +202,9 @@ public class EasyBlastFurnacePlugin extends Plugin
     {
         if (!isEnabled) return;
 
-        if (event.getMenuOption().equals(FILL_ACTION)) state.getCoalBag().fill();
-        if (event.getMenuOption().equals(EMPTY_ACTION)) state.getCoalBag().empty();
-        if (event.getMenuOption().equals(DRINK_ACTION)) statistics.drinkStamina();
+        if (event.getMenuOption().equals(Strings.FILL.getTxt())) state.getCoalBag().fill();
+        if (event.getMenuOption().equals(Strings.EMPTY.getTxt())) state.getCoalBag().empty();
+        if (event.getMenuOption().equals(Strings.DRINK.getTxt())) statistics.drinkStamina();
 
         // handle coal bag changes
         methodHandler.next();

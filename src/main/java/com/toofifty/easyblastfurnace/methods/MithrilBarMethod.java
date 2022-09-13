@@ -1,6 +1,7 @@
 package com.toofifty.easyblastfurnace.methods;
 
 import com.toofifty.easyblastfurnace.steps.MethodStep;
+import com.toofifty.easyblastfurnace.utils.CoalPer;
 import com.toofifty.easyblastfurnace.utils.Strings;
 import net.runelite.api.ItemID;
 
@@ -27,7 +28,7 @@ public class MithrilBarMethod extends MetalBarMethod
     @Override
     protected int coalPer()
     {
-        return 2;
+        return CoalPer.MITHRIL.getValue();
     }
 
     @Override

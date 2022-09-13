@@ -3,6 +3,7 @@ package com.toofifty.easyblastfurnace.utils;
 import lombok.Getter;
 
 public enum Strings {
+    // MethodSteps
     FILLCOALBAG("Fill coal bag"),
     REFILLCOALBAG("Refill coal bag"),
     EMPTYCOALBAG("Empty coal bag"),
@@ -26,6 +27,7 @@ public enum Strings {
     WAITFORBARS("Wait for bars to smelt"),
     DRINKSTAMINA(null),
 
+    // Bars
     ADAMANTITEHYBRID("Gold + adamantite bars"),
     ADAMANTITE("Adamantite bars"),
     GOLD("Gold bars"),
@@ -33,7 +35,17 @@ public enum Strings {
     MITHRILHYBRID("Gold + mithril bars"),
     RUNITE("Runite bars"),
     RUNITEHYBRID("Gold + runite bars"),
-    STEEL("Steel bars");
+    STEEL("Steel bars"),
+
+    // Patterns
+    COAL_FULL("^The coal bag is full.$"),
+    COAL_EMPTY("^The coal bag is now empty.$"),
+
+    // Actions
+    FILL("Fill"),
+    EMPTY("Empty"),
+    DRINK("Drink");
+
 
     @Getter
     private final String txt;
