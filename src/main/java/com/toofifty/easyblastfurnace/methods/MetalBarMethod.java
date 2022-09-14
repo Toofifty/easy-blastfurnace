@@ -18,6 +18,8 @@ abstract public class MetalBarMethod extends Method
 
     protected abstract int barItem();
 
+    protected abstract int coalPer();
+
     private MethodStep checkPrerequisite(BlastFurnaceState state)
     {
         if (!state.getInventory().has(ItemID.COAL_BAG_12019, ItemID.OPEN_COAL_BAG)) {

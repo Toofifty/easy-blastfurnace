@@ -75,10 +75,4 @@ public class DrinkStaminaMethod extends Method
     {
         return Strings.DRINKSTAMINA.getTxt();
     }
-
-    @Override
-    public int coalPer()
-    {
-        return 0;
-    }
 }

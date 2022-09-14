@@ -26,7 +26,7 @@ public class SteelBarMethod extends MetalBarMethod
     }
 
     @Override
-    public int coalPer()
+    protected int coalPer()
     {
         return CoalPer.IRON.getValue();
     }

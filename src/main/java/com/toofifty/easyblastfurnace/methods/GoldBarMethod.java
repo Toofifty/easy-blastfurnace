@@ -79,10 +79,4 @@ public class GoldBarMethod extends Method
     {
         return Strings.GOLD.getTxt();
     }
-
-    @Override
-    public int coalPer()
-    {
-        return 0;
-    }
 }

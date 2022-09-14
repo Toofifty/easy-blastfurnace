@@ -26,7 +26,7 @@ public class AdamantiteBarMethod extends MetalBarMethod
     }
 
     @Override
-    public int coalPer()
+    protected int coalPer()
     {
         return CoalPer.ADAMANTITE.getValue();
     }

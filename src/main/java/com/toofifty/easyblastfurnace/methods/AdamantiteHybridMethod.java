@@ -26,7 +26,7 @@ public class AdamantiteHybridMethod extends GoldHybridMethod
     }
 
     @Override
-    public int coalPer()
+    protected int coalPer()
     {
         return CoalPer.ADAMANTITE.getValue();
     }

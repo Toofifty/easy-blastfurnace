@@ -26,7 +26,7 @@ public class RuniteBarMethod extends MetalBarMethod
     }
 
     @Override
-    public int coalPer()
+    protected int coalPer()
     {
         return CoalPer.RUNITE.getValue();
     }

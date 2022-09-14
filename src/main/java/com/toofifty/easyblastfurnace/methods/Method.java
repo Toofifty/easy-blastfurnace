@@ -39,6 +39,4 @@ public abstract class Method
     public abstract MethodStep next(BlastFurnaceState state);
 
     public abstract String getName();
-
-    public abstract int coalPer();
 }

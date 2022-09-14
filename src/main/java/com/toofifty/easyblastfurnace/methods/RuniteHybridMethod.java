@@ -26,7 +26,7 @@ public class RuniteHybridMethod extends GoldHybridMethod
     }
 
     @Override
-    public int coalPer()
+    protected int coalPer()
     {
         return CoalPer.RUNITE.getValue();
     }

@@ -33,10 +33,11 @@ public class StaminaHelper {
         // 18 ticks or 10800 milliseconds minimum in one run.
         // On a metal ore/gold/hybrid trip: 9 ticks with ore, 5 ticks without, 4 ticks with bars.
         Method method = methodHandler.getMethod();
-        boolean isCoalRunNext = state.getFurnace().isCoalRunNext(method.coalPer());
+        int coalPer = CoalPer.getValueFromString(method.getName());
+        boolean isCoalRunNext = state.getFurnace().isCoalRunNext(coalPer);
         int weight = client.getWeight() - getInventoryOresAndBarsWeight();
-        int nextOreWeight = (int) Math.round(getWeightOfNextOresOrBarsInInventory(false)) + weight;
-        int nextBarWeight = (int) Math.round(getWeightOfNextOresOrBarsInInventory(true)) + weight;
+        int nextOreWeight = (int) Math.round(getWeightOfNextOresOrBarsInInventory(false, coalPer)) + weight;
+        int nextBarWeight = (int) Math.round(getWeightOfNextOresOrBarsInInventory(true, coalPer)) + weight;
         int ticksSpentIdle = getTicksSpentIdle(isCoalRunNext, method.getName());
         double energyRecovered = getMinimumEnergyRecovered(ticksSpentIdle);
 
@@ -47,19 +48,19 @@ public class StaminaHelper {
         if (isCoalRunNext) {
             if (state.getBank().isOpen() && !haveLogged) {
                 haveLogged = true;
-                log.debug("COAL | nextOreWeight: " + nextOreWeight);
-                log.debug("staminaDuration: " + Duration.of(10L * client.getVarbitValue(Varbits.STAMINA_EFFECT), RSTimeUnit.GAME_TICKS).toMillis() + " | staminaEndTime: " + (staminaEndTime != null ? Duration.between(Instant.now(), staminaEndTime).toMillis() : 0) + " | lossRateMultiplier: " + lossRateMultiplier);
-                log.debug( "Energy: " + client.getEnergy() + " | minEnergyRecovered: " + energyRecovered + " | Energy needed: " + (getLossRate(weight) * 9 + getLossRate(nextOreWeight) * 9 - energyRecovered));
-                log.debug("--------------------------------------------------------------------");
+                log.info("COAL | nextOreWeight: " + nextOreWeight + " | coalPer: " + coalPer);
+                log.info("staminaDuration: " + Duration.of(10L * client.getVarbitValue(Varbits.STAMINA_EFFECT), RSTimeUnit.GAME_TICKS).toMillis() + " | staminaEndTime: " + (staminaEndTime != null ? Duration.between(Instant.now(), staminaEndTime).toMillis() : 0) + " | lossRateMultiplier: " + lossRateMultiplier);
+                log.info( "Energy: " + client.getEnergy() + " | minEnergyRecovered: " + energyRecovered + " | Energy needed: " + (getLossRate(weight) * 9 + getLossRate(nextOreWeight) * 9 - energyRecovered));
+                log.info("--------------------------------------------------------------------");
             }
             return Math.round(getLossRate(weight) * 9 + getLossRate(nextOreWeight) * 9 - energyRecovered);
         } else {
             if (state.getBank().isOpen() && !haveLogged) {
                 haveLogged = true;
-                log.debug("BARS | nextOreWeight: " + nextOreWeight + " | nextBarWeight: " + nextBarWeight);
-                log.debug("staminaDuration: " + Duration.of(10L * client.getVarbitValue(Varbits.STAMINA_EFFECT), RSTimeUnit.GAME_TICKS).toMillis() + " | staminaEndTime: " + (staminaEndTime != null ? Duration.between(Instant.now(), staminaEndTime).toMillis() : 0) + " | lossRateMultiplier: " + lossRateMultiplier);
-                log.debug( "Energy: " + client.getEnergy() + " | energyRecovered: " + energyRecovered + " | Energy needed: " + (getLossRate(nextOreWeight) * 9 + getLossRate(weight) * 5 + getLossRate(nextBarWeight) * 4 - energyRecovered));
-                log.debug("--------------------------------------------------------------------");
+                log.info("BARS | nextOreWeight: " + nextOreWeight + " | nextBarWeight: " + nextBarWeight + " | coalPer: " + coalPer);
+                log.info("staminaDuration: " + Duration.of(10L * client.getVarbitValue(Varbits.STAMINA_EFFECT), RSTimeUnit.GAME_TICKS).toMillis() + " | staminaEndTime: " + (staminaEndTime != null ? Duration.between(Instant.now(), staminaEndTime).toMillis() : 0) + " | lossRateMultiplier: " + lossRateMultiplier);
+                log.info( "Energy: " + client.getEnergy() + " | energyRecovered: " + energyRecovered + " | Energy needed: " + (getLossRate(nextOreWeight) * 9 + getLossRate(weight) * 5 + getLossRate(nextBarWeight) * 4 - energyRecovered));
+                log.info("--------------------------------------------------------------------");
             }
             return Math.round(getLossRate(nextOreWeight) * 9 + getLossRate(weight) * 5 + getLossRate(nextBarWeight) * 4 - energyRecovered);
         }
@@ -102,7 +103,7 @@ public class StaminaHelper {
         return ticksSpentIdle;
     }
 
-    private double getWeightOfNextOresOrBarsInInventory(boolean getBars)
+    private double getWeightOfNextOresOrBarsInInventory(boolean getBars, int coalPer)
     {
         Method method = methodHandler.getMethod();
         String ore = method.getName().toUpperCase().replace("GOLD + ", "").replace("STEEL", "IRON").replace(" BARS", "_ORE");
@@ -110,7 +111,7 @@ public class StaminaHelper {
         double coalRunWeight = getBars ? BarsOres.GOLD_BAR.getWeight() : BarsOres.COAL.getWeight();
         int freeSlots = state.getInventory().getFreeSlots(true);
 
-        if (state.getFurnace().isCoalRunNext(method.coalPer())) {
+        if (state.getFurnace().isCoalRunNext(coalPer)) {
             freeSlots = Math.min(freeSlots, state.getBank().getQuantity(method.getName().contains("Gold") ? ItemID.GOLD_ORE : ItemID.COAL));
             return coalRunWeight * freeSlots;
         } else {

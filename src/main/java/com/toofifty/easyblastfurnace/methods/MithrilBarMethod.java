@@ -26,7 +26,7 @@ public class MithrilBarMethod extends MetalBarMethod
     }
 
     @Override
-    public int coalPer()
+    protected int coalPer()
     {
         return CoalPer.MITHRIL.getValue();
     }
