@@ -26,8 +26,6 @@ public class StaminaHelper {
 
     private double lossRateMultiplier;
 
-    private boolean haveLogged;
-
     public double getEnergyNeededForNextRun()
     {
         // 18 ticks or 10800 milliseconds minimum in one run.
@@ -43,25 +41,9 @@ public class StaminaHelper {
 
         calculateStaminaDuration(ticksSpentIdle);
 
-        if (!state.getBank().isOpen()) haveLogged = false;
-
         if (isCoalRunNext) {
-            if (state.getBank().isOpen() && !haveLogged) {
-                haveLogged = true;
-                log.info("COAL | nextOreWeight: " + nextOreWeight + " | coalPer: " + coalPer);
-                log.info("staminaDuration: " + Duration.of(10L * client.getVarbitValue(Varbits.STAMINA_EFFECT), RSTimeUnit.GAME_TICKS).toMillis() + " | staminaEndTime: " + (staminaEndTime != null ? Duration.between(Instant.now(), staminaEndTime).toMillis() : 0) + " | lossRateMultiplier: " + lossRateMultiplier);
-                log.info( "Energy: " + client.getEnergy() + " | minEnergyRecovered: " + energyRecovered + " | Energy needed: " + (getLossRate(weight) * 9 + getLossRate(nextOreWeight) * 9 - energyRecovered));
-                log.info("--------------------------------------------------------------------");
-            }
             return Math.round(getLossRate(weight) * 9 + getLossRate(nextOreWeight) * 9 - energyRecovered);
         } else {
-            if (state.getBank().isOpen() && !haveLogged) {
-                haveLogged = true;
-                log.info("BARS | nextOreWeight: " + nextOreWeight + " | nextBarWeight: " + nextBarWeight + " | coalPer: " + coalPer);
-                log.info("staminaDuration: " + Duration.of(10L * client.getVarbitValue(Varbits.STAMINA_EFFECT), RSTimeUnit.GAME_TICKS).toMillis() + " | staminaEndTime: " + (staminaEndTime != null ? Duration.between(Instant.now(), staminaEndTime).toMillis() : 0) + " | lossRateMultiplier: " + lossRateMultiplier);
-                log.info( "Energy: " + client.getEnergy() + " | energyRecovered: " + energyRecovered + " | Energy needed: " + (getLossRate(nextOreWeight) * 9 + getLossRate(weight) * 5 + getLossRate(nextBarWeight) * 4 - energyRecovered));
-                log.info("--------------------------------------------------------------------");
-            }
             return Math.round(getLossRate(nextOreWeight) * 9 + getLossRate(weight) * 5 + getLossRate(nextBarWeight) * 4 - energyRecovered);
         }
     }
@@ -152,7 +134,7 @@ public class StaminaHelper {
 
         // todo: && runEnergyPlugin.getRingOfEnduranceCharges() >= 500 once Runelite accepts this PR: https://github.com/runelite/runelite/pull/15621.
         if (state.getEquipment().equipped(ItemID.RING_OF_ENDURANCE)) {
-            lossRateMultiplier *= 0.85; // Ring of Endurance passive effect reduces energy depletion to 85%
+            lossRateMultiplier *= 0.85; // Ring of endurance passive effect reduces energy depletion to 85%
         }
     }
 }

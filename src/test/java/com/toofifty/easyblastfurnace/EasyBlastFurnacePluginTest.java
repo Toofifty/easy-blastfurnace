@@ -2,10 +2,13 @@ package com.toofifty.easyblastfurnace;
 
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import com.toofifty.easyblastfurnace.overlays.InstructionOverlay;
 import com.toofifty.easyblastfurnace.state.BlastFurnaceState;
 import com.toofifty.easyblastfurnace.utils.BarsOres;
-import com.toofifty.easyblastfurnace.utils.MethodHandler;
+import com.toofifty.easyblastfurnace.utils.CoalPer;
 import com.toofifty.easyblastfurnace.utils.Strings;
+import com.toofifty.easyblastfurnace.utils.MethodHandler;
+import com.toofifty.easyblastfurnace.utils.StaminaHelper;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameObjectSpawned;
@@ -16,7 +19,9 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,13 +38,19 @@ import static org.mockito.Mockito.*;
 public class EasyBlastFurnacePluginTest {
 
     @Inject
+    private BlastFurnaceState state;
+
+    @Inject
     EasyBlastFurnacePlugin easyBlastFurnacePlugin;
+
+    @Inject
+    private InstructionOverlay instructionOverlay;
 
     @Inject
     private MethodHandler methodHandler;
 
     @Inject
-    private BlastFurnaceState state;
+    private StaminaHelper staminaHelper;
 
     @Mock
     @Bind
@@ -178,16 +189,18 @@ public class EasyBlastFurnacePluginTest {
     @Test
     public void drinkStaminaMethod()
     {
-        when(inventoryContainer.getItems()).thenReturn(new Item[]{new Item(ItemID.VIAL, 1), new Item(ItemID.GOLD_ORE, 1)});
-        when(inventoryContainer.count(ItemID.GOLD_ORE)).thenReturn(1);
-        when(equipmentContainer.count(ItemID.SMITHING_CAPE)).thenReturn(1);
-
         // Check ignoreRemainingPotion works
         when(easyBlastFurnaceConfig.staminaPotionEnable()).thenReturn(false);
         assertTrue(state.getPlayer().hasEnoughEnergy());
 
-        // deposit inventory
+        // setup
         when(easyBlastFurnaceConfig.staminaPotionEnable()).thenReturn(true);
+        when(inventoryContainer.getItems()).thenReturn(new Item[0]);
+        when(equipmentContainer.count(ItemID.SMITHING_CAPE)).thenReturn(1);
+
+        checkStaminaHelper(); // Check energy calculation
+
+        // deposit inventory
         when(easyBlastFurnaceConfig.requireStaminaThreshold()).thenReturn(50);
         when(client.getEnergy()).thenReturn(64);
         when(inventoryContainer.count(ItemID.VIAL)).thenReturn(1);
@@ -205,6 +218,7 @@ public class EasyBlastFurnacePluginTest {
         assertEquals(Strings.DEPOSITINVENTORY.getTxt(), methodHandler.getStep().getTooltip());
 
         // drink/withdraw stamina potions
+        when(inventoryContainer.getItems()).thenReturn(new Item[0]);
         checkStaminaPotion(ItemID.STAMINA_POTION4, ItemID.STAMINA_POTION1, Strings.DRINK_STAMINA_POTION1.getTxt());
         checkStaminaPotion(ItemID.STAMINA_POTION1, ItemID.STAMINA_POTION2, Strings.DRINK_STAMINA_POTION2.getTxt());
         checkStaminaPotion(ItemID.STAMINA_POTION2, ItemID.STAMINA_POTION3, Strings.DRINK_STAMINA_POTION3.getTxt());
@@ -222,12 +236,46 @@ public class EasyBlastFurnacePluginTest {
 
     private void checkStaminaPotion(int staminaPotionA, int staminaPotionB, String methodStep)
     {
-        when(inventoryContainer.getItems()).thenReturn(new Item[0]);
         when(inventoryContainer.count(staminaPotionA)).thenReturn(0);
         when(bankContainer.count(staminaPotionA)).thenReturn(0);
         when((methodStep.toLowerCase().contains("withdraw") ? bankContainer : inventoryContainer).count(staminaPotionB)).thenReturn(1);
         easyBlastFurnacePlugin.onItemContainerChanged(event);
         assertEquals(methodStep, methodHandler.getStep().getTooltip());
+    }
+
+    private void checkStaminaHelper()
+    {
+        // Check StaminaHelper works for all methods: coal and ore runs. This catches issues with strings changing too.
+        when(client.getVarbitValue(Varbits.STAMINA_EFFECT)).thenReturn(1);
+        when(client.getVarbitValue(BarsOres.COAL.getVarbit())).thenReturn(254);
+        when(equipmentContainer.count(ItemID.RING_OF_ENDURANCE)).thenReturn(1); // todo: && runEnergyPlugin.getRingOfEnduranceCharges() >= 500 once Runelite accepts this PR: https://github.com/runelite/runelite/pull/15621.
+        runThroughBarMethods(ItemID.IRON_ORE,ItemID.MITHRIL_ORE,ItemID.ADAMANTITE_ORE,ItemID.RUNITE_ORE);
+        assertFalse(state.getFurnace().isCoalRunNext(CoalPer.getValueFromString(methodHandler.getMethod().toString())));
+        when(client.getVarbitValue(BarsOres.COAL.getVarbit())).thenReturn(0);
+        runThroughBarMethods(ItemID.IRON_ORE,ItemID.MITHRIL_ORE,ItemID.ADAMANTITE_ORE,ItemID.RUNITE_ORE);
+        assertTrue(state.getFurnace().isCoalRunNext(CoalPer.getValueFromString(methodHandler.getMethod().toString())));
+        assertEquals(6, (int) staminaHelper.getEnergyNeededForNextRun());
+    }
+
+    private void runThroughBarMethods(int ...ores)
+    {
+        for (int i = 0; i < ores.length; i++) {
+            resetMethod();
+            when(inventoryContainer.count(ores[i])).thenReturn(1);
+            when(inventoryContainer.count(ItemID.GOLD_ORE)).thenReturn(1);
+            if (i != 0) when(inventoryContainer.count(ores[i - 1])).thenReturn(0);
+            easyBlastFurnacePlugin.onItemContainerChanged(event);
+            resetMethod();
+            when(inventoryContainer.count(ItemID.GOLD_ORE)).thenReturn(0);
+            easyBlastFurnacePlugin.onItemContainerChanged(event);
+        }
+    }
+
+    private void resetMethod()
+    {
+        OverlayMenuEntry entry = new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY, InstructionOverlay.RESET_ACTION, null);
+        OverlayMenuClicked overlayMenuClickedEvent = new OverlayMenuClicked(entry, instructionOverlay);
+        easyBlastFurnacePlugin.onOverlayMenuClicked(overlayMenuClickedEvent);
     }
 
     private void metalMethods(int ore, int bar, String barName, String barMethod)
