@@ -61,7 +61,9 @@ public class InventoryState
         return total;
     }
 
-    public boolean has(int ...itemIds) { return getQuantity(itemIds) > 0; }
+    public boolean has(int ...itemIds) {
+        return getQuantity(itemIds) > 0;
+    }
 
     public int getFreeSlots(boolean ignoreBarsAndOres)
     {

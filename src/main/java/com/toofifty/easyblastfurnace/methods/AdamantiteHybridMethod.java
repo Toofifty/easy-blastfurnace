@@ -1,6 +1,8 @@
 package com.toofifty.easyblastfurnace.methods;
 
 import com.toofifty.easyblastfurnace.steps.MethodStep;
+import com.toofifty.easyblastfurnace.utils.CoalPer;
+import com.toofifty.easyblastfurnace.utils.Strings;
 import net.runelite.api.ItemID;
 
 public class AdamantiteHybridMethod extends GoldHybridMethod
@@ -26,12 +28,12 @@ public class AdamantiteHybridMethod extends GoldHybridMethod
     @Override
     public int coalPer()
     {
-        return 3;
+        return CoalPer.ADAMANTITE.getValue();
     }
 
     @Override
     public String getName()
     {
-        return "Gold + adamantite bars";
+        return Strings.ADAMANTITEHYBRID.getTxt();
     }
 }

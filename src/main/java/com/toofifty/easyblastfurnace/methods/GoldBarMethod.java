@@ -2,6 +2,7 @@ package com.toofifty.easyblastfurnace.methods;
 
 import com.toofifty.easyblastfurnace.state.BlastFurnaceState;
 import com.toofifty.easyblastfurnace.steps.MethodStep;
+import com.toofifty.easyblastfurnace.utils.Strings;
 import net.runelite.api.ItemID;
 
 public class GoldBarMethod extends Method
@@ -76,7 +77,7 @@ public class GoldBarMethod extends Method
     @Override
     public String getName()
     {
-        return "Gold bars";
+        return Strings.GOLD.getTxt();
     }
 
     @Override

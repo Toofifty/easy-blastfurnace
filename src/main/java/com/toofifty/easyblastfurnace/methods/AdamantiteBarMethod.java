@@ -1,6 +1,8 @@
 package com.toofifty.easyblastfurnace.methods;
 
 import com.toofifty.easyblastfurnace.steps.MethodStep;
+import com.toofifty.easyblastfurnace.utils.CoalPer;
+import com.toofifty.easyblastfurnace.utils.Strings;
 import net.runelite.api.ItemID;
 
 public class AdamantiteBarMethod extends MetalBarMethod
@@ -26,12 +28,12 @@ public class AdamantiteBarMethod extends MetalBarMethod
     @Override
     public int coalPer()
     {
-        return 3;
+        return CoalPer.ADAMANTITE.getValue();
     }
 
     @Override
     public String getName()
     {
-        return "Adamantite bars";
+        return Strings.ADAMANTITE.getTxt();
     }
 }
