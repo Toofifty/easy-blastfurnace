@@ -103,6 +103,7 @@ public class EasyBlastFurnacePluginTest {
 
         when(client.getLocalPlayer()).thenReturn(localPlayer);
         when(localPlayer.getWorldLocation()).thenReturn(new WorldPoint(1949, 4967, 0));
+        when(easyBlastFurnaceConfig.addCoalBuffer()).thenReturn(true);
 
         assertTrue(easyBlastFurnacePlugin.isEnabled());
     }
@@ -111,10 +112,10 @@ public class EasyBlastFurnacePluginTest {
     public void steelBarMethod()
     {
         metalMethod(
-                ItemID.IRON_ORE, BarsOres.IRON_ORE.getVarbit(),
-                ItemID.STEEL_BAR, BarsOres.STEEL_BAR.getVarbit(),
-                Strings.WITHDRAW_IRON_ORE, Strings.STEEL,
-                CoalPer.IRON.getValue()
+            ItemID.IRON_ORE, BarsOres.IRON_ORE.getVarbit(),
+            ItemID.STEEL_BAR, BarsOres.STEEL_BAR.getVarbit(),
+            Strings.WITHDRAW_IRON_ORE, Strings.STEEL,
+            CoalPer.IRON.getValue()
         );
     }
 
@@ -122,10 +123,10 @@ public class EasyBlastFurnacePluginTest {
     public void mithrilBarMethod()
     {
         metalMethod(
-                ItemID.MITHRIL_ORE, BarsOres.MITHRIL_ORE.getVarbit(),
-                ItemID.MITHRIL_BAR, BarsOres.MITHRIL_BAR.getVarbit(),
-                Strings.WITHDRAW_MITHRIL_ORE, Strings.MITHRIL,
-                CoalPer.MITHRIL.getValue()
+            ItemID.MITHRIL_ORE, BarsOres.MITHRIL_ORE.getVarbit(),
+            ItemID.MITHRIL_BAR, BarsOres.MITHRIL_BAR.getVarbit(),
+            Strings.WITHDRAW_MITHRIL_ORE, Strings.MITHRIL,
+            CoalPer.MITHRIL.getValue()
         );
     }
 
@@ -133,10 +134,10 @@ public class EasyBlastFurnacePluginTest {
     public void adamantiteBarMethod()
     {
         metalMethod(
-                ItemID.ADAMANTITE_ORE, BarsOres.ADAMANTITE_ORE.getVarbit(),
-                ItemID.ADAMANTITE_BAR, BarsOres.ADAMANTITE_BAR.getVarbit(),
-                Strings.WITHDRAW_ADAMANTITE_ORE, Strings.ADAMANTITE,
-                CoalPer.ADAMANTITE.getValue()
+            ItemID.ADAMANTITE_ORE, BarsOres.ADAMANTITE_ORE.getVarbit(),
+            ItemID.ADAMANTITE_BAR, BarsOres.ADAMANTITE_BAR.getVarbit(),
+            Strings.WITHDRAW_ADAMANTITE_ORE, Strings.ADAMANTITE,
+            CoalPer.ADAMANTITE.getValue()
         );
     }
 
@@ -144,10 +145,10 @@ public class EasyBlastFurnacePluginTest {
     public void runiteBarMethod()
     {
         metalMethod(
-                ItemID.RUNITE_ORE, BarsOres.RUNITE_ORE.getVarbit(),
-                ItemID.RUNITE_BAR, BarsOres.RUNITE_BAR.getVarbit(),
-                Strings.WITHDRAW_RUNITE_ORE, Strings.RUNITE,
-                CoalPer.RUNITE.getValue()
+            ItemID.RUNITE_ORE, BarsOres.RUNITE_ORE.getVarbit(),
+            ItemID.RUNITE_BAR, BarsOres.RUNITE_BAR.getVarbit(),
+            Strings.WITHDRAW_RUNITE_ORE, Strings.RUNITE,
+            CoalPer.RUNITE.getValue()
         );
     }
 
@@ -208,7 +209,7 @@ public class EasyBlastFurnacePluginTest {
 
         setInventoryCount(ItemID.GOLDSMITH_GAUNTLETS, 0);
         setEquipmentCount(ItemID.GOLDSMITH_GAUNTLETS, 1);
-        assertStepTooltip(Strings.PUT_ONTO_CONVEYOR_BELT);
+        assertStepTooltip(Strings.PUT_ORE_ONTO_CONVEYOR_BELT);
 
         setAtBank(false);
         setWorldPoint(atConveyorBelt);
@@ -293,14 +294,10 @@ public class EasyBlastFurnacePluginTest {
     private void metalMethod(
         int oreID, int oreVarbit, int barID, int barVarbit, String withdrawOreText, String methodName, int coalPer
     ) {
-        setInventoryItems(new Item[]{new Item(oreID, 1)});
-        setInventoryCount(oreID, 1);
-        assertEquals(methodName, methodHandler.getMethod().getName());
+        setMethod(oreID, methodName, new Item[]{new Item(oreID, 1)});
         assertStepTooltip(Strings.WITHDRAW_COAL_BAG);
 
         setInventoryCount(ItemID.OPEN_COAL_BAG, 1);
-        setCoalBag(Strings.FILL);
-        assertEquals(state.getCoalBag().getMaxCoal(), state.getCoalBag().getCoal());
         assertStepTooltip(Strings.WITHDRAW_ICE_OR_SMITHS_GLOVES);
 
         setInventoryCount(ItemID.ICE_GLOVES, 1);
@@ -308,12 +305,22 @@ public class EasyBlastFurnacePluginTest {
 
         setInventoryCount(ItemID.ICE_GLOVES, 0);
         setEquipmentCount(ItemID.ICE_GLOVES, 1);
-        assertStepTooltip(Strings.PUT_ONTO_CONVEYOR_BELT);
+        assertStepTooltip(Strings.DEPOSIT_INVENTORY);
 
-        setAtBank(false);
-        setWorldPoint(atConveyorBelt);
         setInventoryCount(oreID, 0);
-        setFurnaceCount(oreVarbit, 1);
+        assertStepTooltip(Strings.FILL_COAL_BAG);
+
+        setCoalBag(Strings.FILL);
+        assertEquals(state.getCoalBag().getMaxCoal(), state.getCoalBag().getCoal());
+        assertStepTooltip(Strings.WITHDRAW_COAL);
+
+        setFurnaceCount(BarsOres.COAL.getVarbit(), 27 * (coalPer - state.getFurnace().getCoalOffset()));
+        assertStepTooltip(withdrawOreText);
+
+        setInventoryCount(oreID, 1);
+        assertStepTooltip(Strings.PUT_ORE_ONTO_CONVEYOR_BELT);
+
+        goToAndLoadFurnace(oreID, oreVarbit);
         assertStepTooltip(Strings.EMPTY_COAL_BAG);
 
         setCoalBag(Strings.EMPTY);
@@ -325,36 +332,19 @@ public class EasyBlastFurnacePluginTest {
         setFurnaceCount(barVarbit, 1);
         assertStepTooltip(Strings.COLLECT_BARS);
 
-        setWorldPoint(notAtConveyorBelt);
-        setInventoryCount(barID, 1);
-        setFurnaceCount(barVarbit, 0);
+        collectBars(barID, barVarbit);
         assertStepTooltip(Strings.OPEN_BANK);
-
-        setAtBank(true);
-        assertStepTooltip(Strings.DEPOSIT_INVENTORY);
-
-        setInventoryCount(barID, 0);
-        assertStepTooltip(Strings.FILL_COAL_BAG);
-
-        setCoalBag(Strings.FILL);
-        if (coalPer > 1) assertStepTooltip(Strings.WITHDRAW_COAL);
-
-        setFurnaceCount(BarsOres.COAL.getVarbit(), 27 * (coalPer - state.getFurnace().getCoalOffset()));
-        assertStepTooltip(withdrawOreText);
     }
 
     private void hybridMethod(
         int oreID, int oreVarbit, int barID, int barVarbit, String withdrawOreText, String methodName, int coalPer
     ) {
-        setInventoryItems(new Item[]{new Item(oreID, 1), new Item(ItemID.GOLD_ORE, 1)});
-        setInventoryCount(oreID, 1);
+        setMethod(oreID, methodName, new Item[]{new Item(oreID, 1), new Item(ItemID.GOLD_ORE, 1)});
         setInventoryCount(ItemID.GOLD_ORE, 1);
-        assertEquals(methodName, methodHandler.getMethod().getName());
         assertStepTooltip(Strings.WITHDRAW_COAL_BAG);
 
+        setInventoryCount(ItemID.GOLD_ORE, 0);
         setInventoryCount(ItemID.OPEN_COAL_BAG, 1);
-        setCoalBag(Strings.FILL);
-        assertEquals(state.getCoalBag().getMaxCoal(), state.getCoalBag().getCoal());
         assertStepTooltip(Strings.WITHDRAW_ICE_OR_SMITHS_GLOVES);
 
         setInventoryCount(ItemID.ICE_GLOVES, 1);
@@ -373,14 +363,22 @@ public class EasyBlastFurnacePluginTest {
 
         setInventoryCount(ItemID.GOLDSMITH_GAUNTLETS, 0);
         setEquipmentCount(ItemID.GOLDSMITH_GAUNTLETS, 1);
-        assertStepTooltip(Strings.PUT_ONTO_CONVEYOR_BELT);
+        assertStepTooltip(Strings.DEPOSIT_INVENTORY);
 
-        setAtBank(false);
-        setWorldPoint(atConveyorBelt);
         setInventoryCount(oreID, 0);
-        setInventoryCount(ItemID.GOLD_ORE, 0);
-        setFurnaceCount(oreVarbit, 1);
-        setFurnaceCount(BarsOres.GOLD_ORE.getVarbit(), 1);
+        assertStepTooltip(Strings.FILL_COAL_BAG);
+
+        setCoalBag(Strings.FILL);
+        assertEquals(state.getCoalBag().getMaxCoal(), state.getCoalBag().getCoal());
+        assertStepTooltip(Strings.WITHDRAW_GOLD_ORE);
+
+        setFurnaceCount(BarsOres.COAL.getVarbit(), 27 * (coalPer - state.getFurnace().getCoalOffset()));
+        assertStepTooltip(withdrawOreText);
+
+        setInventoryCount(oreID, 1);
+        assertStepTooltip(Strings.PUT_ORE_ONTO_CONVEYOR_BELT);
+
+        goToAndLoadFurnace(oreID, oreVarbit);
         assertStepTooltip(Strings.EMPTY_COAL_BAG);
 
         setCoalBag(Strings.EMPTY);
@@ -390,8 +388,6 @@ public class EasyBlastFurnacePluginTest {
 
         setFurnaceCount(oreVarbit, 0);
         setFurnaceCount(barVarbit, 1);
-        setFurnaceCount(BarsOres.GOLD_ORE.getVarbit(), 0);
-        setFurnaceCount(BarsOres.GOLD_BAR.getVarbit(), 1);
         assertStepTooltip(Strings.EQUIP_ICE_OR_SMITHS_GLOVES);
 
         setInventoryCount(ItemID.ICE_GLOVES, 0);
@@ -400,28 +396,40 @@ public class EasyBlastFurnacePluginTest {
         setEquipmentCount(ItemID.GOLDSMITH_GAUNTLETS, 0);
         assertStepTooltip(Strings.COLLECT_BARS);
 
-        setWorldPoint(notAtConveyorBelt);
-        setInventoryCount(barID, 1);
-        setFurnaceCount(barVarbit, 0);
-        setInventoryCount(ItemID.GOLD_BAR, 1);
-        setFurnaceCount(BarsOres.GOLD_BAR.getVarbit(), 0);
+        collectBars(barID, barVarbit);
         assertStepTooltip(Strings.OPEN_BANK);
 
         setAtBank(true);
         assertStepTooltip(Strings.DEPOSIT_INVENTORY);
 
         setInventoryCount(barID, 0);
-        setInventoryCount(ItemID.GOLD_BAR, 0);
         assertStepTooltip(Strings.REFILL_COAL_BAG);
 
         setCoalBag(Strings.FILL);
-        assertStepTooltip(Strings.WITHDRAW_GOLD_ORE);
-
-        setFurnaceCount(BarsOres.COAL.getVarbit(), 27 * (coalPer - state.getFurnace().getCoalOffset()));
-        assertStepTooltip(withdrawOreText);
-
         setInventoryCount(ItemID.GOLD_ORE, 1);
         assertStepTooltip(Strings.EQUIP_GOLDSMITH_GAUNTLETS);
+    }
+
+    private void collectBars(int barID, int barVarbit)
+    {
+        setWorldPoint(notAtConveyorBelt);
+        setInventoryCount(barID, 1);
+        setFurnaceCount(barVarbit, 0);
+    }
+
+    private void goToAndLoadFurnace(int oreID, int oreVarbit)
+    {
+        setAtBank(false);
+        setWorldPoint(atConveyorBelt);
+        setInventoryCount(oreID, 0);
+        setFurnaceCount(oreVarbit, 1);
+    }
+
+    private void setMethod(int oreID, String methodName, Item[] items)
+    {
+        setInventoryItems(items);
+        setInventoryCount(oreID, 1);
+        assertEquals(methodName, methodHandler.getMethod().getName());
     }
 
     private void setInventoryCount(int itemID, int count)
