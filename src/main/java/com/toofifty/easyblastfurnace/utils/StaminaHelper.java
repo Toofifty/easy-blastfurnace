@@ -56,7 +56,6 @@ public class StaminaHelper {
     private double getMinimumEnergyRecovered(int ticksSpentIdle)
     {
         double energyRecoveryPerSecond = ((48 + client.getBoostedSkillLevel(Skill.AGILITY)) / 360.0);
-
         int boost = 0;
 
         for (Graceful graceful : Graceful.values()) {
@@ -64,7 +63,6 @@ public class StaminaHelper {
         }
 
         if (boost == 20) boost += 10; // full graceful bonus
-
         energyRecoveryPerSecond *= 1.0 + boost / 100.0;
 
         return energyRecoveryPerSecond * 0.6 * ticksSpentIdle;
