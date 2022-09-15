@@ -34,6 +34,8 @@ public class BankState
         load();
         int total = 0;
 
+        if (bank == null) return 0;
+
         for (int itemId : itemIds) {
             total += bank.count(itemId);
         }

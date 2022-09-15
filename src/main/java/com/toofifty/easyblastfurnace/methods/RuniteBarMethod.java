@@ -34,6 +34,6 @@ public class RuniteBarMethod extends MetalBarMethod
     @Override
     public String getName()
     {
-        return Strings.RUNITE.getTxt();
+        return Strings.RUNITE;
     }
 }
