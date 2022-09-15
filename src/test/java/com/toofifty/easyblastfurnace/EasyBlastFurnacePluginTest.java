@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.toofifty.easyblastfurnace.state.BlastFurnaceState;
 import com.toofifty.easyblastfurnace.utils.BarsOres;
+import com.toofifty.easyblastfurnace.utils.CoalPer;
 import com.toofifty.easyblastfurnace.utils.MethodHandler;
 import com.toofifty.easyblastfurnace.utils.Strings;
 import net.runelite.api.*;
@@ -74,6 +75,9 @@ public class EasyBlastFurnacePluginTest {
     private final ItemContainerChanged event = new ItemContainerChanged(InventoryID.INVENTORY.getId(), inventoryContainer);
     private final MenuOptionClicked menuOptionClicked = mock(MenuOptionClicked.class);
 
+    private final WorldPoint atConveyorBelt = new WorldPoint(1942, 4967, 0);
+    private final WorldPoint notAtConveyorBelt = new WorldPoint(1949, 4967, 0);
+
     @Before
     public void before()
     {
@@ -106,81 +110,140 @@ public class EasyBlastFurnacePluginTest {
     @Test
     public void steelBarMethod()
     {
-        metalMethods(ItemID.IRON_ORE, ItemID.STEEL_BAR, BarsOres.STEEL_BAR.name(), Strings.STEEL.name());
-        assertEquals(Strings.WITHDRAWIRONORE.getTxt(), methodHandler.getStep().getTooltip());
+        metalMethod(
+                ItemID.IRON_ORE, BarsOres.IRON_ORE.getVarbit(),
+                ItemID.STEEL_BAR, BarsOres.STEEL_BAR.getVarbit(),
+                Strings.WITHDRAW_IRON_ORE, Strings.STEEL,
+                CoalPer.IRON.getValue()
+        );
     }
 
     @Test
     public void mithrilBarMethod()
     {
-        metalMethods(ItemID.MITHRIL_ORE, ItemID.MITHRIL_BAR, BarsOres.MITHRIL_BAR.name(), Strings.MITHRIL.name());
-        assertEquals(Strings.WITHDRAWMITHRILORE.getTxt(), methodHandler.getStep().getTooltip());
+        metalMethod(
+                ItemID.MITHRIL_ORE, BarsOres.MITHRIL_ORE.getVarbit(),
+                ItemID.MITHRIL_BAR, BarsOres.MITHRIL_BAR.getVarbit(),
+                Strings.WITHDRAW_MITHRIL_ORE, Strings.MITHRIL,
+                CoalPer.MITHRIL.getValue()
+        );
     }
 
     @Test
     public void adamantiteBarMethod()
     {
-        metalMethods(ItemID.ADAMANTITE_ORE, ItemID.ADAMANTITE_BAR, BarsOres.ADAMANTITE_BAR.name(), Strings.ADAMANTITE.name());
-        assertEquals(Strings.WITHDRAWADAMANTITEORE.getTxt(), methodHandler.getStep().getTooltip());
+        metalMethod(
+                ItemID.ADAMANTITE_ORE, BarsOres.ADAMANTITE_ORE.getVarbit(),
+                ItemID.ADAMANTITE_BAR, BarsOres.ADAMANTITE_BAR.getVarbit(),
+                Strings.WITHDRAW_ADAMANTITE_ORE, Strings.ADAMANTITE,
+                CoalPer.ADAMANTITE.getValue()
+        );
     }
 
     @Test
     public void runiteBarMethod()
     {
-        metalMethods(ItemID.RUNITE_ORE, ItemID.RUNITE_BAR, BarsOres.RUNITE_BAR.name(), Strings.RUNITE.name());
-        assertEquals(Strings.WITHDRAWRUNITEORE.getTxt(), methodHandler.getStep().getTooltip());
+        metalMethod(
+                ItemID.RUNITE_ORE, BarsOres.RUNITE_ORE.getVarbit(),
+                ItemID.RUNITE_BAR, BarsOres.RUNITE_BAR.getVarbit(),
+                Strings.WITHDRAW_RUNITE_ORE, Strings.RUNITE,
+                CoalPer.RUNITE.getValue()
+        );
     }
 
     @Test
     public void mithrilHybridMethod()
     {
-        metalMethods(ItemID.MITHRIL_ORE, ItemID.MITHRIL_BAR, BarsOres.MITHRIL_BAR.name(), Strings.MITHRILHYBRID.name());
-        assertEquals(Strings.WITHDRAWMITHRILORE.getTxt(), methodHandler.getStep().getTooltip());
+        hybridMethod(
+            ItemID.MITHRIL_ORE, BarsOres.MITHRIL_ORE.getVarbit(),
+            ItemID.MITHRIL_BAR, BarsOres.MITHRIL_BAR.getVarbit(),
+            Strings.WITHDRAW_MITHRIL_ORE, Strings.MITHRILHYBRID,
+            CoalPer.MITHRIL.getValue()
+        );
     }
 
     @Test
     public void adamantiteHybridMethod()
     {
-        metalMethods(ItemID.ADAMANTITE_ORE, ItemID.ADAMANTITE_BAR, BarsOres.ADAMANTITE_BAR.name(), Strings.ADAMANTITEHYBRID.name());
-        assertEquals(Strings.WITHDRAWADAMANTITEORE.getTxt(), methodHandler.getStep().getTooltip());
+        hybridMethod(
+            ItemID.ADAMANTITE_ORE, BarsOres.ADAMANTITE_ORE.getVarbit(),
+            ItemID.ADAMANTITE_BAR, BarsOres.ADAMANTITE_BAR.getVarbit(),
+            Strings.WITHDRAW_ADAMANTITE_ORE, Strings.ADAMANTITEHYBRID,
+            CoalPer.ADAMANTITE.getValue()
+        );
     }
 
     @Test
     public void runiteHybridMethod()
     {
-        metalMethods(ItemID.RUNITE_ORE, ItemID.RUNITE_BAR, BarsOres.RUNITE_BAR.name(), Strings.RUNITEHYBRID.name());
-        assertEquals(Strings.WITHDRAWRUNITEORE.getTxt(), methodHandler.getStep().getTooltip());
+        hybridMethod(
+            ItemID.RUNITE_ORE, BarsOres.RUNITE_ORE.getVarbit(),
+            ItemID.RUNITE_BAR, BarsOres.RUNITE_BAR.getVarbit(),
+            Strings.WITHDRAW_RUNITE_ORE, Strings.RUNITEHYBRID,
+            CoalPer.RUNITE.getValue()
+        );
     }
 
     @Test
     public void goldBarMethod()
     {
-        // Set method to Gold bars to get Withdraw ice or smiths gloves step
-        getBarMethod(ItemID.GOLD_ORE, Strings.GOLD.name(), false);
-        assertEquals(Strings.WITHDRAWICEORSMITHSGLOVES.getTxt(), methodHandler.getStep().getTooltip());
+        setInventoryItems(new Item[]{new Item(ItemID.GOLD_ORE, 1)});
+        setInventoryCount(ItemID.GOLD_ORE, 1);
+        assertEquals(Strings.GOLD, methodHandler.getMethod().getName());
+        assertStepTooltip(Strings.WITHDRAW_ICE_OR_SMITHS_GLOVES);
 
-        goldPrerequisites();
-        putOreOntoConveyor(ItemID.GOLD_ORE, true);
-        assertEquals(Strings.WAITFORBARS.getTxt(), methodHandler.getStep().getTooltip());
+        setInventoryCount(ItemID.ICE_GLOVES, 1);
+        setBankCount(ItemID.SMITHING_CAPE, 1);
+        assertStepTooltip(Strings.WITHDRAW_SMITHING_CAPE);
 
-        // Equip ice gloves and give the Blast Furnace a gold bar to get Collect bars step
-        when(client.getVarbitValue(BarsOres.GOLD_BAR.getVarbit())).thenReturn(1);
-        equipIceGloves();
-        easyBlastFurnacePlugin.onVarbitChanged(blastFurnaceChange);
-        assertEquals(Strings.COLLECTBARS.getTxt(), methodHandler.getStep().getTooltip());
+        setInventoryCount(ItemID.SMITHING_CAPE, 1);
+        setBankCount(ItemID.SMITHING_CAPE, 0);
+        assertStepTooltip(Strings.EQUIP_SMITHING_CAPE);
 
-        // Remove bars from inventory to get Withdraw gold ore step.
-        takeBarsToBank(ItemID.GOLD_BAR, BarsOres.GOLD_BAR.name());
-        easyBlastFurnacePlugin.onItemContainerChanged(event);
-        assertEquals(Strings.WITHDRAWGOLDORE.getTxt(), methodHandler.getStep().getTooltip());
+        setInventoryCount(ItemID.SMITHING_CAPE, 0);
+        assertStepTooltip(Strings.WITHDRAW_GOLDSMITH_GAUNTLETS);
+
+        setInventoryCount(ItemID.GOLDSMITH_GAUNTLETS, 1);
+        assertStepTooltip(Strings.EQUIP_GOLDSMITH_GAUNTLETS);
+
+        setInventoryCount(ItemID.GOLDSMITH_GAUNTLETS, 0);
+        setEquipmentCount(ItemID.GOLDSMITH_GAUNTLETS, 1);
+        assertStepTooltip(Strings.PUT_ONTO_CONVEYOR_BELT);
+
+        setAtBank(false);
+        setWorldPoint(atConveyorBelt);
+        setInventoryCount(ItemID.GOLD_ORE, 0);
+        setFurnaceCount(BarsOres.GOLD_ORE.getVarbit(), 1);
+        assertStepTooltip(Strings.WAIT_FOR_BARS);
+
+        setFurnaceCount(BarsOres.GOLD_ORE.getVarbit(), 0);
+        setFurnaceCount(BarsOres.GOLD_BAR.getVarbit(), 1);
+        assertStepTooltip(Strings.EQUIP_ICE_OR_SMITHS_GLOVES);
+
+        setInventoryCount(ItemID.ICE_GLOVES, 0);
+        setEquipmentCount(ItemID.ICE_GLOVES, 1);
+        setInventoryCount(ItemID.GOLDSMITH_GAUNTLETS, 1);
+        setEquipmentCount(ItemID.GOLDSMITH_GAUNTLETS, 0);
+        assertStepTooltip(Strings.COLLECT_BARS);
+
+        setWorldPoint(notAtConveyorBelt);
+        setInventoryCount(ItemID.GOLD_BAR, 1);
+        setFurnaceCount(BarsOres.GOLD_BAR.getVarbit(), 0);
+        assertStepTooltip(Strings.OPEN_BANK);
+
+        setAtBank(true);
+        assertStepTooltip(Strings.DEPOSIT_INVENTORY);
+
+        setInventoryCount(ItemID.GOLD_BAR, 0);
+        assertStepTooltip(Strings.WITHDRAW_GOLD_ORE);
     }
 
     @Test
     public void drinkStaminaMethod()
     {
-        when(inventoryContainer.getItems()).thenReturn(new Item[]{new Item(ItemID.VIAL, 1), new Item(ItemID.GOLD_ORE, 1)});
-        when(inventoryContainer.count(ItemID.GOLD_ORE)).thenReturn(1);
-        when(equipmentContainer.count(ItemID.SMITHING_CAPE)).thenReturn(1);
+        setInventoryItems(new Item[]{new Item(ItemID.VIAL, 1), new Item(ItemID.GOLD_ORE, 1)});
+        setInventoryCount(ItemID.GOLD_ORE, 1);
+        setInventoryCount(ItemID.SMITHING_CAPE, 1);
 
         // Check ignoreRemainingPotion works
         when(easyBlastFurnaceConfig.ignoreRemainingPotion()).thenReturn(true);
@@ -190,9 +253,8 @@ public class EasyBlastFurnacePluginTest {
         when(easyBlastFurnaceConfig.ignoreRemainingPotion()).thenReturn(false);
         when(easyBlastFurnaceConfig.requireStaminaThreshold()).thenReturn(50);
         when(client.getEnergy()).thenReturn(51);
-        when(inventoryContainer.count(ItemID.VIAL)).thenReturn(1);
-        easyBlastFurnacePlugin.onItemContainerChanged(event);
-        assertEquals(Strings.DEPOSITINVENTORY.getTxt(), methodHandler.getStep().getTooltip());
+        setInventoryCount(ItemID.VIAL, 1);
+        assertStepTooltip(Strings.DEPOSIT_INVENTORY);
 
         // Second deposit Inventory
         when(client.getEnergy()).thenReturn(49);
@@ -200,165 +262,218 @@ public class EasyBlastFurnacePluginTest {
         for (int i = 0; i < 28; i++) {
             gold[i] = new Item(ItemID.GOLD_ORE, 1);
         }
-        when(inventoryContainer.getItems()).thenReturn(gold);
-        easyBlastFurnacePlugin.onItemContainerChanged(event);
-        assertEquals(Strings.DEPOSITINVENTORY.getTxt(), methodHandler.getStep().getTooltip());
+        setInventoryItems(gold);
+        assertStepTooltip(Strings.DEPOSIT_INVENTORY);
 
         // drink/withdraw stamina potions
-        checkStaminaPotion(ItemID.STAMINA_POTION4, ItemID.STAMINA_POTION1, Strings.DRINK_STAMINA_POTION1.getTxt());
-        checkStaminaPotion(ItemID.STAMINA_POTION1, ItemID.STAMINA_POTION2, Strings.DRINK_STAMINA_POTION2.getTxt());
-        checkStaminaPotion(ItemID.STAMINA_POTION2, ItemID.STAMINA_POTION3, Strings.DRINK_STAMINA_POTION3.getTxt());
-        checkStaminaPotion(ItemID.STAMINA_POTION3, ItemID.STAMINA_POTION4, Strings.DRINK_STAMINA_POTION4.getTxt());
-        checkStaminaPotion(ItemID.STAMINA_POTION4, ItemID.STAMINA_POTION1, Strings.WITHDRAW_STAMINA_POTION1.getTxt());
-        checkStaminaPotion(ItemID.STAMINA_POTION1, ItemID.STAMINA_POTION2, Strings.WITHDRAW_STAMINA_POTION2.getTxt());
-        checkStaminaPotion(ItemID.STAMINA_POTION2, ItemID.STAMINA_POTION3, Strings.WITHDRAW_STAMINA_POTION3.getTxt());
-        checkStaminaPotion(ItemID.STAMINA_POTION3, ItemID.STAMINA_POTION4, Strings.WITHDRAW_STAMINA_POTION4.getTxt());
+        checkStaminaPotion(ItemID.STAMINA_POTION4, ItemID.STAMINA_POTION1, Strings.DRINK_STAMINA_POTION1);
+        checkStaminaPotion(ItemID.STAMINA_POTION1, ItemID.STAMINA_POTION2, Strings.DRINK_STAMINA_POTION2);
+        checkStaminaPotion(ItemID.STAMINA_POTION2, ItemID.STAMINA_POTION3, Strings.DRINK_STAMINA_POTION3);
+        checkStaminaPotion(ItemID.STAMINA_POTION3, ItemID.STAMINA_POTION4, Strings.DRINK_STAMINA_POTION4);
+        checkStaminaPotion(ItemID.STAMINA_POTION4, ItemID.STAMINA_POTION1, Strings.WITHDRAW_STAMINA_POTION1);
+        checkStaminaPotion(ItemID.STAMINA_POTION1, ItemID.STAMINA_POTION2, Strings.WITHDRAW_STAMINA_POTION2);
+        checkStaminaPotion(ItemID.STAMINA_POTION2, ItemID.STAMINA_POTION3, Strings.WITHDRAW_STAMINA_POTION3);
+        checkStaminaPotion(ItemID.STAMINA_POTION3, ItemID.STAMINA_POTION4, Strings.WITHDRAW_STAMINA_POTION4);
 
         // getMoreStaminaPotions
-        when(bankContainer.count(ItemID.STAMINA_POTION4)).thenReturn(0);
-        easyBlastFurnacePlugin.onItemContainerChanged(event);
-        assertEquals(Strings.GET_MORE_STAMINA_POTIONS.getTxt(), methodHandler.getStep().getTooltip());
+        setBankCount(ItemID.STAMINA_POTION4, 0);
+        assertStepTooltip(Strings.GET_MORE_STAMINA_POTIONS);
     }
 
     private void checkStaminaPotion(int staminaPotionA, int staminaPotionB, String methodStep)
     {
-        when(inventoryContainer.getItems()).thenReturn(new Item[0]);
-        when(inventoryContainer.count(staminaPotionA)).thenReturn(0);
-        when(bankContainer.count(staminaPotionA)).thenReturn(0);
-        when((methodStep.toLowerCase().contains("withdraw") ? bankContainer : inventoryContainer).count(staminaPotionB)).thenReturn(1);
-        easyBlastFurnacePlugin.onItemContainerChanged(event);
-        assertEquals(methodStep, methodHandler.getStep().getTooltip());
+        setInventoryItems(new Item[0]);
+        setInventoryCount(staminaPotionA, 0);
+        setBankCount(staminaPotionA, 0);
+        if (methodStep.toLowerCase().contains("withdraw")) setBankCount(staminaPotionB, 1);
+        else setInventoryCount(staminaPotionB, 1);
+        assertStepTooltip(methodStep);
     }
 
-    private void metalMethods(int ore, int bar, String barName, String barMethod)
-    {
-        boolean isHybrid = barMethod.contains("HYBRID"), isNotSteel = !barName.equals(BarsOres.STEEL_BAR.name());
+    private void metalMethod(
+        int oreID, int oreVarbit, int barID, int barVarbit, String withdrawOreText, String methodName, int coalPer
+    ) {
+        setInventoryItems(new Item[]{new Item(oreID, 1)});
+        setInventoryCount(oreID, 1);
+        assertEquals(methodName, methodHandler.getMethod().getName());
+        assertStepTooltip(Strings.WITHDRAW_COAL_BAG);
 
-        getBarMethod(ore, barMethod, isHybrid);
-        assertEquals(Strings.WITHDRAWCOALBAG.getTxt(), methodHandler.getStep().getTooltip());
+        setInventoryCount(ItemID.OPEN_COAL_BAG, 1);
+        setCoalBag(Strings.FILL);
+        assertEquals(state.getCoalBag().getMaxCoal(), state.getCoalBag().getCoal());
+        assertStepTooltip(Strings.WITHDRAW_ICE_OR_SMITHS_GLOVES);
 
-        // Fill coal bag to get Withdraw ice gloves step
-        when(inventoryContainer.count(ItemID.OPEN_COAL_BAG)).thenReturn(1);
-        state.getCoalBag().setCoal(state.getCoalBag().getMaxCoal());
-        easyBlastFurnacePlugin.onItemContainerChanged(event);
-        assertEquals(Strings.WITHDRAWICEORSMITHSGLOVES.getTxt(), methodHandler.getStep().getTooltip());
+        setInventoryCount(ItemID.ICE_GLOVES, 1);
+        assertStepTooltip(Strings.EQUIP_ICE_OR_SMITHS_GLOVES);
 
-        if (isHybrid) goldPrerequisites();
-        else equipIceGloves();
-        putOreOntoConveyor(ore, isHybrid);
-        assertEquals(Strings.EMPTYCOALBAG.getTxt(), methodHandler.getStep().getTooltip());
+        setInventoryCount(ItemID.ICE_GLOVES, 0);
+        setEquipmentCount(ItemID.ICE_GLOVES, 1);
+        assertStepTooltip(Strings.PUT_ONTO_CONVEYOR_BELT);
 
-        // Empty coal bag to get Wait for bars step
-        when(inventoryContainer.getItems()).thenReturn(new Item[]{new Item(ItemID.OPEN_COAL_BAG, 1)});
-        when(menuOptionClicked.getMenuOption()).thenReturn(Strings.EMPTY.getTxt());
-        when(bankWidget.isHidden()).thenReturn(true);
-        easyBlastFurnacePlugin.onMenuOptionClicked(menuOptionClicked);
+        setAtBank(false);
+        setWorldPoint(atConveyorBelt);
+        setInventoryCount(oreID, 0);
+        setFurnaceCount(oreVarbit, 1);
+        assertStepTooltip(Strings.EMPTY_COAL_BAG);
+
+        setCoalBag(Strings.EMPTY);
         assertEquals(0, state.getCoalBag().getCoal());
-        assertEquals(Strings.WAITFORBARS.getTxt(), methodHandler.getStep().getTooltip());
+        setFurnaceCount(BarsOres.COAL.getVarbit(), state.getCoalBag().getCoal());
+        assertStepTooltip(Strings.WAIT_FOR_BARS);
 
-        // Give the Blast Furnace bars to get Collect bars step
-        when(client.getVarbitValue(BarsOres.valueOf(barName).getVarbit())).thenReturn(1);
-        if (isHybrid) equipIceGloves();
+        setFurnaceCount(oreVarbit, 0);
+        setFurnaceCount(barVarbit, 1);
+        assertStepTooltip(Strings.COLLECT_BARS);
+
+        setWorldPoint(notAtConveyorBelt);
+        setInventoryCount(barID, 1);
+        setFurnaceCount(barVarbit, 0);
+        assertStepTooltip(Strings.OPEN_BANK);
+
+        setAtBank(true);
+        assertStepTooltip(Strings.DEPOSIT_INVENTORY);
+
+        setInventoryCount(barID, 0);
+        assertStepTooltip(Strings.FILL_COAL_BAG);
+
+        setCoalBag(Strings.FILL);
+        if (coalPer > 1) assertStepTooltip(Strings.WITHDRAW_COAL);
+
+        setFurnaceCount(BarsOres.COAL.getVarbit(), 27 * (coalPer - state.getFurnace().getCoalOffset()));
+        assertStepTooltip(withdrawOreText);
+    }
+
+    private void hybridMethod(
+        int oreID, int oreVarbit, int barID, int barVarbit, String withdrawOreText, String methodName, int coalPer
+    ) {
+        setInventoryItems(new Item[]{new Item(oreID, 1), new Item(ItemID.GOLD_ORE, 1)});
+        setInventoryCount(oreID, 1);
+        setInventoryCount(ItemID.GOLD_ORE, 1);
+        assertEquals(methodName, methodHandler.getMethod().getName());
+        assertStepTooltip(Strings.WITHDRAW_COAL_BAG);
+
+        setInventoryCount(ItemID.OPEN_COAL_BAG, 1);
+        setCoalBag(Strings.FILL);
+        assertEquals(state.getCoalBag().getMaxCoal(), state.getCoalBag().getCoal());
+        assertStepTooltip(Strings.WITHDRAW_ICE_OR_SMITHS_GLOVES);
+
+        setInventoryCount(ItemID.ICE_GLOVES, 1);
+        setBankCount(ItemID.SMITHING_CAPE, 1);
+        assertStepTooltip(Strings.WITHDRAW_SMITHING_CAPE);
+
+        setInventoryCount(ItemID.SMITHING_CAPE, 1);
+        setBankCount(ItemID.SMITHING_CAPE, 0);
+        assertStepTooltip(Strings.EQUIP_SMITHING_CAPE);
+
+        setInventoryCount(ItemID.SMITHING_CAPE, 0);
+        assertStepTooltip(Strings.WITHDRAW_GOLDSMITH_GAUNTLETS);
+
+        setInventoryCount(ItemID.GOLDSMITH_GAUNTLETS, 1);
+        assertStepTooltip(Strings.EQUIP_GOLDSMITH_GAUNTLETS);
+
+        setInventoryCount(ItemID.GOLDSMITH_GAUNTLETS, 0);
+        setEquipmentCount(ItemID.GOLDSMITH_GAUNTLETS, 1);
+        assertStepTooltip(Strings.PUT_ONTO_CONVEYOR_BELT);
+
+        setAtBank(false);
+        setWorldPoint(atConveyorBelt);
+        setInventoryCount(oreID, 0);
+        setInventoryCount(ItemID.GOLD_ORE, 0);
+        setFurnaceCount(oreVarbit, 1);
+        setFurnaceCount(BarsOres.GOLD_ORE.getVarbit(), 1);
+        assertStepTooltip(Strings.EMPTY_COAL_BAG);
+
+        setCoalBag(Strings.EMPTY);
+        assertEquals(1, state.getCoalBag().getCoal());
+        setFurnaceCount(BarsOres.COAL.getVarbit(), state.getCoalBag().getCoal());
+        assertStepTooltip(Strings.WAIT_FOR_BARS);
+
+        setFurnaceCount(oreVarbit, 0);
+        setFurnaceCount(barVarbit, 1);
+        setFurnaceCount(BarsOres.GOLD_ORE.getVarbit(), 0);
+        setFurnaceCount(BarsOres.GOLD_BAR.getVarbit(), 1);
+        assertStepTooltip(Strings.EQUIP_ICE_OR_SMITHS_GLOVES);
+
+        setInventoryCount(ItemID.ICE_GLOVES, 0);
+        setEquipmentCount(ItemID.ICE_GLOVES, 1);
+        setInventoryCount(ItemID.GOLDSMITH_GAUNTLETS, 1);
+        setEquipmentCount(ItemID.GOLDSMITH_GAUNTLETS, 0);
+        assertStepTooltip(Strings.COLLECT_BARS);
+
+        setWorldPoint(notAtConveyorBelt);
+        setInventoryCount(barID, 1);
+        setFurnaceCount(barVarbit, 0);
+        setInventoryCount(ItemID.GOLD_BAR, 1);
+        setFurnaceCount(BarsOres.GOLD_BAR.getVarbit(), 0);
+        assertStepTooltip(Strings.OPEN_BANK);
+
+        setAtBank(true);
+        assertStepTooltip(Strings.DEPOSIT_INVENTORY);
+
+        setInventoryCount(barID, 0);
+        setInventoryCount(ItemID.GOLD_BAR, 0);
+        assertStepTooltip(Strings.REFILL_COAL_BAG);
+
+        setCoalBag(Strings.FILL);
+        assertStepTooltip(Strings.WITHDRAW_GOLD_ORE);
+
+        setFurnaceCount(BarsOres.COAL.getVarbit(), 27 * (coalPer - state.getFurnace().getCoalOffset()));
+        assertStepTooltip(withdrawOreText);
+
+        setInventoryCount(ItemID.GOLD_ORE, 1);
+        assertStepTooltip(Strings.EQUIP_GOLDSMITH_GAUNTLETS);
+    }
+
+    private void setInventoryCount(int itemID, int count)
+    {
+        when(inventoryContainer.count(itemID)).thenReturn(count);
+        easyBlastFurnacePlugin.onItemContainerChanged(event);
+    }
+
+    private void setEquipmentCount(int itemID, int count)
+    {
+        when(equipmentContainer.count(itemID)).thenReturn(count);
+        easyBlastFurnacePlugin.onItemContainerChanged(event);
+    }
+
+    private void setBankCount(int itemID, int count)
+    {
+        when(bankContainer.count(itemID)).thenReturn(count);
+        easyBlastFurnacePlugin.onItemContainerChanged(event);
+    }
+
+    private void setFurnaceCount(int varbit, int count)
+    {
+        when(client.getVarbitValue(varbit)).thenReturn(count);
         easyBlastFurnacePlugin.onVarbitChanged(blastFurnaceChange);
-        assertEquals(Strings.COLLECTBARS.getTxt(), methodHandler.getStep().getTooltip());
+    }
 
-        // Remove bars from inventory to get Fill coal bag step
-        takeBarsToBank(bar, barName);
+    private void setWorldPoint(WorldPoint worldPoint)
+    {
+        when(localPlayer.getWorldLocation()).thenReturn(worldPoint);
         easyBlastFurnacePlugin.onItemContainerChanged(event);
-        assertEquals(Strings.FILLCOALBAG.getTxt(), methodHandler.getStep().getTooltip());
+    }
 
-        // Fill coal bag to get Withdraw gold/coal step
-        when(client.getVarbitValue(BarsOres.COAL.getVarbit())).thenReturn(0);
-        when(menuOptionClicked.getMenuOption()).thenReturn(Strings.FILL.getTxt());
+    private void setAtBank(boolean atBank) {
+        when(bankWidget.isHidden()).thenReturn(!atBank);
+        easyBlastFurnacePlugin.onItemContainerChanged(event);
+    }
+
+    private void assertStepTooltip(String expectedString)
+    {
+        assertEquals(expectedString, methodHandler.getStep().getTooltip());
+    }
+
+    private void setCoalBag(String emptyOrFillText)
+    {
+        // Empty coal bag to get Wait for bars step
+        when(menuOptionClicked.getMenuOption()).thenReturn(emptyOrFillText);
         easyBlastFurnacePlugin.onMenuOptionClicked(menuOptionClicked);
-        assertEquals(state.getCoalBag().getMaxCoal(), state.getCoalBag().getCoal());
-        if (isHybrid) assertEquals(Strings.WITHDRAWGOLDORE.getTxt(), methodHandler.getStep().getTooltip());
-        else if (isNotSteel) assertEquals(Strings.WITHDRAWCOAL.getTxt(), methodHandler.getStep().getTooltip());
-
-        // Remove ores from inventory and fill Blast Furnace with coal to get Withdraw metal ore step
-        when(client.getVarbitValue(BarsOres.COAL.getVarbit())).thenReturn(254);
-        when(inventoryContainer.count(ItemID.COAL)).thenReturn(0);
-        when(inventoryContainer.count(ItemID.GOLD_ORE)).thenReturn(0);
-        easyBlastFurnacePlugin.onItemContainerChanged(event);
-        assertEquals(state.getCoalBag().getMaxCoal(), state.getCoalBag().getCoal());
     }
 
-    private void goldPrerequisites()
+    private void setInventoryItems(Item[] items)
     {
-        // Add ice gloves to inventory and smithing cape to bank to get Withdraw smithing cape step
-        when(inventoryContainer.count(ItemID.ICE_GLOVES)).thenReturn(1);
-        when(bankContainer.count(ItemID.SMITHING_CAPE)).thenReturn(1);
+        when(inventoryContainer.getItems()).thenReturn(items);
         easyBlastFurnacePlugin.onItemContainerChanged(event);
-        assertEquals(Strings.WITHDRAWSMITHINGCAPE.getTxt(), methodHandler.getStep().getTooltip());
-
-        // Add smithing cape to inventory to get Equip smithing cape step
-        when(inventoryContainer.count(ItemID.SMITHING_CAPE)).thenReturn(1);
-        easyBlastFurnacePlugin.onItemContainerChanged(event);
-        assertEquals(Strings.EQUIPSMITHINGCAPE.getTxt(), methodHandler.getStep().getTooltip());
-
-        // Remove smithing cape from inventory and bank to get Withdraw goldsmith gauntlets step
-        when(bankContainer.count(ItemID.SMITHING_CAPE)).thenReturn(0);
-        when(inventoryContainer.count(ItemID.SMITHING_CAPE)).thenReturn(0);
-        easyBlastFurnacePlugin.onItemContainerChanged(event);
-        assertEquals(Strings.WITHDRAWGOLDSMITHGAUNTLETS.getTxt(), methodHandler.getStep().getTooltip());
-
-        // Add goldsmith gauntlets to inventory to get Equip goldsmith gauntlets step
-        when(inventoryContainer.count(ItemID.GOLDSMITH_GAUNTLETS)).thenReturn(1);
-        easyBlastFurnacePlugin.onItemContainerChanged(event);
-        assertEquals(Strings.EQUIPGOLDSMITHGAUNTLETS.getTxt(), methodHandler.getStep().getTooltip());
-    }
-
-    private void putOreOntoConveyor(int ore, boolean needsGoldGloves)
-    {
-        if (needsGoldGloves) when(equipmentContainer.count(ItemID.GOLDSMITH_GAUNTLETS)).thenReturn(1);
-        when(inventoryContainer.count(ore)).thenReturn(27);
-        easyBlastFurnacePlugin.onItemContainerChanged(event);
-        assertEquals(Strings.PUTONTOCONVEYORBELT.getTxt(), methodHandler.getStep().getTooltip());
-
-        // Remove ores from inventory as they've been added to the Blast Furnace
-        when(localPlayer.getWorldLocation()).thenReturn(new WorldPoint(1942, 4967, 0));
-        when(inventoryContainer.count(ItemID.GOLD_ORE)).thenReturn(0);
-        when(inventoryContainer.count(ore)).thenReturn(0);
-        state.update();
-        easyBlastFurnacePlugin.onItemContainerChanged(event);
-    }
-
-    private void takeBarsToBank(int bar, String barName)
-    {
-        // Move bars from Blast Furnace to inventory to get Open bank step
-        when(client.getVarbitValue(BarsOres.valueOf(barName).getVarbit())).thenReturn(0);
-        when(inventoryContainer.count(bar)).thenReturn(1);
-        when(localPlayer.getWorldLocation()).thenReturn(new WorldPoint(1949, 4967, 0));
-        when(bankWidget.isHidden()).thenReturn(true);
-        easyBlastFurnacePlugin.onItemContainerChanged(event);
-        assertEquals(Strings.OPENBANK.getTxt(), methodHandler.getStep().getTooltip());
-
-        // Show bank widget to get Deposit inventory step. Remove bars from inventory after.
-        when(bankWidget.isHidden()).thenReturn(false);
-        easyBlastFurnacePlugin.onItemContainerChanged(event);
-        assertEquals(Strings.DEPOSITINVENTORY.getTxt(), methodHandler.getStep().getTooltip());
-        when(inventoryContainer.count(bar)).thenReturn(0);
-    }
-
-    private void getBarMethod(int ore, String barMethod, boolean isHybrid)
-    {
-        // Place correct ores in inventory to get the right bar method.
-        Item[] inv = new Item[]{new Item(ore, 1), new Item(ItemID.GOLD_ORE, 1)};
-        when(inventoryContainer.getItems()).thenReturn(inv);
-        when(inventoryContainer.count(ore)).thenReturn(1);
-        if (isHybrid) when(inventoryContainer.count(ItemID.GOLD_ORE)).thenReturn(1);
-        easyBlastFurnacePlugin.onItemContainerChanged(event);
-        assertEquals(Strings.valueOf(barMethod).getTxt(), methodHandler.getMethod().getName());
-    }
-
-    private void equipIceGloves()
-    {
-        // Unequip ice gloves to get Equip ice or smiths gloves step. Re-equip afterwards.
-        when(inventoryContainer.count(ItemID.ICE_GLOVES)).thenReturn(1);
-        when(equipmentContainer.count(ItemID.ICE_GLOVES)).thenReturn(0);
-        easyBlastFurnacePlugin.onItemContainerChanged(event);
-        assertEquals(Strings.EQUIPICEORSMITHSGLOVES.getTxt(), methodHandler.getStep().getTooltip());
-        when(inventoryContainer.count(ItemID.ICE_GLOVES)).thenReturn(0);
-        when(equipmentContainer.count(ItemID.ICE_GLOVES)).thenReturn(1);
     }
 }

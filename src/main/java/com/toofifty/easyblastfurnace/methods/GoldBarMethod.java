@@ -77,6 +77,6 @@ public class GoldBarMethod extends Method
     @Override
     public String getName()
     {
-        return Strings.GOLD.getTxt();
+        return Strings.GOLD;
     }
 }

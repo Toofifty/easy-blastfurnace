@@ -34,6 +34,6 @@ public class MithrilBarMethod extends MetalBarMethod
     @Override
     public String getName()
     {
-        return Strings.MITHRIL.getTxt();
+        return Strings.MITHRIL;
     }
 }
