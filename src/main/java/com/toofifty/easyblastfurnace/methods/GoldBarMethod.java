@@ -10,7 +10,7 @@ public class GoldBarMethod extends Method
     {
         // ensure player has both ice gloves & goldsmith gauntlets either in inventory or equipped
 
-        if (state.getInventory().has(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I) &&
+        if (!state.getInventory().has(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I) &&
             !state.getEquipment().equipped(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I)) {
             return state.getBank().isOpen() ? withdrawIceOrSmithsGloves : openBank;
         }
