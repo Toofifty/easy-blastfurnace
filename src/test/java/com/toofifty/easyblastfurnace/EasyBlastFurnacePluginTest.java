@@ -121,10 +121,10 @@ public class EasyBlastFurnacePluginTest {
     public void steelBarMethod()
     {
         metalMethod(
-                ItemID.IRON_ORE, BarsOres.IRON_ORE.getVarbit(),
-                ItemID.STEEL_BAR, BarsOres.STEEL_BAR.getVarbit(),
-                Strings.WITHDRAW_IRON_ORE, Strings.STEEL,
-                CoalPer.IRON.getValue()
+            ItemID.IRON_ORE, BarsOres.IRON_ORE.getVarbit(),
+            ItemID.STEEL_BAR, BarsOres.STEEL_BAR.getVarbit(),
+            Strings.WITHDRAW_IRON_ORE, Strings.STEEL,
+            CoalPer.IRON.getValue()
         );
     }
 
@@ -132,10 +132,10 @@ public class EasyBlastFurnacePluginTest {
     public void mithrilBarMethod()
     {
         metalMethod(
-                ItemID.MITHRIL_ORE, BarsOres.MITHRIL_ORE.getVarbit(),
-                ItemID.MITHRIL_BAR, BarsOres.MITHRIL_BAR.getVarbit(),
-                Strings.WITHDRAW_MITHRIL_ORE, Strings.MITHRIL,
-                CoalPer.MITHRIL.getValue()
+            ItemID.MITHRIL_ORE, BarsOres.MITHRIL_ORE.getVarbit(),
+            ItemID.MITHRIL_BAR, BarsOres.MITHRIL_BAR.getVarbit(),
+            Strings.WITHDRAW_MITHRIL_ORE, Strings.MITHRIL,
+            CoalPer.MITHRIL.getValue()
         );
     }
 
@@ -143,10 +143,10 @@ public class EasyBlastFurnacePluginTest {
     public void adamantiteBarMethod()
     {
         metalMethod(
-                ItemID.ADAMANTITE_ORE, BarsOres.ADAMANTITE_ORE.getVarbit(),
-                ItemID.ADAMANTITE_BAR, BarsOres.ADAMANTITE_BAR.getVarbit(),
-                Strings.WITHDRAW_ADAMANTITE_ORE, Strings.ADAMANTITE,
-                CoalPer.ADAMANTITE.getValue()
+            ItemID.ADAMANTITE_ORE, BarsOres.ADAMANTITE_ORE.getVarbit(),
+            ItemID.ADAMANTITE_BAR, BarsOres.ADAMANTITE_BAR.getVarbit(),
+            Strings.WITHDRAW_ADAMANTITE_ORE, Strings.ADAMANTITE,
+            CoalPer.ADAMANTITE.getValue()
         );
     }
 
@@ -154,10 +154,10 @@ public class EasyBlastFurnacePluginTest {
     public void runiteBarMethod()
     {
         metalMethod(
-                ItemID.RUNITE_ORE, BarsOres.RUNITE_ORE.getVarbit(),
-                ItemID.RUNITE_BAR, BarsOres.RUNITE_BAR.getVarbit(),
-                Strings.WITHDRAW_RUNITE_ORE, Strings.RUNITE,
-                CoalPer.RUNITE.getValue()
+            ItemID.RUNITE_ORE, BarsOres.RUNITE_ORE.getVarbit(),
+            ItemID.RUNITE_BAR, BarsOres.RUNITE_BAR.getVarbit(),
+            Strings.WITHDRAW_RUNITE_ORE, Strings.RUNITE,
+            CoalPer.RUNITE.getValue()
         );
     }
 
