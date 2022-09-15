@@ -294,7 +294,9 @@ public class EasyBlastFurnacePluginTest {
     private void metalMethod(
         int oreID, int oreVarbit, int barID, int barVarbit, String withdrawOreText, String methodName, int coalPer
     ) {
-        setMethod(oreID, methodName, new Item[]{new Item(oreID, 1)});
+        setInventoryItems(new Item[]{new Item(oreID, 1)});
+        setInventoryCount(oreID, 1);
+        assertEquals(methodName, methodHandler.getMethod().getName());
         assertStepTooltip(Strings.WITHDRAW_COAL_BAG);
 
         setInventoryCount(ItemID.OPEN_COAL_BAG, 1);
@@ -339,8 +341,10 @@ public class EasyBlastFurnacePluginTest {
     private void hybridMethod(
         int oreID, int oreVarbit, int barID, int barVarbit, String withdrawOreText, String methodName, int coalPer
     ) {
-        setMethod(oreID, methodName, new Item[]{new Item(oreID, 1), new Item(ItemID.GOLD_ORE, 1)});
+        setInventoryItems(new Item[]{new Item(oreID, 1), new Item(ItemID.GOLD_ORE, 1)});
+        setInventoryCount(oreID, 1);
         setInventoryCount(ItemID.GOLD_ORE, 1);
+        assertEquals(methodName, methodHandler.getMethod().getName());
         assertStepTooltip(Strings.WITHDRAW_COAL_BAG);
 
         setInventoryCount(ItemID.GOLD_ORE, 0);
@@ -423,13 +427,6 @@ public class EasyBlastFurnacePluginTest {
         setWorldPoint(atConveyorBelt);
         setInventoryCount(oreID, 0);
         setFurnaceCount(oreVarbit, 1);
-    }
-
-    private void setMethod(int oreID, String methodName, Item[] items)
-    {
-        setInventoryItems(items);
-        setInventoryCount(oreID, 1);
-        assertEquals(methodName, methodHandler.getMethod().getName());
     }
 
     private void setInventoryCount(int itemID, int count)
