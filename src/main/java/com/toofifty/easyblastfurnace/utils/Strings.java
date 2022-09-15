@@ -1,68 +1,57 @@
 package com.toofifty.easyblastfurnace.utils;
 
-import lombok.Getter;
-
-public enum Strings {
+public class Strings {
     // MethodSteps
-    FILLCOALBAG("Fill coal bag"),
-    REFILLCOALBAG("Refill coal bag"),
-    EMPTYCOALBAG("Empty coal bag"),
-    WITHDRAWCOALBAG("Withdraw coal bag"),
-    WITHDRAWCOAL("Withdraw coal"),
-    WITHDRAWGOLDORE("Withdraw gold ore"),
-    WITHDRAWIRONORE("Withdraw iron ore"),
-    WITHDRAWMITHRILORE("Withdraw mithril ore"),
-    WITHDRAWADAMANTITEORE("Withdraw adamantite ore"),
-    WITHDRAWRUNITEORE("Withdraw runite ore"),
-    WITHDRAWICEORSMITHSGLOVES("Withdraw ice gloves or smiths gloves (i)"),
-    EQUIPICEORSMITHSGLOVES("Equip ice gloves or smiths gloves (i)"),
-    WITHDRAWGOLDSMITHGAUNTLETS("Withdraw goldsmith gauntlets"),
-    EQUIPGOLDSMITHGAUNTLETS("Equip goldsmith gauntlets"),
-    WITHDRAWSMITHINGCAPE("Withdraw Smithing cape"),
-    EQUIPSMITHINGCAPE("Equip Smithing cape"),
-    DEPOSITINVENTORY("Deposit inventory"),
-    PUTONTOCONVEYORBELT("Put ore onto conveyor belt"),
-    OPENBANK("Open bank chest"),
-    COLLECTBARS("Collect bars"),
-    WAITFORBARS("Wait for bars to smelt"),
-    DRINKSTAMINA(null),
+    public static String FILL_COAL_BAG = "Fill coal bag";
+    public static String REFILL_COAL_BAG = "Refill coal bag";
+    public static String EMPTY_COAL_BAG = "Empty coal bag";
+    public static String WITHDRAW_COAL_BAG = "Withdraw coal bag";
+    public static String WITHDRAW_COAL = "Withdraw coal";
+    public static String WITHDRAW_GOLD_ORE = "Withdraw gold ore";
+    public static String WITHDRAW_IRON_ORE = "Withdraw iron ore";
+    public static String WITHDRAW_MITHRIL_ORE = "Withdraw mithril ore";
+    public static String WITHDRAW_ADAMANTITE_ORE = "Withdraw adamantite ore";
+    public static String WITHDRAW_RUNITE_ORE = "Withdraw runite ore";
+    public static String WITHDRAW_ICE_OR_SMITHS_GLOVES = "Withdraw ice gloves or smiths gloves (i)";
+    public static String EQUIP_ICE_OR_SMITHS_GLOVES = "Equip ice gloves or smiths gloves (i)";
+    public static String WITHDRAW_GOLDSMITH_GAUNTLETS = "Withdraw goldsmith gauntlets";
+    public static String EQUIP_GOLDSMITH_GAUNTLETS = "Equip goldsmith gauntlets";
+    public static String WITHDRAW_SMITHING_CAPE = "Withdraw Smithing cape";
+    public static String EQUIP_SMITHING_CAPE = "Equip Smithing cape";
+    public static String DEPOSIT_INVENTORY = "Deposit inventory";
+    public static String PUT_ONTO_CONVEYOR_BELT = "Put ore onto conveyor belt";
+    public static String OPEN_BANK  = "Open bank chest";
+    public static String COLLECT_BARS = "Collect bars";
+    public static String WAIT_FOR_BARS = "Wait for bars to smelt";
+    public static String DRINK_STAMINA = null;
 
     // Bars
-    ADAMANTITEHYBRID("Gold + adamantite bars"),
-    ADAMANTITE("Adamantite bars"),
-    GOLD("Gold bars"),
-    MITHRIL("Mithril bars"),
-    MITHRILHYBRID("Gold + mithril bars"),
-    RUNITE("Runite bars"),
-    RUNITEHYBRID("Gold + runite bars"),
-    STEEL("Steel bars"),
+    public static String ADAMANTITEHYBRID = "Gold + adamantite bars";
+    public static String ADAMANTITE = "Adamantite bars";
+    public static String GOLD = "Gold bars";
+    public static String MITHRIL = "Mithril bars";
+    public static String MITHRILHYBRID = "Gold + mithril bars";
+    public static String RUNITE = "Runite bars";
+    public static String RUNITEHYBRID = "Gold + runite bars";
+    public static String STEEL = "Steel bars";
 
     // Patterns
-    COAL_FULL("^The coal bag is full.$"),
-    COAL_EMPTY("^The coal bag is now empty.$"),
+    public static String COAL_FULL = "^The coal bag is full.$";
+    public static String COAL_EMPTY = "^The coal bag is now empty.$";
 
     // Actions
-    FILL("Fill"),
-    EMPTY("Empty"),
-    DRINK("Drink"),
+    public static String FILL = "Fill";
+    public static String EMPTY = "Empty";
+    public static String DRINK = "Drink";
 
     // Stamina
-    WITHDRAW_STAMINA_POTION1("Withdraw stamina potion"),
-    WITHDRAW_STAMINA_POTION2("Withdraw stamina potion"),
-    WITHDRAW_STAMINA_POTION3("Withdraw stamina potion"),
-    WITHDRAW_STAMINA_POTION4("Withdraw stamina potion"),
-    DRINK_STAMINA_POTION1("Drink stamina potion"),
-    DRINK_STAMINA_POTION2("Drink stamina potion"),
-    DRINK_STAMINA_POTION3("Drink stamina potion"),
-    DRINK_STAMINA_POTION4("Drink stamina potion"),
-    GET_MORE_STAMINA_POTIONS("Get more stamina potions! Check settings to disable this");
-
-
-    @Getter
-    private final String txt;
-
-    Strings(String txt)
-    {
-        this.txt = txt;
-    }
+    public static String WITHDRAW_STAMINA_POTION1 = "Withdraw stamina potion";
+    public static String WITHDRAW_STAMINA_POTION2 = "Withdraw stamina potion";
+    public static String WITHDRAW_STAMINA_POTION3 = "Withdraw stamina potion";
+    public static String WITHDRAW_STAMINA_POTION4 = "Withdraw stamina potion";
+    public static String DRINK_STAMINA_POTION1 = "Drink stamina potion";
+    public static String DRINK_STAMINA_POTION2 = "Drink stamina potion";
+    public static String DRINK_STAMINA_POTION3 = "Drink stamina potion";
+    public static String DRINK_STAMINA_POTION4 = "Drink stamina potion";
+    public static String GET_MORE_STAMINA_POTIONS = "Get more stamina potions! Check settings to disable this";
 }

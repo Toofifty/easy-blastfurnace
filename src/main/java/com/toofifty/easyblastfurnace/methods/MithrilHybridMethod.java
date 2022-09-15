@@ -34,6 +34,6 @@ public class MithrilHybridMethod extends GoldHybridMethod
     @Override
     public String getName()
     {
-        return Strings.MITHRILHYBRID.getTxt();
+        return Strings.MITHRILHYBRID;
     }
 }

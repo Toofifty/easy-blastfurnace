@@ -34,6 +34,6 @@ public class RuniteHybridMethod extends GoldHybridMethod
     @Override
     public String getName()
     {
-        return Strings.RUNITEHYBRID.getTxt();
+        return Strings.RUNITEHYBRID;
     }
 }

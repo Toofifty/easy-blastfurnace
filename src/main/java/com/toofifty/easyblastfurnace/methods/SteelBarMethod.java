@@ -34,6 +34,6 @@ public class SteelBarMethod extends MetalBarMethod
     @Override
     public String getName()
     {
-        return Strings.STEEL.getTxt();
+        return Strings.STEEL;
     }
 }

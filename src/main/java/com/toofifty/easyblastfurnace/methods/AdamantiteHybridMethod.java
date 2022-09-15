@@ -34,6 +34,6 @@ public class AdamantiteHybridMethod extends GoldHybridMethod
     @Override
     public String getName()
     {
-        return Strings.ADAMANTITEHYBRID.getTxt();
+        return Strings.ADAMANTITEHYBRID;
     }
 }

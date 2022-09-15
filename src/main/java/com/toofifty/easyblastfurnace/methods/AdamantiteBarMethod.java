@@ -34,6 +34,6 @@ public class AdamantiteBarMethod extends MetalBarMethod
     @Override
     public String getName()
     {
-        return Strings.ADAMANTITE.getTxt();
+        return Strings.ADAMANTITE;
     }
 }

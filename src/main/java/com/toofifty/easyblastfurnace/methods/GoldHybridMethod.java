@@ -49,6 +49,11 @@ abstract public class GoldHybridMethod extends MetalBarMethod
         // continue doing gold bars until enough coal has been deposited
         // then do one trip of metal bars
 
+        if (state.getInventory().has(ItemID.GOLD_ORE) &&
+            !state.getEquipment().equipped(ItemID.GOLDSMITH_GAUNTLETS, ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET)) {
+            return equipGoldsmithGauntlets;
+        }
+
         if (state.getInventory().has(ItemID.COAL, ItemID.GOLD_ORE, oreItem())) {
             return putOntoConveyorBelt;
         }
