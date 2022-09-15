@@ -31,7 +31,7 @@ public abstract class Method
 
     // objects
     protected final MethodStep depositInventory = new WidgetStep(WidgetInfo.BANK_DEPOSIT_INVENTORY, Strings.DEPOSIT_INVENTORY);
-    protected final MethodStep putOntoConveyorBelt = new ObjectStep(EasyBlastFurnacePlugin.CONVEYOR_BELT, Strings.PUT_ONTO_CONVEYOR_BELT);
+    protected final MethodStep putOntoConveyorBelt = new ObjectStep(EasyBlastFurnacePlugin.CONVEYOR_BELT, Strings.PUT_ORE_ONTO_CONVEYOR_BELT);
     protected final MethodStep openBank = new ObjectStep(EasyBlastFurnacePlugin.BANK_CHEST, Strings.OPEN_BANK);
     protected final MethodStep collectBars = new ObjectStep(EasyBlastFurnacePlugin.BAR_DISPENSER, Strings.COLLECT_BARS);
     protected final MethodStep waitForBars = new TileStep(EasyBlastFurnacePlugin.PICKUP_POSITION, Strings.WAIT_FOR_BARS);

@@ -19,7 +19,7 @@ public class Strings {
     public static String WITHDRAW_SMITHING_CAPE = "Withdraw Smithing cape";
     public static String EQUIP_SMITHING_CAPE = "Equip Smithing cape";
     public static String DEPOSIT_INVENTORY = "Deposit inventory";
-    public static String PUT_ONTO_CONVEYOR_BELT = "Put ore onto conveyor belt";
+    public static String PUT_ORE_ONTO_CONVEYOR_BELT = "Put ore onto conveyor belt";
     public static String OPEN_BANK  = "Open bank chest";
     public static String COLLECT_BARS = "Collect bars";
     public static String WAIT_FOR_BARS = "Wait for bars to smelt";
