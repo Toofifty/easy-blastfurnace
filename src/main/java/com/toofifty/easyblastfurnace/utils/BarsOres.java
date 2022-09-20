@@ -9,10 +9,10 @@ import net.runelite.api.Varbits;
 
 public enum BarsOres
 {
+    COAL(Varbits.BLAST_FURNACE_COAL, ItemID.COAL),
     COPPER_ORE(Varbits.BLAST_FURNACE_COPPER_ORE, ItemID.COPPER_ORE),
     TIN_ORE(Varbits.BLAST_FURNACE_TIN_ORE, ItemID.TIN_ORE),
     IRON_ORE(Varbits.BLAST_FURNACE_IRON_ORE, ItemID.IRON_ORE),
-    COAL(Varbits.BLAST_FURNACE_COAL, ItemID.COAL),
     MITHRIL_ORE(Varbits.BLAST_FURNACE_MITHRIL_ORE, ItemID.MITHRIL_ORE),
     ADAMANTITE_ORE(Varbits.BLAST_FURNACE_ADAMANTITE_ORE, ItemID.ADAMANTITE_ORE),
     RUNITE_ORE(Varbits.BLAST_FURNACE_RUNITE_ORE, ItemID.RUNITE_ORE),
@@ -45,6 +45,7 @@ public enum BarsOres
     private final int varbit;
     @Getter
     private final int itemID;
+
 
     BarsOres(int varbit, int itemID)
     {
