@@ -17,6 +17,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+
 @Singleton
 public class SessionStatistics
 {
