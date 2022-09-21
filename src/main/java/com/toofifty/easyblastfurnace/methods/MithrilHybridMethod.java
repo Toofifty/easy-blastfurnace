@@ -1,6 +1,8 @@
 package com.toofifty.easyblastfurnace.methods;
 
 import com.toofifty.easyblastfurnace.steps.MethodStep;
+import com.toofifty.easyblastfurnace.utils.CoalPer;
+import com.toofifty.easyblastfurnace.utils.Strings;
 import net.runelite.api.ItemID;
 
 public class MithrilHybridMethod extends GoldHybridMethod
@@ -26,12 +28,12 @@ public class MithrilHybridMethod extends GoldHybridMethod
     @Override
     protected int coalPer()
     {
-        return 2;
+        return CoalPer.MITHRIL.getValue();
     }
 
     @Override
     public String getName()
     {
-        return "Gold + mithril bars";
+        return Strings.MITHRILHYBRID;
     }
 }
