@@ -257,6 +257,8 @@ public class EasyBlastFurnacePluginTest {
 
         // setup
         when(easyBlastFurnaceConfig.staminaPotionEnable()).thenReturn(true);
+        when(client.getWeight()).thenReturn(54);
+        when(client.getBoostedSkillLevel(Skill.AGILITY)).thenReturn(35);
         setInventoryItems(new Item[0]);
         setEquipmentCount(ItemID.SMITHING_CAPE, 1);
 
@@ -306,16 +308,16 @@ public class EasyBlastFurnacePluginTest {
     {
         // Check StaminaHelper works for all methods: coal and ore runs. This catches issues with strings changing too.
         when(client.getVarbitValue(BarsOres.COAL.getVarbit())).thenReturn(254);
+        setEquipmentCount(ItemID.RING_OF_ENDURANCE, 1); // todo: && runEnergyPlugin.getRingOfEnduranceCharges() >= 500 once Runelite accepts this PR: https://github.com/runelite/runelite/pull/15621.
         runThroughBarMethods(ItemID.IRON_ORE,ItemID.MITHRIL_ORE,ItemID.ADAMANTITE_ORE,ItemID.RUNITE_ORE);
         assertFalse(state.getFurnace().isCoalRunNext(CoalPer.getValueFromString(methodHandler.getMethod().toString())));
-        assertEquals(11, (int) staminaHelper.getEnergyNeededForNextRun());
+        assertEquals(17, (int) staminaHelper.getEnergyNeededForNextRun());
 
         when(client.getVarbitValue(Varbits.STAMINA_EFFECT)).thenReturn(1);
-        setEquipmentCount(ItemID.RING_OF_ENDURANCE, 1); // todo: && runEnergyPlugin.getRingOfEnduranceCharges() >= 500 once Runelite accepts this PR: https://github.com/runelite/runelite/pull/15621.
         when(client.getVarbitValue(BarsOres.COAL.getVarbit())).thenReturn(0);
         runThroughBarMethods(ItemID.IRON_ORE,ItemID.MITHRIL_ORE,ItemID.ADAMANTITE_ORE,ItemID.RUNITE_ORE);
         assertTrue(state.getFurnace().isCoalRunNext(CoalPer.getValueFromString(methodHandler.getMethod().toString())));
-        assertEquals(6, (int) staminaHelper.getEnergyNeededForNextRun());
+        assertEquals(12, (int) staminaHelper.getEnergyNeededForNextRun());
     }
 
     private void runThroughBarMethods(int ...ores)
