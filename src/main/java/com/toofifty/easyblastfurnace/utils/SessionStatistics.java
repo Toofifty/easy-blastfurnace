@@ -36,7 +36,7 @@ public class SessionStatistics
     private Instant timeStarted;
 
     @Getter
-    private long barsPerHour = 0;
+    private int barsPerHour = 0;
 
     private ItemContainer cachedBank;
 
@@ -181,7 +181,7 @@ public class SessionStatistics
 
         if (!timeSinceStart.isNegative() && hours != 0)
         {
-            barsPerHour = (long) Math.floor(totalBars / hours);
+            barsPerHour = (int) Math.floor(totalBars / hours);
         }
     }
 }
