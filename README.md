@@ -16,7 +16,7 @@ Helps you train at the blast furnace more efficiently
 ## Requirements
 
 - Ice gloves or Smiths Gloves (i)
-- Goldsmith gauntlets or Smithing cape (for gold bar & hybrid methods)
+- Goldsmith gauntlets or Smithing/Max cape (for gold bar & hybrid methods)
 - Coal bag (for metal bar & hybrid methods)
 - Stamina potions easily accessible in bank
 
@@ -40,4 +40,3 @@ Helps you train at the blast furnace more efficiently
     1. You can reset the method at any time by __shift-right clicking__ the method overlay
 2. Deposit the ores.
 3. Withdraw/equip required items as prompted by the plugin.
-4. Clear coal bag/glove placeholders and fill your bank with bank fillers, so you can use the deposit inventory button.

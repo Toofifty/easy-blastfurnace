@@ -7,7 +7,7 @@ public class ObjectStep extends MethodStep
 {
     private final int objectId;
 
-    public ObjectStep(int objectId, String tooltip)
+    public ObjectStep(String tooltip, int objectId)
     {
         super(tooltip);
         this.objectId = objectId;

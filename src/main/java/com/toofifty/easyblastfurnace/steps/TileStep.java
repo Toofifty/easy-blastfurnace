@@ -8,7 +8,7 @@ public class TileStep extends MethodStep
     @Getter
     private final WorldPoint worldPoint;
 
-    public TileStep(WorldPoint worldPoint, String tooltip)
+    public TileStep(String tooltip, WorldPoint worldPoint)
     {
         super(tooltip);
         this.worldPoint = worldPoint;

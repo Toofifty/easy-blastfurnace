@@ -40,9 +40,6 @@ public class EasyBlastFurnacePlugin extends Plugin
     private static final Pattern COAL_EMPTY_MESSAGE = Pattern.compile(Strings.COAL_EMPTY);
 
     @Inject
-    private Client client;
-
-    @Inject
     private OverlayManager overlayManager;
 
     @Inject
@@ -83,6 +80,8 @@ public class EasyBlastFurnacePlugin extends Plugin
 
     @Getter
     private boolean isEnabled = false;
+
+    private int oreOntoConveyorCount = 0;
 
     @Override
     protected void startUp()
@@ -181,16 +180,32 @@ public class EasyBlastFurnacePlugin extends Plugin
     public void onChatMessage(ChatMessage event)
     {
         if (!isEnabled) return;
-        if (event.getType() != ChatMessageType.GAMEMESSAGE) return;
+        if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM) return;
 
-        Matcher emptyMatcher = COAL_EMPTY_MESSAGE.matcher(event.getMessage());
-        Matcher filledMatcher = COAL_FULL_MESSAGE.matcher(event.getMessage());
+        String message = event.getMessage();
+        int maxConveyorCount = state.getCoalBag().getMaxCoal() == 27 ? 2 : 3;
+        Matcher emptyMatcher = COAL_EMPTY_MESSAGE.matcher(message);
+        Matcher filledMatcher = COAL_FULL_MESSAGE.matcher(message);
 
         if (emptyMatcher.matches()) {
             state.getCoalBag().empty();
 
         } else if (filledMatcher.matches()) {
             state.getCoalBag().fill();
+        }
+
+        if (message.equals("All your ore goes onto the conveyor belt.")) {
+            if (state.getInventory().has(ItemID.COAL)) {
+                oreOntoConveyorCount++;
+            } else {
+                oreOntoConveyorCount = 1;
+            }
+        }
+
+        // After emptying coal bag onto conveyor, ensure coal amount is 0.
+        if (maxConveyorCount == oreOntoConveyorCount) {
+            oreOntoConveyorCount = 0;
+            if (state.getCoalBag().getCoal() > 1) state.getCoalBag().setCoal(0);
         }
 
         // handle coal bag changes
