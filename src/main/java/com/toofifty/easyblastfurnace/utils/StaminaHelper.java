@@ -4,6 +4,7 @@ import com.toofifty.easyblastfurnace.methods.Method;
 import com.toofifty.easyblastfurnace.state.BlastFurnaceState;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.util.RSTimeUnit;
 
 import javax.inject.Inject;
@@ -14,13 +15,16 @@ import java.time.Instant;
 public class StaminaHelper {
 
     @Inject
-    BlastFurnaceState state;
+    private BlastFurnaceState state;
 
     @Inject
-    Client client;
+    private Client client;
 
     @Inject
-    MethodHandler methodHandler;
+    private MethodHandler methodHandler;
+
+    @Inject
+    private ConfigManager configManager;
 
     private Instant staminaEndTime;
 
@@ -148,9 +152,7 @@ public class StaminaHelper {
 
     private boolean isWearingSufficientlyChargedRingOfEndurance()
     {
-        // todo once Runelite accepts this PR: https://github.com/runelite/runelite/pull/15621 -
-        // Integer charges = configManager.getRSProfileConfiguration(RunEnergyConfig.GROUP_NAME, "ringOfEnduranceCharges", Integer.class)
-        // return (charges != null && charges >= 500 && state.getEquipment().equipped(ItemID.RING_OF_ENDURANCE));
-        return state.getEquipment().equipped(ItemID.RING_OF_ENDURANCE);
+        Integer charges = configManager.getRSProfileConfiguration("runenergy", "ringOfEnduranceCharges", Integer.class);
+        return (charges != null && charges >= 500 && state.getEquipment().equipped(ItemID.RING_OF_ENDURANCE));
     }
 }

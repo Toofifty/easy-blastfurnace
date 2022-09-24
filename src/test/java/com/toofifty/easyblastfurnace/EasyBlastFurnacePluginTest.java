@@ -308,7 +308,8 @@ public class EasyBlastFurnacePluginTest {
     {
         // Check StaminaHelper works for all methods: coal and ore runs. This catches issues with strings changing too.
         when(client.getVarbitValue(BarsOres.COAL.getVarbit())).thenReturn(254);
-        setEquipmentCount(ItemID.RING_OF_ENDURANCE, 1); // todo: && runEnergyPlugin.getRingOfEnduranceCharges() >= 500 once Runelite accepts this PR: https://github.com/runelite/runelite/pull/15621.
+        when(configManager.getRSProfileConfiguration("runenergy", "ringOfEnduranceCharges", Integer.class)).thenReturn(500);
+        setEquipmentCount(ItemID.RING_OF_ENDURANCE, 1);
         runThroughBarMethods(ItemID.IRON_ORE,ItemID.MITHRIL_ORE,ItemID.ADAMANTITE_ORE,ItemID.RUNITE_ORE);
         assertFalse(state.getFurnace().isCoalRunNext(CoalPer.getValueFromString(methodHandler.getMethod().toString())));
         assertEquals(17, (int) staminaHelper.getEnergyNeededForNextRun());
