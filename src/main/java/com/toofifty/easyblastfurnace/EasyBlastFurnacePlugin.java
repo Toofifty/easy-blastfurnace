@@ -40,6 +40,9 @@ public class EasyBlastFurnacePlugin extends Plugin
     private static final Pattern COAL_EMPTY_MESSAGE = Pattern.compile(Strings.COAL_EMPTY);
 
     @Inject
+    private Client client;
+
+    @Inject
     private OverlayManager overlayManager;
 
     @Inject
@@ -188,9 +191,11 @@ public class EasyBlastFurnacePlugin extends Plugin
         Matcher filledMatcher = COAL_FULL_MESSAGE.matcher(message);
 
         if (emptyMatcher.matches()) {
+            oreOntoConveyorCount = 0;
             state.getCoalBag().empty();
 
         } else if (filledMatcher.matches()) {
+            oreOntoConveyorCount = 0;
             state.getCoalBag().fill();
         }
 
