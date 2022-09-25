@@ -4,7 +4,6 @@ import com.toofifty.easyblastfurnace.state.BlastFurnaceState;
 import com.toofifty.easyblastfurnace.steps.ItemStep;
 import com.toofifty.easyblastfurnace.steps.MethodStep;
 import com.toofifty.easyblastfurnace.utils.Strings;
-import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 
 public class DrinkStaminaMethod extends Method
