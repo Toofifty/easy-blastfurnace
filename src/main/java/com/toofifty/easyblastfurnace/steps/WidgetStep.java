@@ -8,7 +8,7 @@ public class WidgetStep extends MethodStep
     @Getter
     private final WidgetInfo widgetInfo;
 
-    public WidgetStep(WidgetInfo widgetInfo, String tooltip)
+    public WidgetStep(String tooltip, WidgetInfo widgetInfo)
     {
         super(tooltip);
         this.widgetInfo = widgetInfo;

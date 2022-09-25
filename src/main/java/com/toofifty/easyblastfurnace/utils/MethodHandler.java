@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.toofifty.easyblastfurnace.EasyBlastFurnaceConfig;
 import com.toofifty.easyblastfurnace.methods.*;
+import com.toofifty.easyblastfurnace.overlays.ItemStepOverlay;
 import com.toofifty.easyblastfurnace.state.BlastFurnaceState;
 import com.toofifty.easyblastfurnace.steps.MethodStep;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import net.runelite.api.ItemID;
 public class MethodHandler
 {
     @Inject
-    private EasyBlastFurnaceConfig config;
+    private EasyBlastFurnaceConfig easyBlastFurnaceConfig;
 
     @Inject
     private BlastFurnaceState state;
@@ -30,9 +31,12 @@ public class MethodHandler
     {
         if (method == null) return;
         if (!state.getPlayer().isOnBlastFurnaceWorld()) return;
+        ItemStepOverlay.currentWidgetItem = null;
 
         step = drinkStaminaMethod.next(state);
         if (step == null) step = method.next(state);
+
+        ItemStepOverlay.itemInBank = step.getTooltip().contains("Withdraw");
     }
 
     public void clear()

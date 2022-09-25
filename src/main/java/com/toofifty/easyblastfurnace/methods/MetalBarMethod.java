@@ -64,7 +64,7 @@ abstract public class MetalBarMethod extends Method
 
         if (state.getBank().isOpen()) {
             if (state.getInventory().has(barItem(), oreItem())) {
-                return depositInventory;
+                return depositBarsAndOres;
             }
 
             if (state.getCoalBag().isEmpty()) {

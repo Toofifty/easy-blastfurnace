@@ -5,18 +5,11 @@ import lombok.Getter;
 @Getter
 public class ItemStep extends MethodStep
 {
-    private final int itemId;
-    private final int alternateItemId;
+    private final int[] itemIds;
 
-    public ItemStep(int itemId, String tooltip)
-    {
-        this(itemId, -1, tooltip);
-    }
-
-    public ItemStep(int itemId, int alternateItemId, String tooltip)
+    public ItemStep(String tooltip, int ...itemIds)
     {
         super(tooltip);
-        this.itemId = itemId;
-        this.alternateItemId = alternateItemId;
+        this.itemIds = itemIds;
     }
 }

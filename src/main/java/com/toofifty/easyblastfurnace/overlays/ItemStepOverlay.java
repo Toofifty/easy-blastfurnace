@@ -8,6 +8,9 @@ import com.toofifty.easyblastfurnace.config.ItemOverlaySetting;
 import com.toofifty.easyblastfurnace.steps.ItemStep;
 import com.toofifty.easyblastfurnace.steps.MethodStep;
 import com.toofifty.easyblastfurnace.utils.MethodHandler;
+import net.runelite.api.Client;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
@@ -16,10 +19,14 @@ import net.runelite.client.ui.overlay.components.TextComponent;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 
 @Singleton
 public class ItemStepOverlay extends WidgetItemOverlay
 {
+    @Inject
+    Client client;
+
     @Inject
     private ItemManager itemManager;
 
@@ -28,6 +35,9 @@ public class ItemStepOverlay extends WidgetItemOverlay
 
     @Inject
     private MethodHandler methodHandler;
+
+    public static boolean itemInBank = true;
+    public static WidgetItem currentWidgetItem;
 
     ItemStepOverlay()
     {
@@ -44,8 +54,24 @@ public class ItemStepOverlay extends WidgetItemOverlay
 
         if (step == null) return;
         if (!(step instanceof ItemStep)) return;
-        if (((ItemStep) step).getItemId() != itemId &&
-            ((ItemStep) step).getAlternateItemId() != itemId) return;
+
+        if (currentWidgetItem != null) {
+            widgetItem = currentWidgetItem;
+            itemId = widgetItem.getWidget().getItemId();
+        } else {
+            int finalItemId = itemId;
+            if (Arrays.stream(((ItemStep) step).getItemIds()).noneMatch(id -> id == finalItemId)) return;
+        }
+
+        Widget parent = widgetItem.getWidget().getParent();
+
+        while (parent.getParent() != null) {
+            if (parent == client.getWidget(WidgetInfo.BANK_CONTAINER) && !itemInBank) return;
+            if (parent == client.getWidget(WidgetInfo.INVENTORY) && itemInBank) return;
+            parent = parent.getParent();
+        }
+
+        currentWidgetItem = widgetItem;
 
         Color color = config.itemOverlayColor();
 
@@ -59,8 +85,6 @@ public class ItemStepOverlay extends WidgetItemOverlay
         } else {
             graphics.setColor(color);
             graphics.draw(bounds);
-            graphics.setColor(new Color(color.getRed(), color.getBlue(), color.getGreen(), 20));
-            graphics.fill(bounds);
         }
 
         if (config.itemOverlayTextMode() == HighlightOverlayTextSetting.NONE) return;

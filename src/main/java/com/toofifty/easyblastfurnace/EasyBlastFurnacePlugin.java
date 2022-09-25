@@ -40,9 +40,6 @@ public class EasyBlastFurnacePlugin extends Plugin
     private static final Pattern COAL_EMPTY_MESSAGE = Pattern.compile(Strings.COAL_EMPTY);
 
     @Inject
-    private Client client;
-
-    @Inject
     private OverlayManager overlayManager;
 
     @Inject
@@ -208,7 +205,7 @@ public class EasyBlastFurnacePlugin extends Plugin
         // After emptying coal bag onto conveyor, ensure coal amount is 0.
         if (maxConveyorCount == oreOntoConveyorCount) {
             oreOntoConveyorCount = 0;
-            if (state.getCoalBag().getCoal() != 0) state.getCoalBag().setCoal(0);
+            if (state.getCoalBag().getCoal() > 1) state.getCoalBag().setCoal(0);
         }
 
         // handle coal bag changes
