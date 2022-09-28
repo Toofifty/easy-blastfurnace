@@ -7,12 +7,11 @@ import net.runelite.api.ItemID;
 
 public class GoldBarMethod extends Method
 {
-    private MethodStep checkPrerequisite(BlastFurnaceState state, boolean hasGoldsmithEffect)
+    private MethodStep checkPrerequisite(BlastFurnaceState state)
     {
         // ensure player has both ice gloves & goldsmith gauntlets either in inventory or equipped
 
-        if (!state.getInventory().has(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I) &&
-            !state.getEquipment().equipped(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I)) {
+        if (!state.getInventory().has(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I) && !state.getEquipment().hasIceGlovesEffect()) {
             return state.getBank().isOpen() ? withdrawIceOrSmithsGloves : openBank;
         }
 
@@ -38,7 +37,7 @@ public class GoldBarMethod extends Method
             return equipSmithingCape;
         }
 
-        if (!state.getInventory().has(ItemID.GOLDSMITH_GAUNTLETS) && !hasGoldsmithEffect) {
+        if (!state.getInventory().has(ItemID.GOLDSMITH_GAUNTLETS) && !state.getEquipment().hasGoldsmithEffect()) {
             return state.getBank().isOpen() ? withdrawGoldsmithGauntlets : openBank;
         }
 
@@ -46,15 +45,14 @@ public class GoldBarMethod extends Method
     }
 
     @Override
-    public MethodStep next(BlastFurnaceState state)
+    public MethodStep next(BlastFurnaceState state, boolean useDepositInventory)
     {
-        boolean hasGoldsmithEffect = state.getEquipment().hasGoldsmithEffect();
-        MethodStep prerequisite = checkPrerequisite(state, hasGoldsmithEffect);
+        MethodStep prerequisite = checkPrerequisite(state);
         if (prerequisite != null) return prerequisite;
 
         if (state.getInventory().has(ItemID.GOLD_ORE)) {
 
-            if (!hasGoldsmithEffect) {
+            if (!state.getEquipment().hasGoldsmithEffect()) {
                 return equipGoldsmithGauntlets;
             }
 
@@ -62,7 +60,7 @@ public class GoldBarMethod extends Method
         }
 
         if (state.getPlayer().hasLoadedOres()) {
-            if (!state.getEquipment().equipped(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I)) {
+            if (!state.getEquipment().hasIceGlovesEffect()) {
                 return equipIceOrSmithsGloves;
             }
             return waitForBars;
@@ -74,10 +72,10 @@ public class GoldBarMethod extends Method
 
         if (state.getBank().isOpen()) {
             if (state.getInventory().has(ItemID.GOLD_BAR)) {
-                return depositBarsAndOres;
+                return useDepositInventory ? depositInventory : depositBarsAndOres;
             }
 
-            if (!hasGoldsmithEffect) {
+            if (!state.getEquipment().hasGoldsmithEffect()) {
                 return equipGoldsmithGauntlets;
             }
 

@@ -40,3 +40,5 @@ Helps you train at the blast furnace more efficiently
     1. You can reset the method at any time by __shift-right clicking__ the method overlay
 2. Deposit the ores.
 3. Withdraw/equip required items as prompted by the plugin.
+4. Clear coal bag/glove placeholders and fill your bank with bank fillers, so you can use the deposit inventory button.
+   5. Optional - Don't fill your bank with fillers and instead disable the `Use deposit inventory` option to highlight individual items in your inventory

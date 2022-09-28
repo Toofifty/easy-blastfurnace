@@ -39,4 +39,9 @@ public class EquipmentState
     {
         return equipped(ItemID.GOLDSMITH_GAUNTLETS, ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET, ItemID.MAX_CAPE);
     }
+
+    public boolean hasIceGlovesEffect()
+    {
+        return equipped(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I);
+    }
 }

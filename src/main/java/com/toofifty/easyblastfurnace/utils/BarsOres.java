@@ -29,7 +29,6 @@ public enum BarsOres
     @Getter
     private final int itemID;
 
-
     BarsOres(int varbit, int itemID)
     {
         this.varbit = varbit;

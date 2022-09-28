@@ -64,6 +64,9 @@ public class EasyBlastFurnacePlugin extends Plugin
     private ItemStepOverlay itemStepOverlay;
 
     @Inject
+    private BankItemStepOverlay bankItemStepOverlay;
+
+    @Inject
     private WidgetStepOverlay widgetStepOverlay;
 
     @Inject
@@ -84,8 +87,6 @@ public class EasyBlastFurnacePlugin extends Plugin
     @Getter
     private boolean isEnabled = false;
 
-    private int oreOntoConveyorCount = 0;
-
     @Override
     protected void startUp()
     {
@@ -93,6 +94,7 @@ public class EasyBlastFurnacePlugin extends Plugin
         overlayManager.add(statisticsOverlay);
         overlayManager.add(coalBagOverlay);
         overlayManager.add(itemStepOverlay);
+        overlayManager.add(bankItemStepOverlay);
         overlayManager.add(widgetStepOverlay);
         overlayManager.add(objectStepOverlay);
         overlayManager.add(tileStepOverlay);
@@ -108,6 +110,7 @@ public class EasyBlastFurnacePlugin extends Plugin
         overlayManager.remove(statisticsOverlay);
         overlayManager.remove(coalBagOverlay);
         overlayManager.remove(itemStepOverlay);
+        overlayManager.remove(bankItemStepOverlay);
         overlayManager.remove(widgetStepOverlay);
         overlayManager.remove(objectStepOverlay);
         overlayManager.remove(tileStepOverlay);
@@ -191,25 +194,23 @@ public class EasyBlastFurnacePlugin extends Plugin
         Matcher filledMatcher = COAL_FULL_MESSAGE.matcher(message);
 
         if (emptyMatcher.matches()) {
-            oreOntoConveyorCount = 0;
             state.getCoalBag().empty();
 
         } else if (filledMatcher.matches()) {
-            oreOntoConveyorCount = 0;
             state.getCoalBag().fill();
         }
 
         if (message.equals("All your ore goes onto the conveyor belt.")) {
             if (state.getInventory().has(ItemID.COAL)) {
-                oreOntoConveyorCount++;
+                state.getCoalBag().oreOntoConveyor();
             } else {
-                oreOntoConveyorCount = 1;
+                state.getCoalBag().oreOntoConveyor(1);
             }
         }
 
         // After emptying coal bag onto conveyor, ensure coal amount is 0.
-        if (maxConveyorCount == oreOntoConveyorCount) {
-            oreOntoConveyorCount = 0;
+        if (maxConveyorCount == state.getCoalBag().getOreOntoConveyorCount()) {
+            state.getCoalBag().oreOntoConveyor(0);
             if (state.getCoalBag().getCoal() > 1) state.getCoalBag().setCoal(0);
         }
 

@@ -21,18 +21,18 @@ public class DrinkStaminaMethod extends Method
     private final MethodStep getMoreStaminaPotions = new ItemStep(Strings.GET_MORE_STAMINA_POTIONS, ItemID.COAL_BAG_12019);
 
     @Override
-    public MethodStep next(BlastFurnaceState state)
+    public MethodStep next(BlastFurnaceState state, boolean useDepositInventory)
     {
         if (!state.getPlayer().needsStamina() &&
             (state.getInventory().has(ItemID.VIAL, ItemID.STAMINA_POTION1, ItemID.STAMINA_POTION2, ItemID.STAMINA_POTION3, ItemID.STAMINA_POTION4))) {
-            return depositPotions;
+            return useDepositInventory ? depositInventory : depositPotions;
         }
 
         if (!state.getBank().isOpen() || !state.getPlayer().needsStamina()) return null;
 
         if (!state.getInventory().has(ItemID.STAMINA_POTION1, ItemID.STAMINA_POTION2, ItemID.STAMINA_POTION3, ItemID.STAMINA_POTION4) &&
             !state.getInventory().hasFreeSlots()) {
-            return depositBarsAndOres;
+            return useDepositInventory ? depositInventory : depositBarsAndOres;
         }
 
         if (state.getInventory().has(ItemID.STAMINA_POTION1)) {
