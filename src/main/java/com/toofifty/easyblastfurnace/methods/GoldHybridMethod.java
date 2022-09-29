@@ -6,14 +6,13 @@ import net.runelite.api.ItemID;
 
 abstract public class GoldHybridMethod extends MetalBarMethod
 {
-    private MethodStep checkPrerequisite(BlastFurnaceState state, boolean hasGoldsmithEffect)
+    private MethodStep checkPrerequisite(BlastFurnaceState state)
     {
         if (!state.getInventory().has(ItemID.COAL_BAG_12019, ItemID.OPEN_COAL_BAG)) {
             return state.getBank().isOpen() ? withdrawCoalBag : openBank;
         }
 
-        if (!state.getInventory().has(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I) &&
-            !state.getEquipment().equipped(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I)) {
+        if (!state.getInventory().has(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I) && !state.getEquipment().hasIceGlovesEffect()) {
             return state.getBank().isOpen() ? withdrawIceOrSmithsGloves : openBank;
         }
 
@@ -39,11 +38,11 @@ abstract public class GoldHybridMethod extends MetalBarMethod
             return equipSmithingCape;
         }
 
-        if (!state.getInventory().has(ItemID.GOLDSMITH_GAUNTLETS) && !hasGoldsmithEffect) {
+        if (!state.getInventory().has(ItemID.GOLDSMITH_GAUNTLETS) && !state.getEquipment().hasGoldsmithEffect()) {
             return state.getBank().isOpen() ? withdrawGoldsmithGauntlets : openBank;
         }
 
-        if (!state.getEquipment().equipped(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I) && !hasGoldsmithEffect) {
+        if (!state.getEquipment().hasIceGlovesEffect() && !state.getEquipment().hasGoldsmithEffect()) {
             return equipGoldsmithGauntlets;
         }
 
@@ -51,10 +50,9 @@ abstract public class GoldHybridMethod extends MetalBarMethod
     }
 
     @Override
-    public MethodStep next(BlastFurnaceState state)
+    public MethodStep next(BlastFurnaceState state, boolean useDepositInventory)
     {
-        boolean hasGoldsmithEffect = state.getEquipment().hasGoldsmithEffect();
-        MethodStep prerequisite = checkPrerequisite(state, hasGoldsmithEffect);
+        MethodStep prerequisite = checkPrerequisite(state);
         if (prerequisite != null) return prerequisite;
         int maxCoalInventory = state.getEquipment().equipped(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET) ? 27 : 26;
         boolean coalRun = state.getFurnace().getQuantity(ItemID.COAL) < maxCoalInventory * (coalPer() - state.getFurnace().getCoalOffset());
@@ -62,7 +60,7 @@ abstract public class GoldHybridMethod extends MetalBarMethod
         // continue doing gold bars until enough coal has been deposited
         // then do one trip of metal bars
 
-        if (state.getInventory().has(ItemID.GOLD_ORE) && !hasGoldsmithEffect) {
+        if (state.getInventory().has(ItemID.GOLD_ORE) && !state.getEquipment().hasGoldsmithEffect()) {
             return equipGoldsmithGauntlets;
         }
 
@@ -76,7 +74,7 @@ abstract public class GoldHybridMethod extends MetalBarMethod
         }
 
         if (state.getPlayer().hasLoadedOres()) {
-            if (!state.getEquipment().equipped(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I)) {
+            if (!state.getEquipment().hasIceGlovesEffect()) {
                 return equipIceOrSmithsGloves;
             }
             return waitForBars;
@@ -89,10 +87,10 @@ abstract public class GoldHybridMethod extends MetalBarMethod
         if (state.getBank().isOpen()) {
 
             if (state.getInventory().has(ItemID.GOLD_BAR, barItem(), oreItem())) {
-                return depositBarsAndOres;
+                return useDepositInventory ? depositInventory : depositBarsAndOres;
             }
 
-            if (coalRun && !hasGoldsmithEffect) {
+            if (coalRun && !state.getEquipment().hasGoldsmithEffect()) {
                 return equipGoldsmithGauntlets;
             }
 

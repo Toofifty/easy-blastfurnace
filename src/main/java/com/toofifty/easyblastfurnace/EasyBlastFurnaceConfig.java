@@ -78,6 +78,18 @@ public interface EasyBlastFurnaceConfig extends Config
 
     @ConfigItem(
         position = 5,
+        keyName = "useDepositInventory",
+        name = "Use deposit inventory",
+        description = "Use the deposit inventory button. When disabled, individual items in your inventory will be highlighted instead of the deposit inventory button",
+        section = guidanceOverlays
+    )
+    default boolean useDepositInventory()
+    {
+        return true;
+    }
+
+    @ConfigItem(
+        position = 6,
         keyName = "objectOverlayTextMode",
         name = "Object overlay tooltip",
         description = "Select where to display tooltip text for game objects",
@@ -89,7 +101,7 @@ public interface EasyBlastFurnaceConfig extends Config
     }
 
     @ConfigItem(
-        position = 6,
+        position = 7,
         keyName = "objectOverlayColor",
         name = "Object overlay color",
         description = "Change the color of the object overlay",

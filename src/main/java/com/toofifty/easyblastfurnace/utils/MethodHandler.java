@@ -33,10 +33,8 @@ public class MethodHandler
         if (!state.getPlayer().isOnBlastFurnaceWorld()) return;
         ItemStepOverlay.currentWidgetItem = null;
 
-        step = drinkStaminaMethod.next(state);
-        if (step == null) step = method.next(state);
-
-        ItemStepOverlay.itemInBank = step.getTooltip().contains("Withdraw");
+        step = drinkStaminaMethod.next(state, easyBlastFurnaceConfig.useDepositInventory());
+        if (step == null) step = method.next(state, easyBlastFurnaceConfig.useDepositInventory());
     }
 
     public void clear()
