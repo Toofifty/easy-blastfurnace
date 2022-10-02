@@ -1,6 +1,7 @@
 package com.toofifty.easyblastfurnace.methods;
 
 import com.toofifty.easyblastfurnace.state.BlastFurnaceState;
+import com.toofifty.easyblastfurnace.steps.BankItemStep;
 import com.toofifty.easyblastfurnace.steps.ItemStep;
 import com.toofifty.easyblastfurnace.steps.MethodStep;
 import com.toofifty.easyblastfurnace.utils.Strings;
@@ -8,10 +9,10 @@ import net.runelite.api.ItemID;
 
 public class DrinkStaminaMethod extends Method
 {
-    private final MethodStep withdrawStaminaPotion1 = new ItemStep(Strings.WITHDRAW_STAMINA_POTION1, ItemID.STAMINA_POTION1);
-    private final MethodStep withdrawStaminaPotion2 = new ItemStep(Strings.WITHDRAW_STAMINA_POTION2, ItemID.STAMINA_POTION2);
-    private final MethodStep withdrawStaminaPotion3 = new ItemStep(Strings.WITHDRAW_STAMINA_POTION3, ItemID.STAMINA_POTION3);
-    private final MethodStep withdrawStaminaPotion4 = new ItemStep(Strings.WITHDRAW_STAMINA_POTION4, ItemID.STAMINA_POTION4);
+    private final MethodStep withdrawStaminaPotion1 = new BankItemStep(Strings.WITHDRAW_STAMINA_POTION1, ItemID.STAMINA_POTION1);
+    private final MethodStep withdrawStaminaPotion2 = new BankItemStep(Strings.WITHDRAW_STAMINA_POTION2, ItemID.STAMINA_POTION2);
+    private final MethodStep withdrawStaminaPotion3 = new BankItemStep(Strings.WITHDRAW_STAMINA_POTION3, ItemID.STAMINA_POTION3);
+    private final MethodStep withdrawStaminaPotion4 = new BankItemStep(Strings.WITHDRAW_STAMINA_POTION4, ItemID.STAMINA_POTION4);
 
     private final MethodStep drinkStaminaPotion1 = new ItemStep(Strings.DRINK_STAMINA_POTION1, ItemID.STAMINA_POTION1);
     private final MethodStep drinkStaminaPotion2 = new ItemStep(Strings.DRINK_STAMINA_POTION2, ItemID.STAMINA_POTION2);

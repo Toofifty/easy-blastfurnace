@@ -79,13 +79,13 @@ public interface EasyBlastFurnaceConfig extends Config
     @ConfigItem(
         position = 5,
         keyName = "useDepositInventory",
-        name = "Use deposit inventory",
-        description = "Use the deposit inventory button. When disabled, individual items in your inventory will be highlighted instead of the deposit inventory button",
+        name = "Use deposit inventory button",
+        description = "When enabled, the deposit inventory button will be highlighted instead of individual items in your inventory during bank deposits.",
         section = guidanceOverlays
     )
     default boolean useDepositInventory()
     {
-        return true;
+        return false;
     }
 
     @ConfigItem(

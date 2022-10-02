@@ -114,7 +114,6 @@ public class EasyBlastFurnacePluginTest {
         when(client.getLocalPlayer()).thenReturn(localPlayer);
         when(localPlayer.getWorldLocation()).thenReturn(new WorldPoint(1949, 4967, 0));
         when(easyBlastFurnaceConfig.addCoalBuffer()).thenReturn(true);
-        when(easyBlastFurnaceConfig.useDepositInventory()).thenReturn(false);
 
         assertTrue(easyBlastFurnacePlugin.isEnabled());
     }
