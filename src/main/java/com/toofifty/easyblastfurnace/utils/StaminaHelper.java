@@ -71,7 +71,7 @@ public class StaminaHelper {
 
     private double getLossRate(int weight)
     {
-        return ((Math.min(Math.max(weight, 0), 64) / 100.0) + 0.64) * lossRateMultiplier;
+        return ((Math.min(Math.max(weight, 0), 64)) * 67 / 64 + 67) / 100 * lossRateMultiplier;
     }
 
     private double getMinimumEnergyRecovered(int ticksSpentIdle)
@@ -136,7 +136,7 @@ public class StaminaHelper {
         lossRateMultiplier = staminaDuration.isZero() ? baseDrain : 0.3; // Stamina effect reduces energy depletion to 30%
         int timeForNextRun = 10800 + ticksSpentIdle * 600;
 
-        // This is so we can get an accurate stamina timer value for the last 13800ms (staminaDuration changes in steps of 6000ms)
+        // This is so we can get an accurate stamina timer value for the last seconds of potion (staminaDuration changes in steps of 6000ms)
         if (staminaEndTime == null && !staminaDuration.isZero() && staminaDuration.toMillis() <= 18000) {
             staminaEndTime = Instant.now().plus(staminaDuration);
         } else if (staminaDuration.isZero() || staminaDuration.toMillis() > 18000) {
