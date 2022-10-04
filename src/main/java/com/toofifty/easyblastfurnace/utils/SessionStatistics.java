@@ -18,6 +18,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+
 @Slf4j
 @Singleton
 public class SessionStatistics
@@ -37,7 +38,7 @@ public class SessionStatistics
     private Instant timeStarted;
 
     @Getter
-    private long barsPerHour = 0;
+    private int barsPerHour = 0;
 
     private ItemContainer cachedBank;
 
@@ -52,7 +53,6 @@ public class SessionStatistics
 
     public void drinkStamina()
     {
-        log.info("Energy before stamina dose: " + client.getEnergy());
         if (state.getEquipment().equipped(ItemID.RING_OF_ENDURANCE)) {
             staminaDoses = staminaDoses + 2;
         } else {
@@ -187,7 +187,7 @@ public class SessionStatistics
 
         if (!timeSinceStart.isNegative() && hours != 0)
         {
-            barsPerHour = (long) Math.floor(totalBars / hours);
+            barsPerHour = (int) Math.floor(totalBars / hours);
         }
     }
 }
