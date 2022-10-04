@@ -39,7 +39,7 @@ abstract public class MetalBarMethod extends Method
     }
 
     @Override
-    public MethodStep next(BlastFurnaceState state, boolean useDepositInventory)
+    public MethodStep next(BlastFurnaceState state)
     {
         MethodStep prerequisite = checkPrerequisite(state);
         if (prerequisite != null) return prerequisite;
@@ -64,7 +64,7 @@ abstract public class MetalBarMethod extends Method
 
         if (state.getBank().isOpen()) {
             if (state.getInventory().has(barItem(), oreItem())) {
-                return useDepositInventory ? depositInventory : depositBarsAndOres;
+                return state.getConfig().useDepositInventory() ? depositInventory : depositBarsAndOres;
             }
 
             if (state.getCoalBag().isEmpty()) {
