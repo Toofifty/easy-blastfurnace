@@ -1,5 +1,6 @@
 package com.toofifty.easyblastfurnace.state;
 
+import com.toofifty.easyblastfurnace.EasyBlastFurnaceConfig;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 
@@ -28,6 +29,9 @@ public class BlastFurnaceState
     @Inject
     private BankState bank;
 
+    @Inject
+    private EasyBlastFurnaceConfig config;
+
     public void update()
     {
         if (player.isAtConveyorBelt() &&
@@ -43,7 +47,7 @@ public class BlastFurnaceState
             player.hasLoadedOres(false);
         }
 
-        if (equipment.equipped(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET)) {
+        if (equipment.equipped(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET, ItemID.MAX_CAPE)) {
             coalBag.setMaxCoal(36);
         } else {
             coalBag.setMaxCoal(27);

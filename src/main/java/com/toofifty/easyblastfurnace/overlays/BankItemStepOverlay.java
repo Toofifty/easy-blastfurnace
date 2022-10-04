@@ -5,7 +5,7 @@ import com.google.inject.Singleton;
 import com.toofifty.easyblastfurnace.EasyBlastFurnaceConfig;
 import com.toofifty.easyblastfurnace.config.HighlightOverlayTextSetting;
 import com.toofifty.easyblastfurnace.config.ItemOverlaySetting;
-import com.toofifty.easyblastfurnace.steps.ItemStep;
+import com.toofifty.easyblastfurnace.steps.BankItemStep;
 import com.toofifty.easyblastfurnace.steps.MethodStep;
 import com.toofifty.easyblastfurnace.utils.MethodHandler;
 import net.runelite.api.Client;
@@ -20,7 +20,7 @@ import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
 @Singleton
-public class ItemStepOverlay extends WidgetItemOverlay
+public class BankItemStepOverlay extends WidgetItemOverlay
 {
     @Inject
     Client client;
@@ -34,12 +34,9 @@ public class ItemStepOverlay extends WidgetItemOverlay
     @Inject
     private MethodHandler methodHandler;
 
-    public static boolean itemInBank = true;
-    public static WidgetItem currentWidgetItem;
-
-    ItemStepOverlay()
+    BankItemStepOverlay()
     {
-        showOnInventory();
+        showOnBank();
     }
 
     @Override
@@ -48,20 +45,10 @@ public class ItemStepOverlay extends WidgetItemOverlay
         if (config.itemOverlayMode() == ItemOverlaySetting.NONE) return;
 
         MethodStep step = methodHandler.getStep();
-        int finalItemId = itemId;
 
         if (step == null) return;
-        if (!(step instanceof ItemStep)) return;
-
-        // This ensures we only highlight one item, i.e. the first ore in an inventory full of ores.
-        if (currentWidgetItem != null) {
-            widgetItem = currentWidgetItem;
-            itemId = widgetItem.getWidget().getItemId();
-        } else if (Arrays.stream(((ItemStep) step).getItemIds()).noneMatch(id -> id == finalItemId)) {
-             return;
-        }
-
-        currentWidgetItem = widgetItem;
+        if (!(step instanceof BankItemStep)) return;
+        if (Arrays.stream(((BankItemStep) step).getItemIds()).noneMatch(id -> id == itemId)) return;
 
         Color color = config.itemOverlayColor();
 

@@ -1,8 +1,5 @@
 package com.toofifty.easyblastfurnace.utils;
 
-
-import com.google.common.collect.ImmutableMap;
-import java.util.Map;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;
@@ -27,25 +24,10 @@ public enum BarsOres
     SILVER_BAR(Varbits.BLAST_FURNACE_SILVER_BAR, ItemID.SILVER_BAR),
     GOLD_BAR(Varbits.BLAST_FURNACE_GOLD_BAR, ItemID.GOLD_BAR);
 
-    private static final Map<Integer, BarsOres> VARBIT;
-
-    static
-    {
-        ImmutableMap.Builder<Integer, BarsOres> builder = new ImmutableMap.Builder<>();
-
-        for (BarsOres s : values())
-        {
-            builder.put(s.getVarbit(), s);
-        }
-
-        VARBIT = builder.build();
-    }
-
     @Getter
     private final int varbit;
     @Getter
     private final int itemID;
-
 
     BarsOres(int varbit, int itemID)
     {
@@ -53,8 +35,12 @@ public enum BarsOres
         this.itemID = itemID;
     }
 
-    public static BarsOres getVarbit(int varbit)
+    public static int[] getAllIds()
     {
-        return VARBIT.get(varbit);
+        int[] allItemIds = new int[BarsOres.values().length];
+        for (int i = 0; i < BarsOres.values().length; i++) {
+            allItemIds[i] = BarsOres.values()[i].itemID;
+        }
+        return allItemIds;
     }
 }

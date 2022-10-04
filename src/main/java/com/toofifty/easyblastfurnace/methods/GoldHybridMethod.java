@@ -12,28 +12,37 @@ abstract public class GoldHybridMethod extends MetalBarMethod
             return state.getBank().isOpen() ? withdrawCoalBag : openBank;
         }
 
-        if (!state.getInventory().has(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I) &&
-            !state.getEquipment().equipped(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I)) {
+        if (!state.getInventory().has(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I) && !state.getEquipment().hasIceGlovesEffect()) {
             return state.getBank().isOpen() ? withdrawIceOrSmithsGloves : openBank;
+        }
+
+        if (state.getBank().has(ItemID.MAX_CAPE) &&
+            !state.getInventory().has(ItemID.MAX_CAPE) &&
+            !state.getEquipment().equipped(ItemID.MAX_CAPE)) {
+            return state.getBank().isOpen() ? withdrawMaxCape : openBank;
+        }
+
+        if (state.getInventory().has(ItemID.MAX_CAPE) &&
+            !state.getEquipment().equipped(ItemID.MAX_CAPE)) {
+            return equipMaxCape;
         }
 
         if (state.getBank().has(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET) &&
             !state.getInventory().has(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET) &&
-            !state.getEquipment().equipped(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET)) {
+            !state.getEquipment().equipped(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET, ItemID.MAX_CAPE)) {
             return state.getBank().isOpen() ? withdrawSmithingCape : openBank;
         }
 
         if (state.getInventory().has(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET) &&
-            !state.getEquipment().equipped(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET)) {
+            !state.getEquipment().equipped(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET, ItemID.MAX_CAPE)) {
             return equipSmithingCape;
         }
 
-        if (!state.getInventory().has(ItemID.GOLDSMITH_GAUNTLETS) &&
-            !state.getEquipment().equipped(ItemID.GOLDSMITH_GAUNTLETS, ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET)) {
+        if (!state.getInventory().has(ItemID.GOLDSMITH_GAUNTLETS) && !state.getEquipment().hasGoldsmithEffect()) {
             return state.getBank().isOpen() ? withdrawGoldsmithGauntlets : openBank;
         }
 
-        if (!state.getEquipment().equipped(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I, ItemID.GOLDSMITH_GAUNTLETS, ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET)) {
+        if (!state.getEquipment().hasIceGlovesEffect() && !state.getEquipment().hasGoldsmithEffect()) {
             return equipGoldsmithGauntlets;
         }
 
@@ -51,8 +60,7 @@ abstract public class GoldHybridMethod extends MetalBarMethod
         // continue doing gold bars until enough coal has been deposited
         // then do one trip of metal bars
 
-        if (state.getInventory().has(ItemID.GOLD_ORE) &&
-                !state.getEquipment().equipped(ItemID.GOLDSMITH_GAUNTLETS, ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET)) {
+        if (state.getInventory().has(ItemID.GOLD_ORE) && !state.getEquipment().hasGoldsmithEffect()) {
             return equipGoldsmithGauntlets;
         }
 
@@ -61,24 +69,29 @@ abstract public class GoldHybridMethod extends MetalBarMethod
         }
 
         if (state.getPlayer().isAtConveyorBelt() &&
-            state.getCoalBag().isFull()) {
+            (state.getCoalBag().isFull() || (maxCoalInventory == 27 && !state.getCoalBag().isEmpty()))) {
             return emptyCoalBag;
         }
 
         if (state.getPlayer().hasLoadedOres()) {
+            if (!state.getEquipment().hasIceGlovesEffect()) {
+                return equipIceOrSmithsGloves;
+            }
             return waitForBars;
         }
 
         if (state.getFurnace().has(barItem(), ItemID.GOLD_BAR)) {
-            if (!state.getEquipment().equipped(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I)) {
-                return equipIceOrSmithsGloves;
-            }
             return collectBars;
         }
 
         if (state.getBank().isOpen()) {
+
             if (state.getInventory().has(ItemID.GOLD_BAR, barItem(), oreItem())) {
-                return depositInventory;
+                return state.getConfig().useDepositInventory() ? depositInventory : depositBarsAndOres;
+            }
+
+            if (coalRun && !state.getEquipment().hasGoldsmithEffect()) {
+                return equipGoldsmithGauntlets;
             }
 
             if (!state.getCoalBag().isFull()) {
