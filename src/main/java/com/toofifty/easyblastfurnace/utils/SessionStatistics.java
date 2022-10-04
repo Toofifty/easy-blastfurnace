@@ -52,7 +52,7 @@ public class SessionStatistics
     public void drinkStamina()
     {
         if (state.getEquipment().equipped(ItemID.RING_OF_ENDURANCE)) {
-            staminaDoses = staminaDoses + 2;
+            staminaDoses += 2;
         } else {
             staminaDoses++;
         }

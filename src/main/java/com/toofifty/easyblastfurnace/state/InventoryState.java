@@ -1,11 +1,16 @@
 package com.toofifty.easyblastfurnace.state;
 
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
 
 import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.IntStream;
+
 public class InventoryState
 {
     @Inject
