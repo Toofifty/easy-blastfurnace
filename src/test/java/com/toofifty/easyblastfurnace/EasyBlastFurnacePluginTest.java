@@ -326,7 +326,7 @@ public class EasyBlastFurnacePluginTest {
         when(client.getVarbitValue(BarsOres.COAL.getVarbit())).thenReturn(0);
         runThroughBarMethods(ItemID.IRON_ORE,ItemID.MITHRIL_ORE,ItemID.ADAMANTITE_ORE,ItemID.RUNITE_ORE);
         assertTrue(state.getFurnace().isCoalRunNext(CoalPer.getValueFromString(methodHandler.getMethod().toString())));
-        assertEquals(12, (int) staminaHelper.getEnergyNeededForNextRun());
+        assertEquals(13, (int) staminaHelper.getEnergyNeededForNextRun());
     }
 
     private void runThroughBarMethods(int ...ores)

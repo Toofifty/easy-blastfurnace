@@ -71,7 +71,7 @@ public class StaminaHelper {
 
     private double getLossRate(int weight)
     {
-        return ((Math.min(Math.max(weight, 0), 64)) * 67 / 64 + 67) / 100 * lossRateMultiplier;
+        return ((Math.min(Math.max(weight, 0), 64)) * 67 / 64.0 + 67) / 100 * lossRateMultiplier;
     }
 
     private double getMinimumEnergyRecovered(int ticksSpentIdle)
