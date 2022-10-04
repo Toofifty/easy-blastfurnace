@@ -1,5 +1,6 @@
 package com.toofifty.easyblastfurnace.state;
 
+import com.toofifty.easyblastfurnace.EasyBlastFurnaceConfig;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 
@@ -27,6 +28,9 @@ public class BlastFurnaceState
 
     @Inject
     private BankState bank;
+
+    @Inject
+    private EasyBlastFurnaceConfig config;
 
     public void update()
     {

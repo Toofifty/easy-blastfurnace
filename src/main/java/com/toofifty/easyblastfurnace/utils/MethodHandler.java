@@ -2,7 +2,6 @@ package com.toofifty.easyblastfurnace.utils;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.toofifty.easyblastfurnace.EasyBlastFurnaceConfig;
 import com.toofifty.easyblastfurnace.methods.*;
 import com.toofifty.easyblastfurnace.overlays.ItemStepOverlay;
 import com.toofifty.easyblastfurnace.state.BlastFurnaceState;
@@ -13,8 +12,6 @@ import net.runelite.api.ItemID;
 @Singleton
 public class MethodHandler
 {
-    @Inject
-    private EasyBlastFurnaceConfig easyBlastFurnaceConfig;
 
     @Inject
     private BlastFurnaceState state;
@@ -33,8 +30,8 @@ public class MethodHandler
         if (!state.getPlayer().isOnBlastFurnaceWorld()) return;
         ItemStepOverlay.currentWidgetItem = null;
 
-        step = drinkStaminaMethod.next(state, easyBlastFurnaceConfig.useDepositInventory());
-        if (step == null) step = method.next(state, easyBlastFurnaceConfig.useDepositInventory());
+        step = drinkStaminaMethod.next(state);
+        if (step == null) step = method.next(state);
     }
 
     public void clear()

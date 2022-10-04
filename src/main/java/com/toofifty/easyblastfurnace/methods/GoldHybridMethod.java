@@ -50,7 +50,7 @@ abstract public class GoldHybridMethod extends MetalBarMethod
     }
 
     @Override
-    public MethodStep next(BlastFurnaceState state, boolean useDepositInventory)
+    public MethodStep next(BlastFurnaceState state)
     {
         MethodStep prerequisite = checkPrerequisite(state);
         if (prerequisite != null) return prerequisite;
@@ -87,7 +87,7 @@ abstract public class GoldHybridMethod extends MetalBarMethod
         if (state.getBank().isOpen()) {
 
             if (state.getInventory().has(ItemID.GOLD_BAR, barItem(), oreItem())) {
-                return useDepositInventory ? depositInventory : depositBarsAndOres;
+                return state.getConfig().useDepositInventory() ? depositInventory : depositBarsAndOres;
             }
 
             if (coalRun && !state.getEquipment().hasGoldsmithEffect()) {

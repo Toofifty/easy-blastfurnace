@@ -41,7 +41,7 @@ public abstract class Method
     protected final MethodStep collectBars = new ObjectStep(Strings.COLLECT_BARS, EasyBlastFurnacePlugin.BAR_DISPENSER);
     protected final MethodStep waitForBars = new TileStep(Strings.WAIT_FOR_BARS, EasyBlastFurnacePlugin.PICKUP_POSITION);
 
-    public abstract MethodStep next(BlastFurnaceState state, boolean useDepositInventory);
+    public abstract MethodStep next(BlastFurnaceState state);
 
     public abstract String getName();
 }
