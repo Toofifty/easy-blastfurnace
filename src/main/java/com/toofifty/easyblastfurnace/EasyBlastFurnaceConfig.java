@@ -172,7 +172,7 @@ public interface EasyBlastFurnaceConfig extends Config
     @Units(Units.PERCENT)
     default int requireStaminaThreshold()
     {
-        return 50;
+        return 30;
     }
 
     @ConfigSection(
