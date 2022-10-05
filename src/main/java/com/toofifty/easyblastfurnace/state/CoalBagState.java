@@ -51,7 +51,6 @@ public class CoalBagState
             return;
         }
 
-        oreOntoConveyorCount = 0;
         setCoal(coal - inventory.getFreeSlots(false));
     }
 
