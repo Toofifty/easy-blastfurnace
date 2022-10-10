@@ -31,7 +31,7 @@ public class PlayerState
     private EasyBlastFurnaceConfig config;
 
     @Inject
-    StaminaHelper staminaHelper;
+    private StaminaHelper staminaHelper;
 
     public boolean isAtConveyorBelt()
     {
