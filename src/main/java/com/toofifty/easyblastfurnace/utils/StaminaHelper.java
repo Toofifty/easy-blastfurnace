@@ -126,7 +126,7 @@ public class StaminaHelper {
             staminaEndTime = null;
         }
 
-        // The closer our stamina potion is to finishing, the less overall lossRate reduction it needs for the run.
+        // The closer our stamina potion is to finishing, the less overall lossRate reduction it provides for the run.
         long lastMillis = staminaEndTime != null ? Duration.between(Instant.now(), staminaEndTime).toMillis() : 0;
         if (staminaEndTime != null && lastMillis >= 0 && lastMillis <= timeForNextRun) {
             lossRateMultiplier = baseDrain - ((baseDrain - 0.3) * lastMillis / timeForNextRun); // max baseDrain, min 0.3
