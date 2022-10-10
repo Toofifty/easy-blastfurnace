@@ -70,7 +70,21 @@ public class InventoryState
         return getQuantity(itemIds) > 0;
     }
 
-    public int getFreeSlots(boolean ignoreBarsAndOres)
+    public int getFreeSlots()
+    {
+        load();
+
+        int freeSlots = 28;
+        for (Item item : inventory.getItems()) {
+            if (item.getQuantity() > 0) {
+                freeSlots--;
+            }
+        }
+        return freeSlots;
+    }
+
+
+    public int getFreeSlotsIncludingOresAndBars()
     {
         load();
 
@@ -81,9 +95,7 @@ public class InventoryState
         };
 
         for (Item item : inventory.getItems()) {
-            if (ignoreBarsAndOres && IntStream.of(barsAndOres).noneMatch(id -> id == item.getId()) && item.getQuantity() > 0) {
-                freeSlots--;
-            } else if (!ignoreBarsAndOres && item.getQuantity() > 0) {
+            if (IntStream.of(barsAndOres).noneMatch(id -> id == item.getId()) && item.getQuantity() > 0) {
                 freeSlots--;
             }
         }
@@ -92,6 +104,6 @@ public class InventoryState
 
     public boolean hasFreeSlots()
     {
-        return getFreeSlots(false) > 0;
+        return getFreeSlots() > 0;
     }
 }

@@ -90,7 +90,7 @@ public class StaminaHelper {
         String ore = method.getName().toUpperCase().replace("GOLD + ", "").replace("STEEL", "IRON").replace(" BARS", "_ORE");
         String bars = ore.replace("IRON", "STEEL").replace("_ORE", "_BAR");
         double coalRunWeight = getBars ? BarsOres.GOLD_BAR.getWeight() : BarsOres.COAL.getWeight();
-        int freeSlots = state.getInventory().getFreeSlots(true);
+        int freeSlots = state.getInventory().getFreeSlotsIncludingOresAndBars();
 
         if (state.getFurnace().isCoalRunNext(coalPer)) {
             freeSlots = Math.min(freeSlots, state.getBank().getQuantity(method.getName().contains("Gold") ? ItemID.GOLD_ORE : ItemID.COAL));
