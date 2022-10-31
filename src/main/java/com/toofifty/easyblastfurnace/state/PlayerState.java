@@ -1,12 +1,12 @@
 package com.toofifty.easyblastfurnace.state;
 
 import com.toofifty.easyblastfurnace.EasyBlastFurnaceConfig;
+import com.toofifty.easyblastfurnace.utils.StaminaHelper;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 
 import javax.inject.Inject;
@@ -30,10 +30,8 @@ public class PlayerState
     @Inject
     private EasyBlastFurnaceConfig config;
 
-    public int getRunEnergy()
-    {
-        return client.getEnergy();
-    }
+    @Inject
+    private StaminaHelper staminaHelper;
 
     public boolean isAtConveyorBelt()
     {
@@ -44,20 +42,13 @@ public class PlayerState
         return location.distanceTo(LOAD_POSITION) < 2;
     }
 
-    public boolean hasStamina()
+    public boolean hasEnoughEnergy()
     {
-        if (config.ignoreRemainingPotion()) {
-            return false;
+        if (!config.staminaPotionEnable()) {
+            return true;
         }
 
-        return client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE) != 0;
-    }
-
-    public boolean needsStamina()
-    {
-        return config.requireStaminaThreshold() != 0 &&
-            !hasStamina() &&
-            getRunEnergy() <= config.requireStaminaThreshold();
+        return (client.getEnergy() - staminaHelper.getEnergyNeededForNextRun()) > config.requireStaminaThreshold();
     }
 
     public boolean isOnBlastFurnaceWorld()

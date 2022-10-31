@@ -16,4 +16,14 @@ public enum CoalPer
     {
         this.value = value;
     }
+
+    public static int getValueFromString(String str)
+    {
+        String uppercaseStr = str.toUpperCase();
+        if (uppercaseStr.contains("STEEL")) return IRON.getValue();
+        if (uppercaseStr.contains("MITHRIL")) return MITHRIL.getValue();
+        if (uppercaseStr.contains("ADAMANTITE")) return ADAMANTITE.getValue();
+        if (uppercaseStr.contains("RUNITE")) return RUNITE.getValue();
+        return 0;
+    }
 }

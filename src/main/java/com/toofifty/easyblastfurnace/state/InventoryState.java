@@ -4,10 +4,12 @@ import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
 
 import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 public class InventoryState
 {
@@ -75,6 +77,25 @@ public class InventoryState
         int freeSlots = 28;
         for (Item item : inventory.getItems()) {
             if (item.getQuantity() > 0) {
+                freeSlots--;
+            }
+        }
+        return freeSlots;
+    }
+
+
+    public int getFreeSlotsIncludingOresAndBars()
+    {
+        load();
+
+        int freeSlots = 28;
+        int[] barsAndOres = new int[]{
+            ItemID.IRON_BAR, ItemID.MITHRIL_BAR, ItemID.ADAMANTITE_BAR, ItemID.RUNITE_BAR, ItemID.GOLD_BAR, ItemID.STEEL_BAR,
+            ItemID.IRON_ORE, ItemID.MITHRIL_ORE, ItemID.ADAMANTITE_ORE, ItemID.RUNITE_ORE, ItemID.GOLD_ORE, ItemID.COAL
+        };
+
+        for (Item item : inventory.getItems()) {
+            if (IntStream.of(barsAndOres).noneMatch(id -> id == item.getId()) && item.getQuantity() > 0) {
                 freeSlots--;
             }
         }
