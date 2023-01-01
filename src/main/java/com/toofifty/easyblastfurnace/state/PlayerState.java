@@ -5,13 +5,14 @@ import com.toofifty.easyblastfurnace.utils.StaminaHelper;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 
 import javax.inject.Inject;
 import java.util.Arrays;
-
+@Slf4j
 public class PlayerState
 {
     private static final WorldPoint LOAD_POSITION = new WorldPoint(1942, 4967, 0);
@@ -48,7 +49,7 @@ public class PlayerState
             return true;
         }
 
-        return (client.getEnergy() - staminaHelper.getEnergyNeededForNextRun()) > config.requireStaminaThreshold();
+        return (client.getEnergy() / 100.0 - staminaHelper.getEnergyNeededForNextRun()) > config.requireStaminaThreshold();
     }
 
     public boolean isOnBlastFurnaceWorld()
