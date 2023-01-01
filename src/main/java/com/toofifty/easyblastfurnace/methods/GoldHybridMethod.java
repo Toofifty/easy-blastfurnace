@@ -74,13 +74,13 @@ abstract public class GoldHybridMethod extends MetalBarMethod
         }
 
         if (state.getPlayer().hasLoadedOres()) {
-            if (!state.getEquipment().hasIceGlovesEffect()) {
-                return equipIceOrSmithsGloves;
-            }
             return waitForBars;
         }
 
         if (state.getFurnace().has(barItem(), ItemID.GOLD_BAR)) {
+            if (!state.getEquipment().hasIceGlovesEffect()) {
+                return equipIceOrSmithsGloves;
+            }
             return collectBars;
         }
 
