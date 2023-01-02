@@ -274,12 +274,12 @@ public class EasyBlastFurnacePluginTest {
 
         // deposit inventory
         when(easyBlastFurnaceConfig.requireStaminaThreshold()).thenReturn(50);
-        when(client.getEnergy()).thenReturn(64);
+        when(client.getEnergy()).thenReturn(6400);
         setInventoryCount(ItemID.VIAL, 1);
         assertStepTooltip(Strings.DEPOSIT_POTIONS);
 
         // Second deposit Inventory
-        when(client.getEnergy()).thenReturn(49);
+        when(client.getEnergy()).thenReturn(4900);
         Item[] gold = new Item[28];
         for (int i = 0; i < 28; i++) {
             gold[i] = new Item(ItemID.GOLD_ORE, 1);
