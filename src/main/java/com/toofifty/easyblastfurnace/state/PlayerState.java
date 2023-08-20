@@ -1,6 +1,7 @@
 package com.toofifty.easyblastfurnace.state;
 
 import com.toofifty.easyblastfurnace.EasyBlastFurnaceConfig;
+import com.toofifty.easyblastfurnace.config.PotionOverlaySetting;
 import com.toofifty.easyblastfurnace.utils.StaminaHelper;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +24,11 @@ public class PlayerState
     @Getter
     @Setter
     private boolean hasLoadedOres = false;
+
+    @Accessors(fluent = true)
+    @Getter
+    @Setter
+    private boolean needsToDrinkEnergyPotion = false;
 
     @Inject
     private Client client;
@@ -47,8 +53,36 @@ public class PlayerState
         if (!config.staminaPotionEnable()) {
             return true;
         }
+        // Handles Stamina
+        if (config.potionOverlayMode() == PotionOverlaySetting.STAMINA) {
+            return (client.getEnergy() / 100.0 - staminaHelper.getEnergyNeededForNextRun()) > config.requireStaminaThreshold();
+        }
 
-        return (client.getEnergy() / 100.0 - staminaHelper.getEnergyNeededForNextRun()) > config.requireStaminaThreshold();
+        //Handles requiring 1 or more energy potion doses
+        if ((client.getEnergy() / 100.0) <= config.requireStaminaThreshold() && !needsToDrinkEnergyPotion) {
+            needsToDrinkEnergyPotion = true;
+            return false;
+        }
+
+        // Checks If the player needs to drink more super energy potions
+        if(config.potionOverlayMode() == PotionOverlaySetting.SUPER_ENERGY && needsToDrinkEnergyPotion) {
+            if ((client.getEnergy() / 100.0) >= 80) {
+                needsToDrinkEnergyPotion = false;
+            } else {
+                return false;
+            }
+        }
+
+        // Checks If the player needs to drink more energy potions
+        if(config.potionOverlayMode() == PotionOverlaySetting.ENERGY && needsToDrinkEnergyPotion) {
+            if ((client.getEnergy() / 100.0) >= 90) {
+                needsToDrinkEnergyPotion = false;
+            } else {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public boolean isOnBlastFurnaceWorld()

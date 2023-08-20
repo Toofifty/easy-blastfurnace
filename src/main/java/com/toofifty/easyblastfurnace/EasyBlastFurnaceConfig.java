@@ -2,6 +2,7 @@ package com.toofifty.easyblastfurnace;
 
 import com.toofifty.easyblastfurnace.config.HighlightOverlayTextSetting;
 import com.toofifty.easyblastfurnace.config.ItemOverlaySetting;
+import com.toofifty.easyblastfurnace.config.PotionOverlaySetting;
 import net.runelite.client.config.*;
 
 import java.awt.*;
@@ -163,7 +164,19 @@ public interface EasyBlastFurnaceConfig extends Config
     }
 
     @ConfigItem(
-        position = 1,
+            position = 1,
+            keyName = "potionMode",
+            name = "Potion Highlight",
+            description = "Select the potion to highlight",
+            section = staminaPotions
+    )
+    default PotionOverlaySetting potionOverlayMode()
+    {
+        return PotionOverlaySetting.STAMINA;
+    }
+
+    @ConfigItem(
+        position = 2,
         keyName = "requireStaminaThreshold",
         name = "Low energy threshold",
         description = "Run energy will be kept above this value. 0 - 50% recommended.",
