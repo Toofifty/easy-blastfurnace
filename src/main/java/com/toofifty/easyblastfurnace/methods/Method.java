@@ -32,7 +32,9 @@ public abstract class Method
     protected final MethodStep equipSmithingCape = new ItemStep(Strings.EQUIP_SMITHING_CAPE, ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET);
     protected final MethodStep equipMaxCape = new ItemStep(Strings.EQUIP_MAX_CAPE, ItemID.MAX_CAPE);
     protected final MethodStep depositBarsAndOres = new ItemStep(Strings.DEPOSIT_BARS_AND_ORES, BarsOres.getAllIds());
-    protected final MethodStep depositPotions = new ItemStep(Strings.DEPOSIT_POTIONS, ItemID.VIAL, ItemID.STAMINA_POTION1, ItemID.STAMINA_POTION2, ItemID.STAMINA_POTION3, ItemID.STAMINA_POTION4);
+    protected final MethodStep depositStaminaPotions = new ItemStep(Strings.DEPOSIT_STAMINA_POTIONS, ItemID.VIAL, ItemID.STAMINA_POTION1, ItemID.STAMINA_POTION2, ItemID.STAMINA_POTION3, ItemID.STAMINA_POTION4);
+    protected final MethodStep depositSuperEnergyPotions = new ItemStep(Strings.DEPOSIT_SUPER_ENERGY_POTIONS, ItemID.VIAL, ItemID.SUPER_ENERGY1, ItemID.SUPER_ENERGY2, ItemID.SUPER_ENERGY3, ItemID.SUPER_ENERGY4);
+    protected final MethodStep depositEnergyPotions = new ItemStep(Strings.DEPOSIT_ENERGY_POTIONS, ItemID.VIAL, ItemID.ENERGY_POTION1, ItemID.ENERGY_POTION2, ItemID.ENERGY_POTION3, ItemID.ENERGY_POTION4);
 
     // objects
     protected final MethodStep depositInventory = new WidgetStep(Strings.DEPOSIT_INVENTORY, WidgetInfo.BANK_DEPOSIT_INVENTORY);

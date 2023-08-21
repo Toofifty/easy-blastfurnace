@@ -20,7 +20,7 @@ public class MethodHandler
     @Inject
     private BlastFurnaceState state;
 
-    private final DrinkStaminaMethod drinkStaminaMethod = new DrinkStaminaMethod();
+    private final DrinkPotionMethod drinkPotionMethod = new DrinkPotionMethod();
 
     @Getter
     private Method method;
@@ -34,7 +34,7 @@ public class MethodHandler
         if (!state.getPlayer().isOnBlastFurnaceWorld()) return;
         ItemStepOverlay.currentWidgetItem = null;
 
-        step = drinkStaminaMethod.next(state);
+        step = drinkPotionMethod.next(state);
         if (step == null) step = method.next(state);
     }
 

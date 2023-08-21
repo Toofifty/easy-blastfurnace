@@ -12,6 +12,7 @@ Helps you train at the blast furnace more efficiently
 - Shows coal bag contents
 - Prompts to drink a stamina dose when required
     - Can be disabled in the plugin settings
+    - Can configure to use Energy Potions
 
 ## Requirements
 

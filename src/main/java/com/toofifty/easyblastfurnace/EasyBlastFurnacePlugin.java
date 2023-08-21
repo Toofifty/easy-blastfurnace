@@ -13,13 +13,16 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,6 +44,9 @@ public class EasyBlastFurnacePlugin extends Plugin
 
     @Inject
     private Client client;
+
+    @Inject
+    private ClientThread clientThread;
 
     @Inject
     private OverlayManager overlayManager;
@@ -180,6 +186,13 @@ public class EasyBlastFurnacePlugin extends Plugin
 
         // handle furnace ore/bar quantity changes
         methodHandler.next();
+    }
+
+    @Subscribe
+    public void onConfigChanged(ConfigChanged event) {
+        if(Objects.equals(event.getGroup(), "easy-blastfurnace") && Objects.equals(event.getKey(), "potionMode")) {
+            clientThread.invokeLater(() -> methodHandler.next());
+        }
     }
 
     @Subscribe
