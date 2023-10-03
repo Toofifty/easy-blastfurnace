@@ -16,6 +16,17 @@ public interface EasyBlastFurnaceConfig extends Config
 		position = 0
 	)
 	String guidanceOverlays = "guidanceOverlays";
+	@ConfigItem(
+		position = 0,
+		keyName = "showStepOverlay",
+		name = "Show step overlay",
+		description = "Show an instructional overlay of the next step",
+		section = guidanceOverlays
+	)
+	default boolean showStepOverlay()
+	{
+		return true;
+	}
 
 
 	@ConfigItem(
