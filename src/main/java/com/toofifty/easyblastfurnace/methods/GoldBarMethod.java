@@ -63,15 +63,15 @@ public class GoldBarMethod extends Method
             return waitForBars;
         }
 
-		if (state.getConfig().leaveBarInDispenser()) {
-			if (state.getFurnace().hasMoreThanOne(ItemID.GOLD_BAR)) {
+		if (state.getConfig().tickPerfectMethod()) {
+			if (state.getFurnace().hasMoreThanOneInventory(ItemID.GOLD_BAR)) {
 				if (!state.getEquipment().hasIceGlovesEffect()) {
 					return equipIceOrSmithsGloves;
 				}
 				return collectBars;
 			}
 		}
-		else if (!state.getConfig().leaveBarInDispenser()) {
+		else if (!state.getConfig().tickPerfectMethod()) {
 			if (state.getFurnace().has(ItemID.GOLD_BAR)) {
 				if (!state.getEquipment().hasIceGlovesEffect()) {
 					return equipIceOrSmithsGloves;

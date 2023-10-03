@@ -120,7 +120,16 @@ public interface EasyBlastFurnaceConfig extends Config
 		description = "Continues to the next step when there is 1 bar in the dispenser rather than 0",
 		section = guidanceOverlays
 	)
-	default boolean leaveBarInDispenser() { return false; }
+	default boolean tickPerfectMethod() { return false; }
+
+	@ConfigItem(
+		position = 9,
+		keyName = "barsInDispenser",
+		name = "Configure bar quantity in dispenser",
+		description = "Number of bars in the dispenser to ignore to continue to next step for tick perfect method",
+		section = guidanceOverlays
+	)
+	default int barsInDispenser() { return 27; }
 
 	@ConfigSection(
 		name = "Coal bag overlay",
