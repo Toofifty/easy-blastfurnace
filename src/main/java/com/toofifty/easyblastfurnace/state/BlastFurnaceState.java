@@ -43,9 +43,16 @@ public class BlastFurnaceState
             player.hasLoadedOres(true);
         }
 
-        if (furnace.has(ItemID.GOLD_BAR, ItemID.STEEL_BAR, ItemID.MITHRIL_BAR, ItemID.ADAMANTITE_BAR, ItemID.RUNITE_BAR)) {
-            player.hasLoadedOres(false);
-        }
+		if (config.tickPerfectMethod()) {
+			if (furnace.hasInventory(ItemID.GOLD_BAR, ItemID.STEEL_BAR, ItemID.MITHRIL_BAR, ItemID.ADAMANTITE_BAR, ItemID.RUNITE_BAR)) {
+				player.hasLoadedOres(false);
+			}
+		}
+		else if (!config.tickPerfectMethod()) {
+			if (furnace.has(ItemID.GOLD_BAR, ItemID.STEEL_BAR, ItemID.MITHRIL_BAR, ItemID.ADAMANTITE_BAR, ItemID.RUNITE_BAR)) {
+				player.hasLoadedOres(false);
+			}
+		}
 
         if (equipment.equipped(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET, ItemID.MAX_CAPE)) {
             coalBag.setMaxCoal(36);

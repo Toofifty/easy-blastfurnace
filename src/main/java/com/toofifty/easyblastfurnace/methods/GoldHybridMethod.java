@@ -60,6 +60,29 @@ abstract public class GoldHybridMethod extends MetalBarMethod
         // continue doing gold bars until enough coal has been deposited
         // then do one trip of metal bars
 
+		if (state.getBank().isOpen()) {
+
+			if (state.getCoalBag().isFull() && state.getInventory().has(oreItem(), ItemID.GOLD_ORE)) {
+				return putOntoConveyorBelt;
+			}
+
+			if (state.getInventory().has(ItemID.GOLD_BAR, barItem())) {
+				return state.getConfig().useDepositInventory() ? depositInventory : depositBarsAndOres;
+			}
+
+			if (coalRun && !state.getInventory().has(oreItem(), ItemID.GOLD_ORE)) {
+				return withdrawGoldOre;
+			}
+
+			if (!state.getInventory().has(oreItem(), ItemID.GOLD_ORE)) {
+				return withdrawOre();
+			}
+
+			if (!state.getCoalBag().isFull()) {
+				return state.getCoalBag().isEmpty() ? fillCoalBag : refillCoalBag;
+			}
+		}
+
         if (state.getInventory().has(ItemID.GOLD_ORE) && !state.getEquipment().hasGoldsmithEffect()) {
             return equipGoldsmithGauntlets;
         }
@@ -98,14 +121,6 @@ abstract public class GoldHybridMethod extends MetalBarMethod
 
             if (state.getInventory().has(ItemID.GOLD_BAR, barItem(), oreItem())) {
                 return state.getConfig().useDepositInventory() ? depositInventory : depositBarsAndOres;
-            }
-
-            if (coalRun) {
-                return withdrawGoldOre;
-            }
-
-            if (!state.getInventory().has(oreItem())) {
-                return withdrawOre();
             }
 
 			if (!state.getCoalBag().isFull()) {

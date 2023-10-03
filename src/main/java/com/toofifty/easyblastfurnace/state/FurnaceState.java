@@ -59,6 +59,8 @@ public class FurnaceState
         return getQuantity(itemIds) > 0;
     }
 
+	public boolean hasInventory(int ...itemIds) {return getQuantity(itemIds) > config.barsInDispenser(); }
+
 	public boolean hasMoreThanOneInventory(int ...itemIds) {return getQuantity(itemIds) > config.barsInDispenser(); }
 
     public boolean isCoalRunNext(int coalPer) {
