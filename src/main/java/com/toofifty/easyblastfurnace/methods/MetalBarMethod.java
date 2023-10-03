@@ -58,9 +58,16 @@ abstract public class MetalBarMethod extends Method
             return waitForBars;
         }
 
-        if (state.getFurnace().has(barItem())) {
-            return collectBars;
-        }
+		if (state.getConfig().leaveBarInDispenser()) {
+			if (state.getFurnace().hasMoreThanOne(barItem())) {
+				return collectBars;
+			}
+		}
+		else if (!state.getConfig().leaveBarInDispenser()) {
+			if (state.getFurnace().has(barItem())) {
+				return collectBars;
+			}
+		}
 
         if (state.getBank().isOpen()) {
             if (state.getInventory().has(barItem(), oreItem())) {
