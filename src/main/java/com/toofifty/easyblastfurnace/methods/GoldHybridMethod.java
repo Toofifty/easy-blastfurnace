@@ -100,10 +100,6 @@ abstract public class GoldHybridMethod extends MetalBarMethod
                 return state.getConfig().useDepositInventory() ? depositInventory : depositBarsAndOres;
             }
 
-            if (!state.getCoalBag().isFull()) {
-                return state.getCoalBag().isEmpty() ? fillCoalBag : refillCoalBag;
-            }
-
             if (coalRun) {
                 return withdrawGoldOre;
             }
@@ -111,6 +107,10 @@ abstract public class GoldHybridMethod extends MetalBarMethod
             if (!state.getInventory().has(oreItem())) {
                 return withdrawOre();
             }
+
+			if (!state.getCoalBag().isFull()) {
+				return state.getCoalBag().isEmpty() ? fillCoalBag : refillCoalBag;
+			}
 
 			if (coalRun && !state.getEquipment().hasGoldsmithEffect()) {
 				return equipGoldsmithGauntlets;
