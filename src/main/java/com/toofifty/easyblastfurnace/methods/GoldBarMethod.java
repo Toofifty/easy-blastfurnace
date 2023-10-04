@@ -64,7 +64,7 @@ public class GoldBarMethod extends Method
         }
 
 		if (state.getConfig().tickPerfectMethod()) {
-			if (state.getFurnace().hasMoreThanOneInventory(ItemID.GOLD_BAR)) {
+			if (state.getFurnace().hasEnoughBars(ItemID.GOLD_BAR)) {
 				if (!state.getEquipment().hasIceGlovesEffect()) {
 					return equipIceOrSmithsGloves;
 				}

@@ -59,7 +59,7 @@ abstract public class MetalBarMethod extends Method
         }
 
 		if (state.getConfig().tickPerfectMethod()) {
-			if (state.getFurnace().hasMoreThanOneInventory(barItem())) {
+			if (state.getFurnace().hasEnoughBars(barItem())) {
 				return collectBars;
 			}
 		}

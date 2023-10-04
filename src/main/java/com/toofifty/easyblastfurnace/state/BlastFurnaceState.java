@@ -44,7 +44,7 @@ public class BlastFurnaceState
         }
 
 		if (config.tickPerfectMethod()) {
-			if (furnace.hasInventory(ItemID.GOLD_BAR, ItemID.STEEL_BAR, ItemID.MITHRIL_BAR, ItemID.ADAMANTITE_BAR, ItemID.RUNITE_BAR)) {
+			if (furnace.hasEnoughBars(ItemID.GOLD_BAR, ItemID.STEEL_BAR, ItemID.MITHRIL_BAR, ItemID.ADAMANTITE_BAR, ItemID.RUNITE_BAR)) {
 				player.hasLoadedOres(false);
 			}
 		}

@@ -575,20 +575,20 @@ public class EasyBlastFurnacePluginTest {
 
         setInventoryCount(ItemID.GOLDSMITH_GAUNTLETS, 1);
         assertStepTooltip(Strings.EQUIP_GOLDSMITH_GAUNTLETS);
+		setInventoryCount(ItemID.GOLDSMITH_GAUNTLETS, 0);
+		setEquipmentCount(ItemID.GOLDSMITH_GAUNTLETS, 1);
 
-        setInventoryCount(ItemID.GOLDSMITH_GAUNTLETS, 0);
-        setEquipmentCount(ItemID.GOLDSMITH_GAUNTLETS, 1);
-        assertStepTooltip(Strings.DEPOSIT_BARS_AND_ORES);
+		setInventoryCount(oreID, 0);
+		assertStepTooltip(Strings.WITHDRAW_GOLD_ORE);
 
-        setInventoryCount(oreID, 0);
-        assertStepTooltip(Strings.FILL_COAL_BAG);
-
-        setCoalBag(Strings.FILL);
-        assertEquals(state.getCoalBag().getMaxCoal(), state.getCoalBag().getCoal());
-        assertStepTooltip(Strings.WITHDRAW_GOLD_ORE);
+		setInventoryCount(oreID, 1);
+		assertStepTooltip(Strings.FILL_COAL_BAG);
+		setCoalBag(Strings.FILL);
+		assertEquals(state.getCoalBag().getMaxCoal(), state.getCoalBag().getCoal());
 
         setFurnaceCount(BarsOres.COAL.getVarbit(), 27 * (coalPer - state.getFurnace().getCoalOffset()));
-        assertStepTooltip(withdrawOreText);
+		setInventoryCount(oreID, 0);
+		assertStepTooltip(withdrawOreText);
 
         setInventoryCount(oreID, 1);
         assertStepTooltip(Strings.PUT_ORE_ONTO_CONVEYOR_BELT);
@@ -615,18 +615,17 @@ public class EasyBlastFurnacePluginTest {
         assertStepTooltip(Strings.DEPOSIT_BARS_AND_ORES);
 
         setInventoryCount(barID, 0);
-        assertStepTooltip(Strings.EQUIP_GOLDSMITH_GAUNTLETS);
+		assertStepTooltip(Strings.WITHDRAW_GOLD_ORE);
 
-        equipGloves(false);
-        assertStepTooltip(Strings.REFILL_COAL_BAG);
+		setInventoryCount(ItemID.GOLD_ORE, 1);
+		assertStepTooltip(Strings.REFILL_COAL_BAG);
 
-        setCoalBag(Strings.FILL);
-        setInventoryCount(ItemID.GOLD_ORE, 1);
-        assertStepTooltip(Strings.PUT_ORE_ONTO_CONVEYOR_BELT);
+		setCoalBag(Strings.FILL);
+		assertStepTooltip(Strings.PUT_ORE_ONTO_CONVEYOR_BELT);
 
-        setAtBank(false);
-        equipGloves(true);
-        assertStepTooltip(Strings.EQUIP_GOLDSMITH_GAUNTLETS);
+		setAtBank(false);
+		assertStepTooltip(Strings.EQUIP_GOLDSMITH_GAUNTLETS);
+
     }
 
     private void collectBars(int barID, int barVarbit)
