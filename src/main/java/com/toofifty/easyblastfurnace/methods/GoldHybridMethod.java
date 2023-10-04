@@ -100,34 +100,18 @@ abstract public class GoldHybridMethod extends MetalBarMethod
             return waitForBars;
         }
 
-		if (state.getConfig().tickPerfectMethod()) {
-			if (state.getFurnace().hasEnoughBars(barItem(), ItemID.GOLD_BAR)) {
-				if (!state.getEquipment().hasIceGlovesEffect()) {
-					return equipIceOrSmithsGloves;
-				}
-				return collectBars;
-			}
-		}
-		else if (state.getFurnace().has(barItem(), ItemID.GOLD_BAR)) {
+		if (state.getConfig().tickPerfectMethod() && state.getFurnace().hasEnoughBars(barItem(), ItemID.GOLD_BAR) ||
+			state.getFurnace().has(barItem(), ItemID.GOLD_BAR)
+		) {
+
 			if (!state.getEquipment().hasIceGlovesEffect()) {
 				return equipIceOrSmithsGloves;
 			}
 			return collectBars;
 		}
 
-        if (state.getBank().isOpen()) {
-
-            if (state.getInventory().has(ItemID.GOLD_BAR, barItem(), oreItem())) {
-                return state.getConfig().useDepositInventory() ? depositInventory : depositBarsAndOres;
-            }
-
-			if (!state.getCoalBag().isFull()) {
-				return state.getCoalBag().isEmpty() ? fillCoalBag : refillCoalBag;
-			}
-
-			if (coalRun && !state.getEquipment().hasGoldsmithEffect()) {
-				return equipGoldsmithGauntlets;
-			}
+        if (state.getBank().isOpen() && state.getInventory().has(ItemID.GOLD_BAR, barItem(), oreItem())) {
+			return state.getConfig().useDepositInventory() ? depositInventory : depositBarsAndOres;
         }
 
         return openBank;

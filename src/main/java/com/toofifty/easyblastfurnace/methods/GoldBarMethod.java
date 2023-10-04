@@ -71,13 +71,11 @@ public class GoldBarMethod extends Method
 				return collectBars;
 			}
 		}
-		else if (!state.getConfig().tickPerfectMethod()) {
-			if (state.getFurnace().has(ItemID.GOLD_BAR)) {
-				if (!state.getEquipment().hasIceGlovesEffect()) {
-					return equipIceOrSmithsGloves;
-				}
-				return collectBars;
+		else if (state.getFurnace().has(ItemID.GOLD_BAR)) {
+			if (!state.getEquipment().hasIceGlovesEffect()) {
+				return equipIceOrSmithsGloves;
 			}
+			return collectBars;
 		}
 
 

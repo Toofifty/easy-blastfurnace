@@ -58,15 +58,10 @@ abstract public class MetalBarMethod extends Method
             return waitForBars;
         }
 
-		if (state.getConfig().tickPerfectMethod()) {
-			if (state.getFurnace().hasEnoughBars(barItem())) {
-				return collectBars;
-			}
-		}
-		else if (!state.getConfig().tickPerfectMethod()) {
-			if (state.getFurnace().has(barItem())) {
-				return collectBars;
-			}
+		if (state.getConfig().tickPerfectMethod() && state.getFurnace().hasEnoughBars(barItem()) ||
+			!state.getConfig().tickPerfectMethod() && state.getFurnace().has(barItem())
+		) {
+			return collectBars;
 		}
 
         if (state.getBank().isOpen()) {
