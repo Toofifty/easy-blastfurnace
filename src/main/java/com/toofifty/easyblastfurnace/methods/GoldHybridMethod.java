@@ -56,6 +56,8 @@ abstract public class GoldHybridMethod extends MetalBarMethod
         if (prerequisite != null) return prerequisite;
         int maxCoalInventory = state.getEquipment().equipped(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET) ? 27 : 26;
         boolean coalRun = state.getFurnace().getQuantity(ItemID.COAL) < maxCoalInventory * (coalPer() - state.getFurnace().getCoalOffset());
+		boolean oreOnConveyor = state.getPlayer().hasOreOnConveyor();
+		boolean furnaceHasBar = state.getFurnace().has(barItem(), ItemID.GOLD_BAR);
 
         // continue doing gold bars until enough coal has been deposited
         // then do one trip of metal bars
@@ -96,14 +98,13 @@ abstract public class GoldHybridMethod extends MetalBarMethod
             return emptyCoalBag;
         }
 
-        if (state.getPlayer().hasLoadedOres()) {
+        if (!state.getConfig().tickPerfectMethod() && state.getPlayer().hasOreOnConveyor()) {
             return waitForBars;
         }
 
-		if (state.getConfig().tickPerfectMethod() && state.getFurnace().hasEnoughBars(barItem(), ItemID.GOLD_BAR) ||
-			state.getFurnace().has(barItem(), ItemID.GOLD_BAR)
+		if (state.getConfig().tickPerfectMethod() && furnaceHasBar && oreOnConveyor ||
+			!state.getConfig().tickPerfectMethod() && furnaceHasBar
 		) {
-
 			if (!state.getEquipment().hasIceGlovesEffect()) {
 				return equipIceOrSmithsGloves;
 			}

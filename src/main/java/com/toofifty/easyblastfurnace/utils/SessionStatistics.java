@@ -169,7 +169,12 @@ public class SessionStatistics
         for (int barId : bars) {
             int diff = state.getFurnace().getChange(barId);
             if (diff > 0) {
-                outputs.put(barId, outputs.getOrDefault(barId, 0) + diff);
+                int totalBars = outputs.getOrDefault(barId, 0) + diff;
+                outputs.put(barId, totalBars);
+                state.getFurnace().setOresOnConveyorBelt(state.getFurnace().getOresOnConveyorBelt() - diff);
+                if (state.getFurnace().getOresOnConveyorBelt() <= 0) {
+                    state.getPlayer().hasOreOnConveyor(false);
+                }
             }
         }
     }

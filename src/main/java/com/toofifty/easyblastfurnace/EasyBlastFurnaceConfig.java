@@ -122,15 +122,6 @@ public interface EasyBlastFurnaceConfig extends Config
 	)
 	default boolean tickPerfectMethod() { return false; }
 
-	@ConfigItem(
-		position = 9,
-		keyName = "barsInDispenser",
-		name = "Configure bar quantity in dispenser",
-		description = "Number of bars in the dispenser to ignore to continue to next step for tick perfect method",
-		section = guidanceOverlays
-	)
-	default int totalBarsKeptInDispenser() { return 27; }
-
     @ConfigSection(
         name = "Coal bag overlay",
         description = "Configure coal bag overlay",

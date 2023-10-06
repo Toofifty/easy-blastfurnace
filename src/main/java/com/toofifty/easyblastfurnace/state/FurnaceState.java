@@ -2,6 +2,9 @@ package com.toofifty.easyblastfurnace.state;
 
 import com.toofifty.easyblastfurnace.EasyBlastFurnaceConfig;
 import com.toofifty.easyblastfurnace.utils.BarsOres;
+
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 
@@ -20,6 +23,10 @@ public class FurnaceState
     private EasyBlastFurnaceConfig config;
 
     private final Map<Integer, Integer> previousQuantity = new HashMap<>();
+
+    @Getter
+    @Setter
+    public int oresOnConveyorBelt = 0;
 
     public void update()
     {
@@ -58,8 +65,6 @@ public class FurnaceState
     public boolean has(int ...itemIds) {
         return getQuantity(itemIds) > 0;
     }
-
-	public boolean hasEnoughBars(int ...itemIds) {return getQuantity(itemIds) > config.totalBarsKeptInDispenser(); }
 
     public boolean isCoalRunNext(int coalPer) {
         int coalInFurnace = getQuantity(ItemID.COAL);
