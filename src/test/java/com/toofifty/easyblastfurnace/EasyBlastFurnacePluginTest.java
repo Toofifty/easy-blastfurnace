@@ -549,7 +549,7 @@ public class EasyBlastFurnacePluginTest {
     private void hybridMethod(
         int oreID, int oreVarbit, int barID, int barVarbit, String withdrawOreText, String methodName, int coalPer
     ) {
-        setInventoryItems(new Item[]{new Item(oreID, 1), new Item(ItemID.GOLD_ORE, 1)});
+        setInventoryItems(new Item[]{ new Item(ItemID.OPEN_COAL_BAG, 1), new Item(oreID, 1) });
         setInventoryCount(oreID, 1);
         setInventoryCount(ItemID.GOLD_ORE, 1);
         assertEquals(methodName, methodHandler.getMethod().getName());

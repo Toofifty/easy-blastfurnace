@@ -18,6 +18,8 @@ public class Strings {
     public static String DEPOSIT_ENERGY_POTIONS = "Deposit Energy potions";
     public static String WITHDRAW_ICE_OR_SMITHS_GLOVES = "Withdraw ice gloves or smiths gloves (i)";
     public static String EQUIP_ICE_OR_SMITHS_GLOVES = "Equip ice gloves or smiths gloves (i)";
+    public static String COLLECT_BARS_AND_EQUIP_GOLDSMITH_GAUNTLETS = "Collect bars and then immediately equip goldsmith gauntlets";
+    public static String GO_TO_DISPENSER_AND_EQUIP_ICE_OR_SMITHS_GLOVES = "Go to bar dispenser and equip ice gloves or smiths gloves (i)";
     public static String WITHDRAW_GOLDSMITH_GAUNTLETS = "Withdraw goldsmith gauntlets";
     public static String EQUIP_GOLDSMITH_GAUNTLETS = "Equip goldsmith gauntlets";
     public static String WITHDRAW_SMITHING_CAPE = "Withdraw Smithing cape";
