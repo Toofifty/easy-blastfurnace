@@ -236,6 +236,7 @@ public class EasyBlastFurnacePluginTest {
         setFurnaceCount(BarsOres.GOLD_ORE.getVarbit(), 1);
         assertStepTooltip(Strings.WAIT_FOR_BARS);
 
+        setWorldPoint(notAtConveyorBelt);
         setFurnaceCount(BarsOres.GOLD_ORE.getVarbit(), 0);
         setFurnaceCount(BarsOres.GOLD_BAR.getVarbit(), 1);
         assertStepTooltip(Strings.EQUIP_ICE_OR_SMITHS_GLOVES);
@@ -533,6 +534,7 @@ public class EasyBlastFurnacePluginTest {
         setFurnaceCount(BarsOres.COAL.getVarbit(), state.getCoalBag().getCoal());
         assertStepTooltip(Strings.WAIT_FOR_BARS);
 
+        setWorldPoint(notAtConveyorBelt);
         setFurnaceCount(oreVarbit, 0);
         setFurnaceCount(barVarbit, 1);
         assertStepTooltip(Strings.COLLECT_BARS);
@@ -601,8 +603,9 @@ public class EasyBlastFurnacePluginTest {
         setFurnaceCount(BarsOres.COAL.getVarbit(), state.getCoalBag().getCoal());
         assertStepTooltip(Strings.WAIT_FOR_BARS);
 
+        setWorldPoint(notAtConveyorBelt);
         setFurnaceCount(oreVarbit, 0);
-        setFurnaceCount(barVarbit, 1);
+        setFurnaceCount(barVarbit, 2);
         assertStepTooltip(Strings.EQUIP_ICE_OR_SMITHS_GLOVES);
 
         equipGloves(true);

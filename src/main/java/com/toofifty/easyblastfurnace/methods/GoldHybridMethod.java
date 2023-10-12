@@ -98,7 +98,7 @@ abstract public class GoldHybridMethod extends MetalBarMethod
             return emptyCoalBag;
         }
 
-        if (!state.getConfig().tickPerfectMethod() && state.getPlayer().hasOreOnConveyor()) {
+        if (!state.getConfig().tickPerfectMethod() && oreOnConveyor) {
             return waitForBars;
         }
 
