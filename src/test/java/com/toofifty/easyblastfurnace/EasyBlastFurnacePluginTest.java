@@ -5,6 +5,7 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.toofifty.easyblastfurnace.config.PotionOverlaySetting;
 import com.toofifty.easyblastfurnace.overlays.InstructionOverlay;
 import com.toofifty.easyblastfurnace.state.BlastFurnaceState;
+import com.toofifty.easyblastfurnace.steps.MethodStep;
 import com.toofifty.easyblastfurnace.utils.BarsOres;
 import com.toofifty.easyblastfurnace.utils.CoalPer;
 import com.toofifty.easyblastfurnace.utils.Strings;
@@ -681,9 +682,13 @@ public class EasyBlastFurnacePluginTest {
         easyBlastFurnacePlugin.onItemContainerChanged(event);
     }
 
-    private void assertStepTooltip(String expectedString)
+    private void assertStepTooltip(String ...expectedStrings)
     {
-        assertEquals(expectedString, methodHandler.getStep().getTooltip());
+        MethodStep[] steps = methodHandler.getSteps();
+
+        for (int i = 0; i < steps.length; i++) {
+            assertEquals(expectedStrings[i], steps[i].getTooltip());
+        }
     }
 
     private void setCoalBag(String emptyOrFillText)

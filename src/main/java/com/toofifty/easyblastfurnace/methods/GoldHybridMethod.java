@@ -6,7 +6,7 @@ import net.runelite.api.ItemID;
 
 abstract public class GoldHybridMethod extends MetalBarMethod
 {
-    private MethodStep checkPrerequisite(BlastFurnaceState state)
+    private MethodStep[] checkPrerequisite(BlastFurnaceState state)
     {
         if (!state.getInventory().has(ItemID.COAL_BAG_12019, ItemID.OPEN_COAL_BAG)) {
             return state.getBank().isOpen() ? withdrawCoalBag : openBank;
@@ -50,9 +50,9 @@ abstract public class GoldHybridMethod extends MetalBarMethod
     }
 
     @Override
-    public MethodStep next(BlastFurnaceState state)
+    public MethodStep[] next(BlastFurnaceState state)
     {
-        MethodStep prerequisite = checkPrerequisite(state);
+        MethodStep[] prerequisite = checkPrerequisite(state);
         if (prerequisite != null) return prerequisite;
         int maxCoalInventory = state.getEquipment().equipped(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET) ? 27 : 26;
         boolean coalRun = state.getFurnace().getQuantity(ItemID.COAL) < maxCoalInventory * (coalPer() - state.getFurnace().getCoalOffset());

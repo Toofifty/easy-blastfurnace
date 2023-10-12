@@ -8,7 +8,7 @@ import net.runelite.api.ItemID;
 public class MithrilBarMethod extends MetalBarMethod
 {
     @Override
-    protected MethodStep withdrawOre()
+    protected MethodStep[] withdrawOre()
     {
         return withdrawMithrilOre;
     }

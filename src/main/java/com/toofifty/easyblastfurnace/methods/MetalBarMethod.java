@@ -14,13 +14,13 @@ abstract public class MetalBarMethod extends Method
 {
     public abstract int oreItem();
 
-    protected abstract MethodStep withdrawOre();
+    protected abstract MethodStep[] withdrawOre();
 
     protected abstract int barItem();
 
     protected abstract int coalPer();
 
-    private MethodStep checkPrerequisite(BlastFurnaceState state)
+    private MethodStep[] checkPrerequisite(BlastFurnaceState state)
     {
         if (!state.getInventory().has(ItemID.COAL_BAG_12019, ItemID.OPEN_COAL_BAG)) {
             return state.getBank().isOpen() ? withdrawCoalBag : openBank;
@@ -39,9 +39,9 @@ abstract public class MetalBarMethod extends Method
     }
 
     @Override
-    public MethodStep next(BlastFurnaceState state)
+    public MethodStep[] next(BlastFurnaceState state)
     {
-        MethodStep prerequisite = checkPrerequisite(state);
+        MethodStep[] prerequisite = checkPrerequisite(state);
         if (prerequisite != null) return prerequisite;
         boolean coalRun = state.getFurnace().getQuantity(ItemID.COAL) < 27 * (coalPer() - state.getFurnace().getCoalOffset());
         boolean oreOnConveyor = state.getPlayer().hasOreOnConveyor();

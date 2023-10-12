@@ -8,7 +8,7 @@ import net.runelite.api.ItemID;
 public class RuniteHybridMethod extends GoldHybridMethod
 {
     @Override
-    protected MethodStep withdrawOre()
+    protected MethodStep[] withdrawOre()
     {
         return withdrawRuniteOre;
     }

@@ -44,48 +44,50 @@ public class BankItemStepOverlay extends WidgetItemOverlay
     {
         if (config.itemOverlayMode() == ItemOverlaySetting.NONE) return;
 
-        MethodStep step = methodHandler.getStep();
+        MethodStep[] steps = methodHandler.getSteps();
+        if (steps == null) return;
 
-        if (step == null) return;
-        if (!(step instanceof BankItemStep)) return;
-        if (Arrays.stream(((BankItemStep) step).getItemIds()).noneMatch(id -> id == itemId)) return;
+        for (MethodStep step : steps) {
+            if (!(step instanceof BankItemStep)) continue;
+            if (Arrays.stream(((BankItemStep) step).getItemIds()).noneMatch(id -> id == itemId)) continue;
 
-        Color color = config.itemOverlayColor();
+            Color color = config.itemOverlayColor();
 
-        Rectangle bounds = widgetItem.getCanvasBounds();
+            Rectangle bounds = widgetItem.getCanvasBounds();
 
-        if (config.itemOverlayMode() == ItemOverlaySetting.OUTLINE) {
-            BufferedImage outline = itemManager.getItemOutline(itemId, widgetItem.getQuantity(), color);
-            ImageComponent imageComponent = new ImageComponent(outline);
-            imageComponent.setPreferredLocation(new Point(bounds.x, bounds.y));
-            imageComponent.render(graphics);
-        } else {
-            graphics.setColor(color);
-            graphics.draw(bounds);
+            if (config.itemOverlayMode() == ItemOverlaySetting.OUTLINE) {
+                BufferedImage outline = itemManager.getItemOutline(itemId, widgetItem.getQuantity(), color);
+                ImageComponent imageComponent = new ImageComponent(outline);
+                imageComponent.setPreferredLocation(new Point(bounds.x, bounds.y));
+                imageComponent.render(graphics);
+            } else {
+                graphics.setColor(color);
+                graphics.draw(bounds);
+            }
+
+            if (config.itemOverlayTextMode() == HighlightOverlayTextSetting.NONE) continue;
+
+            TextComponent textComponent = new TextComponent();
+            textComponent.setColor(color);
+            textComponent.setText(step.getTooltip());
+
+            FontMetrics fontMetrics = graphics.getFontMetrics();
+            int textWidth = fontMetrics.stringWidth(step.getTooltip());
+            int textHeight = fontMetrics.getHeight();
+
+            if (config.itemOverlayTextMode() == HighlightOverlayTextSetting.BELOW) {
+                textComponent.setPosition(new Point(
+                        bounds.x + bounds.width / 2 - textWidth / 2,
+                        bounds.y + bounds.height + textHeight
+                ));
+            } else {
+                textComponent.setPosition(new Point(
+                        bounds.x + bounds.width / 2 - textWidth / 2,
+                        bounds.y - textHeight / 2
+                ));
+            }
+
+            textComponent.render(graphics);
         }
-
-        if (config.itemOverlayTextMode() == HighlightOverlayTextSetting.NONE) return;
-
-        TextComponent textComponent = new TextComponent();
-        textComponent.setColor(color);
-        textComponent.setText(step.getTooltip());
-
-        FontMetrics fontMetrics = graphics.getFontMetrics();
-        int textWidth = fontMetrics.stringWidth(step.getTooltip());
-        int textHeight = fontMetrics.getHeight();
-
-        if (config.itemOverlayTextMode() == HighlightOverlayTextSetting.BELOW) {
-            textComponent.setPosition(new Point(
-                bounds.x + bounds.width / 2 - textWidth / 2,
-                bounds.y + bounds.height + textHeight
-            ));
-        } else {
-            textComponent.setPosition(new Point(
-                bounds.x + bounds.width / 2 - textWidth / 2,
-                bounds.y - textHeight / 2
-            ));
-        }
-
-        textComponent.render(graphics);
     }
 }

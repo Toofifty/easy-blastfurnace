@@ -7,7 +7,7 @@ import net.runelite.api.ItemID;
 
 public class GoldBarMethod extends Method
 {
-    private MethodStep checkPrerequisite(BlastFurnaceState state)
+    private MethodStep[] checkPrerequisite(BlastFurnaceState state)
     {
         // ensure player has both ice gloves & goldsmith gauntlets either in inventory or equipped
 
@@ -45,9 +45,9 @@ public class GoldBarMethod extends Method
     }
 
     @Override
-    public MethodStep next(BlastFurnaceState state)
+    public MethodStep[] next(BlastFurnaceState state)
     {
-        MethodStep prerequisite = checkPrerequisite(state);
+        MethodStep[] prerequisite = checkPrerequisite(state);
         if (prerequisite != null) return prerequisite;
         boolean oreOnConveyor = state.getPlayer().hasOreOnConveyor();
         boolean furnaceHasBar = state.getFurnace().has(ItemID.GOLD_BAR);
