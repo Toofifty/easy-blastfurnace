@@ -102,11 +102,11 @@ abstract public class GoldHybridMethod extends MetalBarMethod
             return waitForBars;
         }
 
-        if (tickPerfectMethod && !state.getPlayer().isAtBarDispenser()) {
+        if (tickPerfectMethod && !state.getPlayer().isAtBarDispenser() && (oreOnConveyor || furnaceHasBar)) {
             return goToDispenserAndEquipIceOrSmithsGloves;
         }
 
-        if (tickPerfectMethod && state.getPlayer().isAtBarDispenser()) {
+        if (tickPerfectMethod && state.getPlayer().isAtBarDispenser() && furnaceHasBar) {
             return collectBarsAndEquipGoldsmithGauntlets;
         }
 
