@@ -57,6 +57,6 @@ public class CoalBagState
             setCoal(maxCoal);
             return;
         }
-        setCoal(Math.min(coal + inventory.getQuantity(ItemID.COAL), maxCoal));
+        setCoal(coal + inventory.getQuantity(ItemID.COAL));
     }
 }
