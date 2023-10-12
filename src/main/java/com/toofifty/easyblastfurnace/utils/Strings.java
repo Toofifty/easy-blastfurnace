@@ -41,10 +41,6 @@ public class Strings {
     public static String RUNITEHYBRID = "Gold + runite bars";
     public static String STEEL = "Steel bars";
 
-    // Patterns
-    public static String COAL_FULL = "^The coal bag contains 27 pieces of coal.$";
-    public static String COAL_EMPTY = "^The coal bag is now empty.$";
-
     // Actions
     public static String FILL = "Fill";
     public static String EMPTY = "Empty";

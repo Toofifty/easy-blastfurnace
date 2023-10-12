@@ -23,8 +23,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Slf4j
 @PluginDescriptor(
@@ -38,9 +36,6 @@ public class EasyBlastFurnacePlugin extends Plugin
     public static final int BANK_CHEST = ObjectID.BANK_CHEST_26707;
 
     public static final WorldPoint PICKUP_POSITION = new WorldPoint(1940, 4962, 0);
-
-    private static final Pattern COAL_FULL_MESSAGE = Pattern.compile(Strings.COAL_FULL);
-    private static final Pattern COAL_EMPTY_MESSAGE = Pattern.compile(Strings.COAL_EMPTY);
 
     @Inject
     private Client client;
@@ -92,6 +87,9 @@ public class EasyBlastFurnacePlugin extends Plugin
 
     @Getter
     private boolean isEnabled = false;
+
+    @Getter
+    private int lastCheckTick = 0;
 
     @Override
     protected void startUp()
@@ -196,49 +194,22 @@ public class EasyBlastFurnacePlugin extends Plugin
     }
 
     @Subscribe
-    public void onChatMessage(ChatMessage event)
-    {
-        if (!isEnabled) return;
-        if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM) return;
-
-        String message = event.getMessage();
-        int maxConveyorCount = state.getCoalBag().getMaxCoal() == 27 ? 2 : 3;
-        Matcher emptyMatcher = COAL_EMPTY_MESSAGE.matcher(message);
-        Matcher filledMatcher = COAL_FULL_MESSAGE.matcher(message);
-
-        if (emptyMatcher.matches()) {
-            state.getCoalBag().empty();
-
-        } else if (filledMatcher.matches()) {
-            state.getCoalBag().fill();
-        }
-
-        if (message.equals("All your ore goes onto the conveyor belt.")) {
-            if (state.getInventory().has(ItemID.COAL)) {
-                state.getCoalBag().coalOntoConveyor();
-            } else {
-                state.getCoalBag().coalOntoConveyor(1);
-            }
-        }
-
-        // After emptying coal bag onto conveyor, ensure coal amount is 0.
-        if (maxConveyorCount == state.getCoalBag().getCoalOntoConveyorCount()) {
-            state.getCoalBag().coalOntoConveyor(0);
-            if (state.getCoalBag().getCoal() > 1) state.getCoalBag().setCoal(0);
-        }
-
-        // handle coal bag changes
-        methodHandler.next();
-    }
-
-    @Subscribe
     public void onMenuOptionClicked(MenuOptionClicked event)
     {
         if (!isEnabled) return;
 
-        if (event.getMenuOption().equals(Strings.FILL)) state.getCoalBag().fill();
-        if (event.getMenuOption().equals(Strings.EMPTY)) state.getCoalBag().empty();
         if (event.getMenuOption().equals(Strings.DRINK)) statistics.drinkStamina();
+        if (event.getMenuOption().equals(Strings.FILL)) state.getCoalBag().fill();
+
+        // Because menu option events can happen multiple times per tick, this is needed to prevent duplicate coal bag empty events.
+        final int currentTick = client.getTickCount();
+        if (lastCheckTick == currentTick)
+        {
+            return;
+        }
+        lastCheckTick = currentTick;
+
+        if (event.getMenuOption().equals(Strings.EMPTY)) state.getCoalBag().empty();
 
         // handle coal bag changes
         methodHandler.next();

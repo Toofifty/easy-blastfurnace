@@ -47,10 +47,6 @@ public class BlastFurnaceState
             coalBag.setMaxCoal(27);
         }
 
-        if (coalBag.getCoalOntoConveyorCount() > 0 && bank.isOpen() && inventory.hasChanged(ItemID.COAL) && inventory.has(ItemID.COAL)) {
-            coalBag.coalOntoConveyor(0);
-        }
-
         inventory.update();
         furnace.update();
     }

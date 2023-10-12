@@ -90,6 +90,8 @@ public class EasyBlastFurnacePluginTest {
     private final WorldPoint atConveyorBelt = new WorldPoint(1942, 4967, 0);
     private final WorldPoint notAtConveyorBelt = new WorldPoint(1949, 4967, 0);
 
+    private int tickCount = 0;
+
     @Before
     public void before()
     {
@@ -694,6 +696,8 @@ public class EasyBlastFurnacePluginTest {
     private void setCoalBag(String emptyOrFillText)
     {
         // Empty coal bag to get Wait for bars step
+        tickCount = tickCount + 1;
+        when(client.getTickCount()).thenReturn(tickCount);
         when(menuOptionClicked.getMenuOption()).thenReturn(emptyOrFillText);
         easyBlastFurnacePlugin.onMenuOptionClicked(menuOptionClicked);
     }
