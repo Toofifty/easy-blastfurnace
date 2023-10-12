@@ -40,7 +40,7 @@ public abstract class Method
     protected final MethodStep[] depositInventory = new MethodStep[] { new WidgetStep(Strings.DEPOSIT_INVENTORY, WidgetInfo.BANK_DEPOSIT_INVENTORY) };
     protected final MethodStep[] putOntoConveyorBelt = new MethodStep[] { new ObjectStep(Strings.PUT_ORE_ONTO_CONVEYOR_BELT, EasyBlastFurnacePlugin.CONVEYOR_BELT) };
     protected final MethodStep[] openBank = new MethodStep[] { new ObjectStep(Strings.OPEN_BANK, EasyBlastFurnacePlugin.BANK_CHEST) };
-    protected final MethodStep[] collectBars = new MethodStep[] { new ObjectStep(Strings.COLLECT_BARS, EasyBlastFurnacePlugin.BAR_DISPENSER), new ItemStep(Strings.EQUIP_ICE_OR_SMITHS_GLOVES, ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I) };
+    protected final MethodStep[] collectBars = new MethodStep[] { new ObjectStep(Strings.COLLECT_BARS, EasyBlastFurnacePlugin.BAR_DISPENSER) };
     protected final MethodStep[] waitForBars = new MethodStep[] { new TileStep(Strings.WAIT_FOR_BARS, EasyBlastFurnacePlugin.PICKUP_POSITION) };
 
     public abstract MethodStep[] next(BlastFurnaceState state);
