@@ -44,6 +44,8 @@ abstract public class MetalBarMethod extends Method
         MethodStep prerequisite = checkPrerequisite(state);
         if (prerequisite != null) return prerequisite;
         boolean coalRun = state.getFurnace().getQuantity(ItemID.COAL) < 27 * (coalPer() - state.getFurnace().getCoalOffset());
+        boolean oreOnConveyor = state.getPlayer().hasOreOnConveyor();
+        boolean furnaceHasBar = state.getFurnace().has(barItem());
 
         if (state.getInventory().has(ItemID.COAL) || (state.getInventory().has(oreItem()) && !coalRun)) {
             return putOntoConveyorBelt;
@@ -54,13 +56,15 @@ abstract public class MetalBarMethod extends Method
             return emptyCoalBag;
         }
 
-        if (state.getPlayer().hasLoadedOres()) {
+        if (!state.getConfig().tickPerfectMethod() && state.getPlayer().hasOreOnConveyor()) {
             return waitForBars;
         }
 
-        if (state.getFurnace().has(barItem())) {
-            return collectBars;
-        }
+		if (state.getConfig().tickPerfectMethod() && furnaceHasBar && oreOnConveyor ||
+			!state.getConfig().tickPerfectMethod() && furnaceHasBar
+		) {
+			return collectBars;
+		}
 
         if (state.getBank().isOpen()) {
             if (state.getInventory().has(barItem(), oreItem())) {

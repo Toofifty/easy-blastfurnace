@@ -23,7 +23,7 @@ public class PlayerState
     @Accessors(fluent = true)
     @Getter
     @Setter
-    private boolean hasLoadedOres = false;
+    private boolean hasOreOnConveyor = false;
 
     @Accessors(fluent = true)
     @Getter

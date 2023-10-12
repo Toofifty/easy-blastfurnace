@@ -215,15 +215,15 @@ public class EasyBlastFurnacePlugin extends Plugin
 
         if (message.equals("All your ore goes onto the conveyor belt.")) {
             if (state.getInventory().has(ItemID.COAL)) {
-                state.getCoalBag().oreOntoConveyor();
+                state.getCoalBag().coalOntoConveyor();
             } else {
-                state.getCoalBag().oreOntoConveyor(1);
+                state.getCoalBag().coalOntoConveyor(1);
             }
         }
 
         // After emptying coal bag onto conveyor, ensure coal amount is 0.
-        if (maxConveyorCount == state.getCoalBag().getOreOntoConveyorCount()) {
-            state.getCoalBag().oreOntoConveyor(0);
+        if (maxConveyorCount == state.getCoalBag().getCoalOntoConveyorCount()) {
+            state.getCoalBag().coalOntoConveyor(0);
             if (state.getCoalBag().getCoal() > 1) state.getCoalBag().setCoal(0);
         }
 
