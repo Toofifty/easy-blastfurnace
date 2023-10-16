@@ -6,6 +6,7 @@ import com.toofifty.easyblastfurnace.methods.MetalBarMethod;
 import com.toofifty.easyblastfurnace.methods.Method;
 import com.toofifty.easyblastfurnace.state.BlastFurnaceState;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
@@ -19,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Singleton
+@Slf4j
 public class SessionStatistics
 {
     @Inject
@@ -169,11 +171,13 @@ public class SessionStatistics
         for (int barId : bars) {
             int diff = state.getFurnace().getChange(barId);
             if (diff > 0) {
+                log.info("Diff: " + diff + " | oresOnConveyorBelt: " + state.getFurnace().getOresOnConveyorBelt());
                 int totalBars = outputs.getOrDefault(barId, 0) + diff;
                 outputs.put(barId, totalBars);
-                state.getFurnace().setOresOnConveyorBelt(state.getFurnace().getOresOnConveyorBelt() - diff);
-                if (state.getFurnace().getOresOnConveyorBelt() <= 0) {
+                state.getFurnace().setOresOnConveyorBelt(Math.max(state.getFurnace().getOresOnConveyorBelt() - diff, 0));
+                if (state.getFurnace().getOresOnConveyorBelt() == 0) {
                     state.getPlayer().hasOreOnConveyor(false);
+                    log.info("hasOreOnConveyor: false");
                 }
             }
         }

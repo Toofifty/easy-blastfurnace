@@ -16,7 +16,7 @@ import java.util.Arrays;
 public class PlayerState
 {
     private static final WorldPoint LOAD_POSITION = new WorldPoint(1942, 4967, 0);
-    private static final WorldPoint COLLECT_POSITION = new WorldPoint(1940, 4963, 0);
+    private static final WorldPoint COLLECT_POSITION = new WorldPoint(1940, 4962, 0);
     private static final int[] BLAST_FURNACE_WORLDS = new int[]{
         352, 355, 356, 357, 358, 386, 387, 395, 424, 466, 494, 495, 496, 515, 516
     };

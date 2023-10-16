@@ -23,6 +23,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Slf4j
 @PluginDescriptor(
@@ -36,6 +38,8 @@ public class EasyBlastFurnacePlugin extends Plugin
     public static final int BANK_CHEST = ObjectID.BANK_CHEST_26707;
 
     public static final WorldPoint PICKUP_POSITION = new WorldPoint(1940, 4962, 0);
+
+    private static final Pattern COAL_FULL_MESSAGE = Pattern.compile(Strings.COAL_FULL);
 
     @Inject
     private Client client;
@@ -191,6 +195,23 @@ public class EasyBlastFurnacePlugin extends Plugin
         if(Objects.equals(event.getGroup(), "easy-blastfurnace") && Objects.equals(event.getKey(), "potionMode")) {
             clientThread.invokeLater(() -> methodHandler.next());
         }
+    }
+
+    @Subscribe
+    public void onChatMessage(ChatMessage event)
+    {
+        if (!isEnabled) return;
+        if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM) return;
+
+        String message = event.getMessage();
+        Matcher filledMatcher = COAL_FULL_MESSAGE.matcher(message);
+
+        if (filledMatcher.matches() && state.getBank().isOpen()) {
+            state.getCoalBag().fill();
+        }
+
+        // handle coal bag changes
+        methodHandler.next();
     }
 
     @Subscribe
