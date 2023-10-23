@@ -61,8 +61,8 @@ abstract public class GoldHybridMethod extends MetalBarMethod
         boolean coalRun = state.getFurnace().getQuantity(ItemID.COAL) < maxCoalInventory * (coalPer() - state.getFurnace().getCoalOffset());
 		boolean oreOnConveyor = state.getPlayer().hasOreOnConveyor();
 		boolean furnaceHasGoldBar = state.getFurnace().has(ItemID.GOLD_BAR);
+		boolean furnaceHasGoldOre = state.getFurnace().has(ItemID.GOLD_ORE);
 		boolean furnaceHasMetalBar = state.getFurnace().has(barItem());
-		boolean furnaceMetalBarCount = state.getFurnace().has(barItem()) && state.getFurnace().getQuantity(barItem()) >= state.getInventory().getFreeSlotsIncludingOresAndBars();
 		boolean furnaceHasBar = state.getFurnace().has(barItem(), ItemID.GOLD_BAR);
         boolean tickPerfectMethod = state.getConfig().tickPerfectMethod();
         boolean coalBagFull = state.getCoalBag().isFull();
@@ -72,6 +72,14 @@ abstract public class GoldHybridMethod extends MetalBarMethod
 		boolean useDepositInventory = state.getConfig().useDepositInventory();
 
 		if (state.getBank().isOpen()) {
+
+			if ((furnaceHasMetalBar && furnaceHasGoldBar) || (furnaceHasGoldOre && furnaceHasGoldBar)) {
+				if (state.getInventory().has(oreItem(), ItemID.GOLD_ORE, barItem(), ItemID.GOLD_BAR)) {
+					return useDepositInventory ? depositInventory : depositBarsAndOres;
+				}
+				lastInvWasGold = true;
+				return collectBars;
+			}
 
 			if (state.getCoalBag().isFull() && state.getInventory().has(oreItem(), ItemID.GOLD_ORE)) {
 				return putOntoConveyorBelt;
@@ -83,10 +91,6 @@ abstract public class GoldHybridMethod extends MetalBarMethod
 
 			if (!useDepositInventory && !coalBagFull) {
 				return coalBagEmpty ? fillCoalBag : refillCoalBag;
-			}
-
-			if (furnaceHasMetalBar && furnaceHasGoldBar) {
-				return collectBars;
 			}
 
 			if (!useDepositInventory && coalRun && !state.getEquipment().hasGoldsmithEffect()) {
@@ -120,16 +124,24 @@ abstract public class GoldHybridMethod extends MetalBarMethod
             return emptyCoalBag;
         }
 
-		if (tickPerfectMethod && ((oreOnConveyor && furnaceHasGoldBar) || (furnaceHasMetalBar && furnaceHasGoldBar) || (!furnaceHasGoldBar && furnaceHasMetalBar && oreOnConveyor))) {
+		// 1. Add gold and go to bank
+		// 2. Add gold and pick up prev run's bars until enough coal
+		// 3. Add adamantite and pick up gold
+
+		// 4. Add gold and pick up gold until enough coal
+		// 5. Add adamantite and pick up adamantite bars
+		// 6. Repeat steps 4 & 5
+
+		if (tickPerfectMethod && (((oreOnConveyor || furnaceHasGoldOre) && furnaceHasGoldBar) || (furnaceHasMetalBar && furnaceHasGoldBar) || (!furnaceHasGoldBar && furnaceHasMetalBar && oreOnConveyor))) {
 			if (atConveyorBelt) {
 				return goToDispenser;
 			}
 
-			if (furnaceHasGoldBar && oreOnConveyor && !furnaceHasMetalBar && lastInvWasGold && state.getEquipment().hasIceGlovesEffect()) {
+			if (furnaceHasGoldBar && (oreOnConveyor || furnaceHasGoldOre) && lastInvWasGold && state.getEquipment().hasIceGlovesEffect()) {
 				return collectBarsAndEquipGoldsmithGauntlets;
 			}
 
-			if (oreOnConveyor && lastInvWasGold) {
+			if (oreOnConveyor && lastInvWasGold && furnaceHasMetalBar) {
 				return waitForGoldBars;
 			}
 

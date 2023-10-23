@@ -52,9 +52,36 @@ public class GoldBarMethod extends Method
         if (prerequisite != null) return prerequisite;
         boolean oreOnConveyor = state.getPlayer().hasOreOnConveyor();
         boolean furnaceHasBar = state.getFurnace().has(ItemID.GOLD_BAR);
+        boolean furnaceHasOre = state.getFurnace().has(ItemID.GOLD_ORE);
         boolean tickPerfectMethod = state.getConfig().tickPerfectMethod();
         boolean atBarDispenser = state.getPlayer().isAtBarDispenser();
         boolean atConveyorBelt = state.getPlayer().isAtConveyorBelt();
+        boolean useDepositInventory = state.getConfig().useDepositInventory();
+
+        if (state.getBank().isOpen()) {
+            if (furnaceHasOre && furnaceHasBar) {
+                if (state.getInventory().has(ItemID.GOLD_BAR, ItemID.GOLD_ORE)) {
+                    return useDepositInventory ? depositInventory : depositBarsAndOres;
+                }
+                return collectBars;
+            }
+
+            if (state.getInventory().has(ItemID.GOLD_BAR)) {
+                return state.getConfig().useDepositInventory() ? depositInventory : depositBarsAndOres;
+            }
+
+            if (tickPerfectMethod && !state.getEquipment().hasGoldsmithEffect() && !state.getEquipment().hasIceGlovesEffect()) {
+                return equipGoldsmithGauntlets;
+            }
+
+            if (!tickPerfectMethod && !state.getEquipment().hasGoldsmithEffect()) {
+                return equipGoldsmithGauntlets;
+            }
+
+            if (!state.getInventory().has(ItemID.GOLD_ORE)) {
+                return withdrawGoldOre;
+            }
+        }
 
         if (tickPerfectMethod && state.getInventory().has(ItemID.GOLD_ORE)) {
             if (furnaceHasBar) {
@@ -64,7 +91,7 @@ public class GoldBarMethod extends Method
             }
         }
 
-        if (tickPerfectMethod && oreOnConveyor && furnaceHasBar) {
+        if (tickPerfectMethod && (oreOnConveyor || furnaceHasOre) && furnaceHasBar) {
             if (atConveyorBelt) {
                 return goToDispenser;
             }
@@ -92,24 +119,6 @@ public class GoldBarMethod extends Method
                 return equipIceOrSmithsGloves;
             }
             return collectBars;
-        }
-
-        if (state.getBank().isOpen()) {
-            if (state.getInventory().has(ItemID.GOLD_BAR)) {
-                return state.getConfig().useDepositInventory() ? depositInventory : depositBarsAndOres;
-            }
-
-            if (tickPerfectMethod && !state.getEquipment().hasGoldsmithEffect() && !state.getEquipment().hasIceGlovesEffect()) {
-                return equipGoldsmithGauntlets;
-            }
-
-            if (!tickPerfectMethod && !state.getEquipment().hasGoldsmithEffect()) {
-                return equipGoldsmithGauntlets;
-            }
-
-            if (!state.getInventory().has(ItemID.GOLD_ORE)) {
-                return withdrawGoldOre;
-            }
         }
 
         return openBank;

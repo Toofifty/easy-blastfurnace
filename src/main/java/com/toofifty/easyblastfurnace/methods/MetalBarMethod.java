@@ -70,6 +70,10 @@ abstract public class MetalBarMethod extends Method
                 return state.getConfig().useDepositInventory() ? depositInventory : depositBarsAndOres;
             }
 
+            if (state.getFurnace().has(oreItem()) && state.getFurnace().has(barItem())) {
+                return collectBars;
+            }
+
             if (state.getCoalBag().isEmpty()) {
                 return fillCoalBag;
             }

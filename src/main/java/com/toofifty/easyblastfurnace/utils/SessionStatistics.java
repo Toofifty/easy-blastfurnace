@@ -168,17 +168,25 @@ public class SessionStatistics
             ItemID.GOLD_BAR, ItemID.STEEL_BAR, ItemID.MITHRIL_BAR, ItemID.ADAMANTITE_BAR, ItemID.RUNITE_BAR
         };
 
-        for (int barId : bars) {
-            int diff = state.getFurnace().getChange(barId);
+        int[] ores = new int[]{
+            ItemID.GOLD_ORE, ItemID.IRON_ORE, ItemID.MITHRIL_ORE, ItemID.ADAMANTITE_ORE, ItemID.RUNITE_ORE
+        };
+
+        for (int oreId : ores) {
+            int diff = state.getFurnace().getChange(oreId);
             if (diff > 0) {
-                log.info("Diff: " + diff + " | oresOnConveyorBelt: " + state.getFurnace().getOresOnConveyorBelt());
-                int totalBars = outputs.getOrDefault(barId, 0) + diff;
-                outputs.put(barId, totalBars);
                 state.getFurnace().setOresOnConveyorBelt(Math.max(state.getFurnace().getOresOnConveyorBelt() - diff, 0));
                 if (state.getFurnace().getOresOnConveyorBelt() == 0) {
                     state.getPlayer().hasOreOnConveyor(false);
-                    log.info("hasOreOnConveyor: false");
                 }
+            }
+        }
+
+        for (int barId : bars) {
+            int diff = state.getFurnace().getChange(barId);
+            if (diff > 0) {
+                int totalBars = outputs.getOrDefault(barId, 0) + diff;
+                outputs.put(barId, totalBars);
             }
         }
     }

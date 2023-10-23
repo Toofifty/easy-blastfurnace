@@ -57,8 +57,5 @@ public class BlastFurnaceState
 
         inventory.update();
         furnace.update();
-        log.info("Gold ore in furnace: " + furnace.getQuantity(ItemID.GOLD_ORE));
-        log.info("coal in furnace: " + furnace.getQuantity(ItemID.COAL));
-        log.info("adamantite ore in furnace: " + furnace.getQuantity(ItemID.ADAMANTITE_ORE));
     }
 }
