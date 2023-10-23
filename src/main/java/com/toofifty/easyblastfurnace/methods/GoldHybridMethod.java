@@ -84,6 +84,14 @@ abstract public class GoldHybridMethod extends MetalBarMethod
 				return coalBagEmpty ? fillCoalBag : refillCoalBag;
 			}
 
+			if (state.getFurnace().getQuantity(ItemID.GOLD_ORE, oreItem()) == 28 && state.getInventory().has(oreItem(), ItemID.GOLD_ORE)) {
+				return collectBars;
+			}
+
+			if (!useDepositInventory && coalRun && !state.getEquipment().hasGoldsmithEffect()) {
+				return equipGoldsmithGauntlets;
+			}
+
 			if (coalRun && !state.getInventory().has(oreItem(), ItemID.GOLD_ORE)) {
 				return withdrawGoldOre;
 			}
@@ -116,12 +124,16 @@ abstract public class GoldHybridMethod extends MetalBarMethod
 
 			log.info("gold and adamantite bars: " + state.getFurnace().getQuantity(barItem(), ItemID.GOLD_BAR));
 			log.info("gold ore in furnace: " + state.getFurnace().getQuantity(ItemID.GOLD_ORE));
-			if (oreOnConveyor && state.getFurnace().getQuantity(barItem(), ItemID.GOLD_BAR) < 28) {
+			if (oreOnConveyor && state.getFurnace().getQuantity(ItemID.GOLD_BAR) < 28 && !furnaceHasMetalBar) {
 				return waitForGoldBars;
 			}
 
 			if (!atBarDispenser) {
 				return goToDispenserAndEquipIceOrSmithsGloves;
+			}
+
+			if (furnaceHasGoldBar && state.getFurnace().getQuantity(ItemID.GOLD_ORE) > 0 && state.getFurnace().getQuantity(barItem(), oreItem()) == 0) {
+				return collectBarsAndEquipGoldsmithGauntlets;
 			}
 
 			return collectBars;

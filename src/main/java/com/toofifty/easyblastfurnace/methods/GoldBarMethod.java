@@ -57,7 +57,7 @@ public class GoldBarMethod extends Method
         boolean atConveyorBelt = state.getPlayer().isAtConveyorBelt();
 
         if (tickPerfectMethod && state.getInventory().has(ItemID.GOLD_ORE)) {
-            if (state.getBank().isOpen()) {
+            if (furnaceHasBar) {
                 return putOntoConveyorBelt;
             } else {
                 return putOntoConveyorBeltAndEquipGoldsmithGauntlets;
@@ -97,6 +97,10 @@ public class GoldBarMethod extends Method
         if (state.getBank().isOpen()) {
             if (state.getInventory().has(ItemID.GOLD_BAR)) {
                 return state.getConfig().useDepositInventory() ? depositInventory : depositBarsAndOres;
+            }
+
+            if (tickPerfectMethod && !state.getEquipment().hasGoldsmithEffect() && !state.getEquipment().hasIceGlovesEffect()) {
+                return equipGoldsmithGauntlets;
             }
 
             if (!tickPerfectMethod && !state.getEquipment().hasGoldsmithEffect()) {
