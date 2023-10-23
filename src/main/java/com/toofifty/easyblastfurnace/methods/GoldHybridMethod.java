@@ -7,6 +7,7 @@ import net.runelite.api.ItemID;
 @Slf4j
 abstract public class GoldHybridMethod extends MetalBarMethod
 {
+	protected boolean lastInvWasGold = false;
     private MethodStep[] checkPrerequisite(BlastFurnaceState state)
     {
         if (!state.getInventory().has(ItemID.COAL_BAG_12019, ItemID.OPEN_COAL_BAG)) {
@@ -84,7 +85,7 @@ abstract public class GoldHybridMethod extends MetalBarMethod
 				return coalBagEmpty ? fillCoalBag : refillCoalBag;
 			}
 
-			if (state.getFurnace().getQuantity(ItemID.GOLD_ORE, oreItem()) == 28 && state.getInventory().has(oreItem(), ItemID.GOLD_ORE)) {
+			if (furnaceHasMetalBar && furnaceHasGoldBar) {
 				return collectBars;
 			}
 
@@ -93,10 +94,12 @@ abstract public class GoldHybridMethod extends MetalBarMethod
 			}
 
 			if (coalRun && !state.getInventory().has(oreItem(), ItemID.GOLD_ORE)) {
+				lastInvWasGold = true;
 				return withdrawGoldOre;
 			}
 
 			if (!state.getInventory().has(oreItem(), ItemID.GOLD_ORE)) {
+				lastInvWasGold = false;
 				return withdrawOre();
 			}
 
@@ -122,18 +125,16 @@ abstract public class GoldHybridMethod extends MetalBarMethod
 				return goToDispenser;
 			}
 
-			log.info("gold and adamantite bars: " + state.getFurnace().getQuantity(barItem(), ItemID.GOLD_BAR));
-			log.info("gold ore in furnace: " + state.getFurnace().getQuantity(ItemID.GOLD_ORE));
-			if (oreOnConveyor && state.getFurnace().getQuantity(ItemID.GOLD_BAR) < 28 && !furnaceHasMetalBar) {
+			if (furnaceHasGoldBar && oreOnConveyor && !furnaceHasMetalBar && lastInvWasGold && state.getEquipment().hasIceGlovesEffect()) {
+				return collectBarsAndEquipGoldsmithGauntlets;
+			}
+
+			if (oreOnConveyor && lastInvWasGold) {
 				return waitForGoldBars;
 			}
 
 			if (!atBarDispenser) {
 				return goToDispenserAndEquipIceOrSmithsGloves;
-			}
-
-			if (furnaceHasGoldBar && state.getFurnace().getQuantity(ItemID.GOLD_ORE) > 0 && state.getFurnace().getQuantity(barItem(), oreItem()) == 0) {
-				return collectBarsAndEquipGoldsmithGauntlets;
 			}
 
 			return collectBars;

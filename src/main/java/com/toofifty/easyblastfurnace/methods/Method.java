@@ -42,7 +42,7 @@ public abstract class Method
     protected final MethodStep[] putOntoConveyorBeltAndEquipGoldsmithGauntlets = new MethodStep[] { new ItemStep(Strings.EQUIP_GOLDSMITH_GAUNTLETS, ItemID.GOLDSMITH_GAUNTLETS), new ObjectStep(Strings.PUT_ORE_ONTO_CONVEYOR_BELT, EasyBlastFurnacePlugin.CONVEYOR_BELT) };
     protected final MethodStep[] openBank = new MethodStep[] { new ObjectStep(Strings.OPEN_BANK, EasyBlastFurnacePlugin.BANK_CHEST) };
     protected final MethodStep[] collectBars = new MethodStep[] { new ObjectStep(Strings.COLLECT_BARS, EasyBlastFurnacePlugin.BAR_DISPENSER), new ItemStep(Strings.EQUIP_ICE_OR_SMITHS_GLOVES, ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I), new TileStep("", EasyBlastFurnacePlugin.PICKUP_POSITION) };
-    protected final MethodStep[] waitForBars = new MethodStep[] { new TileStep(Strings.WAIT_FOR_BARS, EasyBlastFurnacePlugin.PICKUP_POSITION), new ItemStep(Strings.EQUIP_ICE_OR_SMITHS_GLOVES, ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I) };
+    protected final MethodStep[] waitForBars = new MethodStep[] { new TileStep(Strings.WAIT_FOR_BARS, EasyBlastFurnacePlugin.PICKUP_POSITION) };
     protected final MethodStep[] waitForGoldBars = new MethodStep[] { new TileStep(Strings.WAIT_FOR_BARS, EasyBlastFurnacePlugin.PICKUP_POSITION), new ItemStep(Strings.EQUIP_GOLDSMITH_GAUNTLETS, ItemID.GOLDSMITH_GAUNTLETS) };
     protected final MethodStep[] goToDispenser = new MethodStep[] { new TileStep(Strings.GO_TO_DISPENSER, EasyBlastFurnacePlugin.PICKUP_POSITION) };
     protected final MethodStep[] goToDispenserAndEquipIceOrSmithsGloves = new MethodStep[] { new ItemStep(Strings.EQUIP_ICE_OR_SMITHS_GLOVES, ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I), new TileStep(Strings.GO_TO_DISPENSER, EasyBlastFurnacePlugin.PICKUP_POSITION) };
