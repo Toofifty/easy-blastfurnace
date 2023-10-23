@@ -34,17 +34,11 @@ public class BlastFurnaceState
 
     public void update()
     {
-        if (player.isAtConveyorBelt() &&
-            (inventory.hasChanged(ItemID.GOLD_ORE) ||
-                inventory.hasChanged(ItemID.IRON_ORE) ||
-                inventory.hasChanged(ItemID.MITHRIL_ORE) ||
-                inventory.hasChanged(ItemID.ADAMANTITE_ORE) ||
-                inventory.hasChanged(ItemID.RUNITE_ORE))) {
-            player.hasLoadedOres(true);
-        }
+        int invChange = inventory.getChange(ItemID.GOLD_ORE, ItemID.IRON_ORE, ItemID.MITHRIL_ORE, ItemID.ADAMANTITE_ORE, ItemID.RUNITE_ORE);
 
-        if (furnace.has(ItemID.GOLD_BAR, ItemID.STEEL_BAR, ItemID.MITHRIL_BAR, ItemID.ADAMANTITE_BAR, ItemID.RUNITE_BAR)) {
-            player.hasLoadedOres(false);
+        if (player.isAtConveyorBelt() && invChange < 0) {
+            furnace.setOresOnConveyorBelt(-invChange);
+            player.hasOreOnConveyor(true);
         }
 
         if (equipment.equipped(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET, ItemID.MAX_CAPE)) {
@@ -53,8 +47,8 @@ public class BlastFurnaceState
             coalBag.setMaxCoal(27);
         }
 
-        if (coalBag.getOreOntoConveyorCount() > 0 && bank.isOpen() && inventory.hasChanged(ItemID.COAL) && inventory.has(ItemID.COAL)) {
-            coalBag.oreOntoConveyor(0);
+        if (coalBag.getCoalOntoConveyorCount() > 0 && bank.isOpen() && inventory.hasChanged(ItemID.COAL) && inventory.has(ItemID.COAL)) {
+            coalBag.coalOntoConveyor(0);
         }
 
         inventory.update();

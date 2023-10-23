@@ -113,6 +113,15 @@ public interface EasyBlastFurnaceConfig extends Config
         return Color.CYAN;
     }
 
+	@ConfigItem(
+		position = 8,
+		keyName = "leaveBarInDispenser",
+		name = "Toggle tick perfect method",
+		description = "Continues to the next step when there is 1 bar in the dispenser rather than 0",
+		section = guidanceOverlays
+	)
+	default boolean tickPerfectMethod() { return false; }
+
     @ConfigSection(
         name = "Coal bag overlay",
         description = "Configure coal bag overlay",

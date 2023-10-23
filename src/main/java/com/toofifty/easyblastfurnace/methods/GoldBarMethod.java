@@ -49,6 +49,8 @@ public class GoldBarMethod extends Method
     {
         MethodStep prerequisite = checkPrerequisite(state);
         if (prerequisite != null) return prerequisite;
+        boolean oreOnConveyor = state.getPlayer().hasOreOnConveyor();
+        boolean furnaceHasBar = state.getFurnace().has(ItemID.GOLD_BAR);
 
         if (state.getInventory().has(ItemID.GOLD_ORE)) {
 
@@ -59,23 +61,27 @@ public class GoldBarMethod extends Method
             return putOntoConveyorBelt;
         }
 
-        if (state.getPlayer().hasLoadedOres()) {
-            return waitForBars;
-        }
+		if (!state.getConfig().tickPerfectMethod() && oreOnConveyor) {
+			return waitForBars;
+		}
 
-        if (state.getFurnace().has(ItemID.GOLD_BAR)) {
-            if (!state.getEquipment().hasIceGlovesEffect()) {
-                return equipIceOrSmithsGloves;
-            }
-            return collectBars;
-        }
+
+
+		if (state.getConfig().tickPerfectMethod() && furnaceHasBar && oreOnConveyor ||
+			!state.getConfig().tickPerfectMethod() && furnaceHasBar) {
+			if (!state.getEquipment().hasIceGlovesEffect()) {
+				return equipIceOrSmithsGloves;
+			}
+			return collectBars;
+		}
+
 
         if (state.getBank().isOpen()) {
             if (state.getInventory().has(ItemID.GOLD_BAR)) {
                 return state.getConfig().useDepositInventory() ? depositInventory : depositBarsAndOres;
             }
 
-            if (!state.getEquipment().hasGoldsmithEffect()) {
+            if (!state.getConfig().tickPerfectMethod() && !state.getEquipment().hasGoldsmithEffect()) {
                 return equipGoldsmithGauntlets;
             }
 
