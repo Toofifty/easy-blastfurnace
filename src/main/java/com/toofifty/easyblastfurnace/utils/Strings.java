@@ -46,7 +46,7 @@ public class Strings {
     public static String STEEL = "Steel bars";
 
     // Patterns
-    public static String COAL_FULL = "^The coal bag contains \\d+ pieces of coal.$";
+    public static String COAL_FULL = "^The coal bag contains (\\d+) pieces of coal.$";
 
     // Actions
     public static String FILL = "Fill";

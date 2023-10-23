@@ -208,6 +208,9 @@ public class EasyBlastFurnacePlugin extends Plugin
 
         if (filledMatcher.matches() && state.getBank().isOpen()) {
             state.getCoalBag().fill();
+        } else if (filledMatcher.matches()) {
+            int addedCoal = Integer.parseInt(filledMatcher.group(1));
+            state.getCoalBag().setCoal(state.getCoalBag().getCoal() + addedCoal);
         }
 
         // handle coal bag changes

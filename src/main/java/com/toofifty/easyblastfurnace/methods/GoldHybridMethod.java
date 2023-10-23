@@ -63,6 +63,7 @@ abstract public class GoldHybridMethod extends MetalBarMethod
 		boolean furnaceHasGoldBar = state.getFurnace().has(ItemID.GOLD_BAR);
 		boolean furnaceHasGoldOre = state.getFurnace().has(ItemID.GOLD_ORE);
 		boolean furnaceHasMetalBar = state.getFurnace().has(barItem());
+		boolean furnaceHasMetalOre = state.getFurnace().has(oreItem());
 		boolean furnaceHasBar = state.getFurnace().has(barItem(), ItemID.GOLD_BAR);
         boolean tickPerfectMethod = state.getConfig().tickPerfectMethod();
         boolean coalBagFull = state.getCoalBag().isFull();
@@ -70,10 +71,11 @@ abstract public class GoldHybridMethod extends MetalBarMethod
 		boolean atBarDispenser = state.getPlayer().isAtBarDispenser();
 		boolean atConveyorBelt = state.getPlayer().isAtConveyorBelt();
 		boolean useDepositInventory = state.getConfig().useDepositInventory();
+		boolean barDispenserIsFull = (furnaceHasMetalBar && furnaceHasGoldBar) || (furnaceHasGoldOre && furnaceHasGoldBar) || (furnaceHasMetalOre && furnaceHasMetalBar);
 
 		if (state.getBank().isOpen()) {
 
-			if ((furnaceHasMetalBar && furnaceHasGoldBar) || (furnaceHasGoldOre && furnaceHasGoldBar)) {
+			if (barDispenserIsFull) {
 				if (state.getInventory().has(oreItem(), ItemID.GOLD_ORE, barItem(), ItemID.GOLD_BAR)) {
 					return useDepositInventory ? depositInventory : depositBarsAndOres;
 				}
@@ -120,9 +122,13 @@ abstract public class GoldHybridMethod extends MetalBarMethod
             return putOntoConveyorBelt;
         }
 
-        if ( (coalBagFull && atConveyorBelt) || (!coalBagEmpty && smithingCapeEquipped) ) {
+        if (!barDispenserIsFull && ((coalBagFull && atConveyorBelt) || (!coalBagEmpty && smithingCapeEquipped)) ) {
             return emptyCoalBag;
         }
+
+		if (barDispenserIsFull && state.getInventory().has(ItemID.COAL)) {
+			return coalBagEmpty ? fillCoalBag : refillCoalBag;
+		}
 
 		// 1. Add gold and go to bank
 		// 2. Add gold and pick up prev run's bars until enough coal
@@ -132,7 +138,10 @@ abstract public class GoldHybridMethod extends MetalBarMethod
 		// 5. Add adamantite and pick up adamantite bars
 		// 6. Repeat steps 4 & 5
 
-		if (tickPerfectMethod && (((oreOnConveyor || furnaceHasGoldOre) && furnaceHasGoldBar) || (furnaceHasMetalBar && furnaceHasGoldBar) || (!furnaceHasGoldBar && furnaceHasMetalBar && oreOnConveyor))) {
+		if (tickPerfectMethod && (
+			(furnaceHasGoldBar && (oreOnConveyor || furnaceHasGoldOre)) ||
+			(furnaceHasMetalBar && (oreOnConveyor || furnaceHasGoldBar || furnaceHasMetalOre))
+		)) {
 			if (atConveyorBelt) {
 				return goToDispenser;
 			}

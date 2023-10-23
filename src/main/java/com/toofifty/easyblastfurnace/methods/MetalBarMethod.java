@@ -45,32 +45,19 @@ abstract public class MetalBarMethod extends Method
         if (prerequisite != null) return prerequisite;
         boolean coalRun = state.getFurnace().getQuantity(ItemID.COAL) < 27 * (coalPer() - state.getFurnace().getCoalOffset());
         boolean oreOnConveyor = state.getPlayer().hasOreOnConveyor();
-        boolean furnaceHasBars = state.getFurnace().has(barItem()) && state.getFurnace().getQuantity(barItem()) >= state.getInventory().getFreeSlotsIncludingOresAndBars();
+        boolean furnaceHasBar = state.getFurnace().has(barItem());
+        boolean furnaceHasOre = state.getFurnace().has(oreItem());
         boolean tickPerfectMethod = state.getConfig().tickPerfectMethod();
 
-        if (state.getInventory().has(ItemID.COAL) || (state.getInventory().has(oreItem()) && !coalRun)) {
-            return putOntoConveyorBelt;
-        }
-
-        if (state.getPlayer().isAtConveyorBelt() &&
-            !state.getCoalBag().isEmpty()) {
-            return emptyCoalBag;
-        }
-
-        if (!tickPerfectMethod && oreOnConveyor) {
-            return waitForBars;
-        }
-
-		if (furnaceHasBars && (!tickPerfectMethod || oreOnConveyor)) {
-			return collectBars;
-		}
-
         if (state.getBank().isOpen()) {
-            if (state.getInventory().has(barItem(), oreItem())) {
+            if (state.getInventory().has(barItem()) || (coalRun && state.getInventory().has(oreItem()))) {
                 return state.getConfig().useDepositInventory() ? depositInventory : depositBarsAndOres;
             }
 
             if (state.getFurnace().has(oreItem()) && state.getFurnace().has(barItem())) {
+                if (state.getInventory().has(barItem(), oreItem())) {
+                    return state.getConfig().useDepositInventory() ? depositInventory : depositBarsAndOres;
+                }
                 return collectBars;
             }
 
@@ -86,6 +73,23 @@ abstract public class MetalBarMethod extends Method
                 return withdrawOre();
             }
         }
+
+        if (state.getInventory().has(ItemID.COAL) || (state.getInventory().has(oreItem()) && !coalRun)) {
+            return putOntoConveyorBelt;
+        }
+
+        if (state.getPlayer().isAtConveyorBelt() &&
+            !state.getCoalBag().isEmpty()) {
+            return emptyCoalBag;
+        }
+
+        if (!tickPerfectMethod && oreOnConveyor) {
+            return waitForBars;
+        }
+
+		if ((furnaceHasOre && furnaceHasBar) || (furnaceHasBar && (!tickPerfectMethod || oreOnConveyor))) {
+			return collectBars;
+		}
 
         return openBank;
     }
