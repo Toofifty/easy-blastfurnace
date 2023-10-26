@@ -244,7 +244,7 @@ public class EasyBlastFurnacePluginTest {
         when(easyBlastFurnaceConfig.requireStaminaThreshold()).thenReturn(50);
         when(client.getEnergy()).thenReturn(6400);
         setInventoryCount(ItemID.VIAL, 1);
-        assertStepTooltip(Strings.DEPOSIT_STAMINA_POTIONS);
+        assertStepTooltip(Strings.DEPOSIT_STAMINA_POTIONS, 0);
 
         // Second deposit Inventory
         when(client.getEnergy()).thenReturn(4900);
@@ -253,7 +253,7 @@ public class EasyBlastFurnacePluginTest {
             gold[i] = new Item(ItemID.GOLD_ORE, 1);
         }
         setInventoryItems(gold);
-        assertStepTooltip(Strings.DEPOSIT_BARS_AND_ORES);
+        assertStepTooltip(Strings.DEPOSIT_BARS_AND_ORES, 0);
 
         // drink/withdraw stamina potions
         setInventoryItems(new Item[0]);
@@ -268,7 +268,7 @@ public class EasyBlastFurnacePluginTest {
 
         // getMoreStaminaPotions
         setBankCount(ItemID.STAMINA_POTION4, 0);
-        assertStepTooltip(Strings.GET_MORE_STAMINA_POTIONS);
+        assertStepTooltip(Strings.GET_MORE_STAMINA_POTIONS, 0);
     }
 
     @Test
@@ -290,7 +290,7 @@ public class EasyBlastFurnacePluginTest {
         when(easyBlastFurnaceConfig.requireStaminaThreshold()).thenReturn(20);
         when(client.getEnergy()).thenReturn(8400);
         setInventoryCount(ItemID.VIAL, 1);
-        assertStepTooltip(Strings.DEPOSIT_SUPER_ENERGY_POTIONS);
+        assertStepTooltip(Strings.DEPOSIT_SUPER_ENERGY_POTIONS, 0);
 
         setInventoryItems(new Item[0]);
         // Second deposit Inventory
@@ -300,7 +300,7 @@ public class EasyBlastFurnacePluginTest {
             gold[i] = new Item(ItemID.GOLD_ORE, 1);
         }
         setInventoryItems(gold);
-        assertStepTooltip(Strings.DEPOSIT_BARS_AND_ORES);
+        assertStepTooltip(Strings.DEPOSIT_BARS_AND_ORES, 0);
 
         // drink/withdraw stamina potions
         setInventoryItems(new Item[0]);
@@ -319,28 +319,28 @@ public class EasyBlastFurnacePluginTest {
         setBankCount(ItemID.SUPER_ENERGY2, 0);
         setBankCount(ItemID.SUPER_ENERGY3, 1);
         setBankCount(ItemID.SUPER_ENERGY4, 0);
-        assertStepTooltip(Strings.WITHDRAW_SUPER_ENERGY_POTION);
+        assertStepTooltip(Strings.WITHDRAW_SUPER_ENERGY_POTION, 0);
         setBankCount(ItemID.SUPER_ENERGY1, 0);
         setBankCount(ItemID.SUPER_ENERGY2, 1);
         setBankCount(ItemID.SUPER_ENERGY3, 0);
         setBankCount(ItemID.SUPER_ENERGY4, 0);
-        assertStepTooltip(Strings.WITHDRAW_SUPER_ENERGY_POTION);
+        assertStepTooltip(Strings.WITHDRAW_SUPER_ENERGY_POTION, 0);
         setBankCount(ItemID.SUPER_ENERGY1, 1);
         setBankCount(ItemID.SUPER_ENERGY2, 0);
         setBankCount(ItemID.SUPER_ENERGY3, 0);
         setBankCount(ItemID.SUPER_ENERGY4, 0);
-        assertStepTooltip(Strings.WITHDRAW_SUPER_ENERGY_POTION);
+        assertStepTooltip(Strings.WITHDRAW_SUPER_ENERGY_POTION, 0);
         setBankCount(ItemID.SUPER_ENERGY1, 1);
         setBankCount(ItemID.SUPER_ENERGY2, 1);
         setBankCount(ItemID.SUPER_ENERGY3, 1);
         setBankCount(ItemID.SUPER_ENERGY4, 1);
-        assertStepTooltip(Strings.WITHDRAW_SUPER_ENERGY_POTION);
+        assertStepTooltip(Strings.WITHDRAW_SUPER_ENERGY_POTION, 0);
         // getMoreStaminaPotions
         setBankCount(ItemID.SUPER_ENERGY1, 0);
         setBankCount(ItemID.SUPER_ENERGY2, 0);
         setBankCount(ItemID.SUPER_ENERGY3, 0);
         setBankCount(ItemID.SUPER_ENERGY4, 0);
-        assertStepTooltip(Strings.GET_MORE_SUPER_ENERGY_POTIONS);
+        assertStepTooltip(Strings.GET_MORE_SUPER_ENERGY_POTIONS, 0);
     }
 
     @Test
@@ -362,7 +362,7 @@ public class EasyBlastFurnacePluginTest {
         when(easyBlastFurnaceConfig.requireStaminaThreshold()).thenReturn(20);
         when(client.getEnergy()).thenReturn(9400);
         setInventoryCount(ItemID.VIAL, 1);
-        assertStepTooltip(Strings.DEPOSIT_ENERGY_POTIONS);
+        assertStepTooltip(Strings.DEPOSIT_ENERGY_POTIONS, 0);
 
         setInventoryItems(new Item[0]);
         // Second deposit Inventory
@@ -372,7 +372,7 @@ public class EasyBlastFurnacePluginTest {
             gold[i] = new Item(ItemID.GOLD_ORE, 1);
         }
         setInventoryItems(gold);
-        assertStepTooltip(Strings.DEPOSIT_BARS_AND_ORES);
+        assertStepTooltip(Strings.DEPOSIT_BARS_AND_ORES, 0);
 
         // drink/withdraw stamina potions
         setInventoryItems(new Item[0]);
@@ -391,71 +391,81 @@ public class EasyBlastFurnacePluginTest {
         setBankCount(ItemID.ENERGY_POTION2, 0);
         setBankCount(ItemID.ENERGY_POTION3, 1);
         setBankCount(ItemID.ENERGY_POTION4, 0);
-        assertStepTooltip(Strings.WITHDRAW_ENERGY_POTION);
+        assertStepTooltip(Strings.WITHDRAW_ENERGY_POTION, 0);
         setBankCount(ItemID.ENERGY_POTION1, 0);
         setBankCount(ItemID.ENERGY_POTION2, 1);
         setBankCount(ItemID.ENERGY_POTION3, 0);
         setBankCount(ItemID.ENERGY_POTION4, 0);
-        assertStepTooltip(Strings.WITHDRAW_ENERGY_POTION);
+        assertStepTooltip(Strings.WITHDRAW_ENERGY_POTION, 0);
         setBankCount(ItemID.ENERGY_POTION1, 1);
         setBankCount(ItemID.ENERGY_POTION2, 0);
         setBankCount(ItemID.ENERGY_POTION3, 0);
         setBankCount(ItemID.ENERGY_POTION4, 0);
-        assertStepTooltip(Strings.WITHDRAW_ENERGY_POTION);
+        assertStepTooltip(Strings.WITHDRAW_ENERGY_POTION, 0);
         setBankCount(ItemID.ENERGY_POTION1, 1);
         setBankCount(ItemID.ENERGY_POTION2, 1);
         setBankCount(ItemID.ENERGY_POTION3, 1);
         setBankCount(ItemID.ENERGY_POTION4, 1);
-        assertStepTooltip(Strings.WITHDRAW_ENERGY_POTION);
+        assertStepTooltip(Strings.WITHDRAW_ENERGY_POTION, 0);
         // getMoreStaminaPotions
         setBankCount(ItemID.ENERGY_POTION1, 0);
         setBankCount(ItemID.ENERGY_POTION2, 0);
         setBankCount(ItemID.ENERGY_POTION3, 0);
         setBankCount(ItemID.ENERGY_POTION4, 0);
-        assertStepTooltip(Strings.GET_MORE_ENERGY_POTIONS);
+        assertStepTooltip(Strings.GET_MORE_ENERGY_POTIONS, 0);
     }
 
     private void goldSharedMethod(boolean tickPerfect)
     {
-        setInventoryItems(new Item[]{new Item(ItemID.GOLD_ORE, 27)});
-        setInventoryCount(ItemID.GOLD_ORE, 27);
+        setInventoryItems(new Item[]{new Item(ItemID.GOLD_ORE, 1)});
+        setInventoryCount(ItemID.GOLD_ORE, 1);
         assertEquals(Strings.GOLD, methodHandler.getMethod().getName());
-        assertStepTooltip(Strings.WITHDRAW_ICE_OR_SMITHS_GLOVES);
+
+        setFurnaceCount(BarsOres.GOLD_BAR.getVarbit(), 0);
+        setFurnaceCount(BarsOres.GOLD_ORE.getVarbit(), 0);
+        assertStepTooltip(Strings.WITHDRAW_ICE_OR_SMITHS_GLOVES, 0);
 
         setInventoryCount(ItemID.ICE_GLOVES, 1);
         setBankCount(ItemID.SMITHING_CAPE, 1);
-        assertStepTooltip(Strings.WITHDRAW_SMITHING_CAPE);
+        assertStepTooltip(Strings.WITHDRAW_SMITHING_CAPE, 0);
 
         setInventoryCount(ItemID.SMITHING_CAPE, 1);
         setBankCount(ItemID.SMITHING_CAPE, 0);
-        assertStepTooltip(Strings.EQUIP_SMITHING_CAPE);
+        assertStepTooltip(Strings.EQUIP_SMITHING_CAPE, 0);
 
         setInventoryCount(ItemID.SMITHING_CAPE, 0);
         setBankCount(ItemID.MAX_CAPE, 1);
-        assertStepTooltip(Strings.WITHDRAW_MAX_CAPE);
+        assertStepTooltip(Strings.WITHDRAW_MAX_CAPE, 0);
 
         setInventoryCount(ItemID.MAX_CAPE, 1);
         setBankCount(ItemID.MAX_CAPE, 0);
-        assertStepTooltip(Strings.EQUIP_MAX_CAPE);
+        assertStepTooltip(Strings.EQUIP_MAX_CAPE, 0);
 
         setInventoryCount(ItemID.MAX_CAPE, 0);
-        assertStepTooltip(Strings.WITHDRAW_GOLDSMITH_GAUNTLETS);
+        assertStepTooltip(Strings.WITHDRAW_GOLDSMITH_GAUNTLETS, 0);
 
         setInventoryCount(ItemID.GOLDSMITH_GAUNTLETS, 1);
-        assertStepTooltip(Strings.EQUIP_GOLDSMITH_GAUNTLETS);
+        assertStepTooltip(Strings.EQUIP_GOLDSMITH_GAUNTLETS, 0);
 
+        setFurnaceCount(BarsOres.GOLD_BAR.getVarbit(), 28);
+        setFurnaceCount(BarsOres.GOLD_ORE.getVarbit(), 26);
+        assertStepTooltip(Strings.DEPOSIT_BARS_AND_ORES, 0);
+
+        setInventoryCount(ItemID.GOLD_ORE, 0);
+        assertStepTooltip(Strings.COLLECT_BARS, 0);
+
+        setFurnaceCount(BarsOres.GOLD_BAR.getVarbit(), 0);
+        setFurnaceCount(BarsOres.GOLD_ORE.getVarbit(), 0);
         setInventoryCount(ItemID.GOLDSMITH_GAUNTLETS, 0);
         setEquipmentCount(ItemID.GOLDSMITH_GAUNTLETS, 1);
-        assertStepTooltip(Strings.PUT_ORE_ONTO_CONVEYOR_BELT);
+        assertStepTooltip(Strings.WITHDRAW_GOLD_ORE, 0);
 
-        setAtBank(false);
-        setWorldPoint(atConveyorBelt);
-        setInventoryCount(ItemID.GOLD_ORE, 0);
+        setInventoryCount(ItemID.GOLD_ORE, 27);
 
         if (tickPerfect) {
             goldTickPerfect();
         } else {
-            gold();
+            goldNonTickPerfect();
         }
     }
 
@@ -464,36 +474,59 @@ public class EasyBlastFurnacePluginTest {
         setWorldPoint(atConveyorBelt);
         setInventoryCount(ItemID.GOLD_ORE, 0);
         setFurnaceCount(BarsOres.GOLD_BAR.getVarbit(), 27);
-        assertStepTooltip(Strings.GO_TO_DISPENSER_AND_EQUIP_ICE_OR_SMITHS_GLOVES);
+        assertStepTooltip(Strings.WITHDRAW_GOLD_ORE, 0);
+
+        setWorldPoint(notAtConveyorBelt);
+        setInventoryCount(ItemID.GOLD_ORE, 27);
+        setWorldPoint(atConveyorBelt);
+        goToAndLoadConveyorBelt(ItemID.GOLD_ORE);
+        assertStepTooltip(Strings.GO_TO_DISPENSER, 0);
+
+        setWorldPoint(notAtConveyorBelt);
+        assertStepTooltip(Strings.EQUIP_ICE_OR_SMITHS_GLOVES, 0);
+
 
         setWorldPoint(atBarDispenser);
-        assertStepTooltip(Strings.EQUIP_GOLDSMITH_GAUNTLETS_AFTER_COLLECT_BARS);
+        setFurnaceCount(BarsOres.GOLD_BAR.getVarbit(), 28);
+        setFurnaceCount(BarsOres.GOLD_ORE.getVarbit(), 26);
+        assertStepTooltip(Strings.EQUIP_GOLDSMITH_GAUNTLETS_AFTER_COLLECT_BARS, 0);
     }
 
-    private void gold()
+    private void goldNonTickPerfect()
     {
-        assertStepTooltip(Strings.WAIT_FOR_BARS);
+        assertStepTooltip(Strings.PUT_ORE_ONTO_CONVEYOR_BELT, 0);
+
+        setAtBank(false);
+        equipGloves(true);
+        assertStepTooltip(Strings.EQUIP_GOLDSMITH_GAUNTLETS, 0);
+
+
+        equipGloves(false);
+        goToAndLoadConveyorBelt(ItemID.GOLD_ORE);
+        assertStepTooltip(Strings.WAIT_FOR_BARS, 0);
 
         setWorldPoint(atBarDispenser);
+        setFurnaceCount(BarsOres.GOLD_ORE.getVarbit(), 27);
+        setFurnaceCount(BarsOres.GOLD_ORE.getVarbit(), 0);
         setFurnaceCount(BarsOres.GOLD_BAR.getVarbit(), 27);
-        assertStepTooltip(Strings.EQUIP_ICE_OR_SMITHS_GLOVES);
+        assertStepTooltip(Strings.EQUIP_ICE_OR_SMITHS_GLOVES, 0);
 
         equipGloves(true);
-        assertStepTooltip(Strings.COLLECT_BARS);
+        assertStepTooltip(Strings.COLLECT_BARS, 0);
 
         setInventoryCount(ItemID.GOLD_BAR, 27);
         setFurnaceCount(BarsOres.GOLD_BAR.getVarbit(), 0);
 
-        assertStepTooltip(Strings.OPEN_BANK);
+        assertStepTooltip(Strings.OPEN_BANK, 0);
 
         setAtBank(true);
-        assertStepTooltip(Strings.DEPOSIT_BARS_AND_ORES);
+        assertStepTooltip(Strings.DEPOSIT_BARS_AND_ORES, 0);
 
         setInventoryCount(ItemID.GOLD_BAR, 0);
-        assertStepTooltip(Strings.EQUIP_GOLDSMITH_GAUNTLETS);
+        assertStepTooltip(Strings.EQUIP_GOLDSMITH_GAUNTLETS, 0);
 
         equipGloves(false);
-        assertStepTooltip(Strings.WITHDRAW_GOLD_ORE);
+        assertStepTooltip(Strings.WITHDRAW_GOLD_ORE, 0);
     }
 
     private void checkStaminaPotion(int staminaPotionA, int staminaPotionB, String methodStep)
@@ -502,7 +535,7 @@ public class EasyBlastFurnacePluginTest {
         setBankCount(staminaPotionA, 0);
         if (methodStep.toLowerCase().contains("withdraw")) setBankCount(staminaPotionB, 1);
         else setInventoryCount(staminaPotionB, 1);
-        assertStepTooltip(methodStep);
+        assertStepTooltip(methodStep, 0);
     }
 
     private void checkStaminaHelper()
@@ -547,46 +580,77 @@ public class EasyBlastFurnacePluginTest {
         setInventoryItems(new Item[]{new Item(oreID, 1)});
         setInventoryCount(oreID, 1);
         assertEquals(methodName, methodHandler.getMethod().getName());
-        assertStepTooltip(Strings.WITHDRAW_COAL_BAG);
+        assertStepTooltip(Strings.DEPOSIT_BARS_AND_ORES, 0);
+
+        setInventoryCount(oreID, 0);
+        assertStepTooltip(Strings.WITHDRAW_COAL_BAG, 0);
 
         setInventoryCount(ItemID.OPEN_COAL_BAG, 1);
-        assertStepTooltip(Strings.WITHDRAW_ICE_OR_SMITHS_GLOVES);
+        assertStepTooltip(Strings.WITHDRAW_ICE_OR_SMITHS_GLOVES, 0);
 
         setInventoryCount(ItemID.ICE_GLOVES, 1);
-        assertStepTooltip(Strings.EQUIP_ICE_OR_SMITHS_GLOVES);
+        assertStepTooltip(Strings.EQUIP_ICE_OR_SMITHS_GLOVES, 0);
 
         setInventoryCount(ItemID.ICE_GLOVES, 0);
         setEquipmentCount(ItemID.ICE_GLOVES, 1);
-        assertStepTooltip(Strings.DEPOSIT_BARS_AND_ORES);
+
+        setInventoryCount(barID, 1);
+        assertStepTooltip(Strings.DEPOSIT_BARS_AND_ORES, 0);
+
+        setFurnaceCount(oreVarbit, 1);
+        setFurnaceCount(barVarbit, 1);
+        setFurnaceCount(BarsOres.COAL.getVarbit(), 27 * (coalPer - state.getFurnace().getCoalOffset()));
+        setInventoryCount(barID, 0);
+        setInventoryCount(oreID, 1);
+        assertStepTooltip(Strings.DEPOSIT_BARS_AND_ORES, 0);
 
         setInventoryCount(oreID, 0);
-        assertStepTooltip(Strings.FILL_COAL_BAG);
+        assertStepTooltip(Strings.COLLECT_BARS, 0);
+
+        setFurnaceCount(oreVarbit, 0);
+        setFurnaceCount(barVarbit, 0);
+        setFurnaceCount(BarsOres.COAL.getVarbit(), 0);
+        assertStepTooltip(Strings.FILL_COAL_BAG, 0);
 
         setCoalBag(Strings.FILL);
         assertEquals(state.getCoalBag().getMaxCoal(), state.getCoalBag().getCoal());
-        assertStepTooltip(Strings.WITHDRAW_COAL);
+        assertStepTooltip(Strings.WITHDRAW_COAL, 0);
 
         setFurnaceCount(BarsOres.COAL.getVarbit(), 27 * (coalPer - state.getFurnace().getCoalOffset()));
-        assertStepTooltip(withdrawOreText);
+        assertStepTooltip(withdrawOreText, 0);
 
-        setInventoryCount(oreID, 1);
-        assertStepTooltip(Strings.PUT_ORE_ONTO_CONVEYOR_BELT);
+        setInventoryCount(oreID, 27);
+        assertStepTooltip(Strings.PUT_ORE_ONTO_CONVEYOR_BELT, 0);
 
-        goToAndLoadFurnace(oreID, oreVarbit);
-        assertStepTooltip(Strings.EMPTY_COAL_BAG);
+        goToAndLoadConveyorBelt(oreID);
+        assertStepTooltip(Strings.EMPTY_COAL_BAG, 0);
 
         setCoalBag(Strings.EMPTY);
         assertEquals(0, state.getCoalBag().getCoal());
+
+        setFurnaceCount(oreVarbit, 26);
+        setFurnaceCount(barVarbit, 28);
+        setInventoryCount(ItemID.COAL, 27);
+        assertStepTooltip(Strings.FILL_COAL_BAG, 0);
+
+        setCoalBag(Strings.FILL);
+        assertStepTooltip(Strings.DEPOSIT_BARS_AND_ORES, 0);
+
+        setCoalBag(Strings.EMPTY);
+        setFurnaceCount(oreVarbit, 0);
+        setFurnaceCount(barVarbit, 0);
+        setInventoryCount(ItemID.COAL, 0);
         setFurnaceCount(BarsOres.COAL.getVarbit(), state.getCoalBag().getCoal());
-        assertStepTooltip(Strings.WAIT_FOR_BARS);
+        assertStepTooltip(Strings.WAIT_FOR_BARS, 0);
 
         setWorldPoint(notAtConveyorBelt);
+        setFurnaceCount(oreVarbit, 27);
         setFurnaceCount(oreVarbit, 0);
-        setFurnaceCount(barVarbit, 1);
-        assertStepTooltip(Strings.COLLECT_BARS);
+        setFurnaceCount(barVarbit, 27);
+        assertStepTooltip(Strings.COLLECT_BARS, 0);
 
         collectBars(barID, barVarbit);
-        assertStepTooltip(Strings.OPEN_BANK);
+        assertStepTooltip(Strings.OPEN_BANK, 0);
     }
 
     private void hybridMethod(
@@ -597,94 +661,130 @@ public class EasyBlastFurnacePluginTest {
         setInventoryCount(oreID, 1);
         setInventoryCount(ItemID.GOLD_ORE, 1);
         assertEquals(methodName, methodHandler.getMethod().getName());
-        assertStepTooltip(Strings.WITHDRAW_COAL_BAG);
+        assertStepTooltip(Strings.DEPOSIT_BARS_AND_ORES, 0);
 
+        setAtBank(true);
+        setInventoryCount(oreID, 0);
         setInventoryCount(ItemID.GOLD_ORE, 0);
+        assertStepTooltip(Strings.WITHDRAW_COAL_BAG, 0);
+
         setInventoryCount(ItemID.OPEN_COAL_BAG, 1);
-        assertStepTooltip(Strings.WITHDRAW_ICE_OR_SMITHS_GLOVES);
+        assertStepTooltip(Strings.WITHDRAW_ICE_OR_SMITHS_GLOVES, 0);
 
         setInventoryCount(ItemID.ICE_GLOVES, 1);
         setBankCount(ItemID.SMITHING_CAPE, 1);
-        assertStepTooltip(Strings.WITHDRAW_SMITHING_CAPE);
+        assertStepTooltip(Strings.WITHDRAW_SMITHING_CAPE, 0);
 
         setInventoryCount(ItemID.SMITHING_CAPE, 1);
         setBankCount(ItemID.SMITHING_CAPE, 0);
-        assertStepTooltip(Strings.EQUIP_SMITHING_CAPE);
+        assertStepTooltip(Strings.EQUIP_SMITHING_CAPE, 0);
 
         setInventoryCount(ItemID.SMITHING_CAPE, 0);
         setBankCount(ItemID.MAX_CAPE, 1);
-        assertStepTooltip(Strings.WITHDRAW_MAX_CAPE);
+        assertStepTooltip(Strings.WITHDRAW_MAX_CAPE, 0);
 
         setInventoryCount(ItemID.MAX_CAPE, 1);
         setBankCount(ItemID.MAX_CAPE, 0);
-        assertStepTooltip(Strings.EQUIP_MAX_CAPE);
+        assertStepTooltip(Strings.EQUIP_MAX_CAPE, 0);
 
         setInventoryCount(ItemID.MAX_CAPE, 0);
-        assertStepTooltip(Strings.WITHDRAW_GOLDSMITH_GAUNTLETS);
+        assertStepTooltip(Strings.WITHDRAW_GOLDSMITH_GAUNTLETS, 0);
 
         setInventoryCount(ItemID.GOLDSMITH_GAUNTLETS, 1);
-        assertStepTooltip(Strings.EQUIP_GOLDSMITH_GAUNTLETS);
+        assertStepTooltip(Strings.EQUIP_GOLDSMITH_GAUNTLETS, 0);
 		setInventoryCount(ItemID.GOLDSMITH_GAUNTLETS, 0);
 		setEquipmentCount(ItemID.GOLDSMITH_GAUNTLETS, 1);
 
-		setInventoryCount(oreID, 0);
-		assertStepTooltip(Strings.WITHDRAW_GOLD_ORE);
+        setFurnaceCount(BarsOres.GOLD_BAR.getVarbit(), 28);
+        setFurnaceCount(BarsOres.GOLD_ORE.getVarbit(), 26);
+        setInventoryCount(ItemID.GOLD_ORE, 1);
+        assertStepTooltip(Strings.DEPOSIT_BARS_AND_ORES, 0);
 
-		setInventoryCount(oreID, 1);
-		assertStepTooltip(Strings.FILL_COAL_BAG);
+        setInventoryCount(ItemID.GOLD_ORE, 0);
+        assertStepTooltip(Strings.COLLECT_BARS, 0);
+
+        setFurnaceCount(BarsOres.GOLD_BAR.getVarbit(), 0);
+        setFurnaceCount(BarsOres.GOLD_ORE.getVarbit(), 0);
+
+		assertStepTooltip(Strings.FILL_COAL_BAG, 0);
 		setCoalBag(Strings.FILL);
 		assertEquals(state.getCoalBag().getMaxCoal(), state.getCoalBag().getCoal());
 
         setFurnaceCount(BarsOres.COAL.getVarbit(), 27 * (coalPer - state.getFurnace().getCoalOffset()));
-		setInventoryCount(oreID, 0);
-		assertStepTooltip(withdrawOreText);
+		assertStepTooltip(withdrawOreText, 0);
 
-        setInventoryCount(oreID, 1);
-        assertStepTooltip(Strings.PUT_ORE_ONTO_CONVEYOR_BELT);
-
-        goToAndLoadFurnace(oreID, oreVarbit);
-        assertStepTooltip(Strings.EMPTY_COAL_BAG);
-
+        setInventoryCount(oreID, 26);
+        when(easyBlastFurnaceConfig.useDepositInventory()).thenReturn(true);
         setCoalBag(Strings.EMPTY);
+        assertStepTooltip(Strings.FILL_COAL_BAG, 0);
+
+        when(easyBlastFurnaceConfig.useDepositInventory()).thenReturn(false);
+        setCoalBag(Strings.FILL);
+        setInventoryCount(oreID, 0);
+        setInventoryCount(ItemID.GOLD_ORE, 1);
+        equipGloves(true);
+        setAtBank(false);
+        assertStepTooltip(Strings.EQUIP_GOLDSMITH_GAUNTLETS, 0);
+
+        equipGloves(false);
+        setInventoryCount(ItemID.GOLD_ORE, 0);
+        setInventoryCount(oreID, 26);
+        assertStepTooltip(Strings.PUT_ORE_ONTO_CONVEYOR_BELT, 0);
+
+        goToAndLoadConveyorBelt(oreID);
+        assertStepTooltip(Strings.EMPTY_COAL_BAG, 0);
+        setCoalBag(Strings.EMPTY);
+
+        setFurnaceCount(barVarbit, 1);
+        setFurnaceCount(BarsOres.GOLD_BAR.getVarbit(), 1);
+        setInventoryCount(ItemID.COAL, 1);
+        assertStepTooltip(Strings.FILL_COAL_BAG, 0);
+
+        setFurnaceCount(barVarbit, 0);
+        setFurnaceCount(BarsOres.GOLD_BAR.getVarbit(), 0);
+        setInventoryCount(ItemID.COAL, 0);
         assertEquals(1, state.getCoalBag().getCoal());
         setFurnaceCount(BarsOres.COAL.getVarbit(), state.getCoalBag().getCoal());
 
         if (tickPerfect) {
             hybridTickPerfect(oreID, barVarbit, coalPer);
         } else {
-            hybrid(oreVarbit, barID, barVarbit);
+            hybridNonTickPerfect(oreVarbit, barID, barVarbit);
         }
     }
 
-    private void hybrid(int oreVarbit, int barID, int barVarbit)
+    private void hybridNonTickPerfect(int oreVarbit, int barID, int barVarbit)
     {
-        assertStepTooltip(Strings.WAIT_FOR_BARS);
-
         setWorldPoint(atBarDispenser);
+        setFurnaceCount(oreVarbit, 26);
+        assertStepTooltip(Strings.WAIT_FOR_BARS, 0);
+
         setFurnaceCount(oreVarbit, 0);
-        setFurnaceCount(barVarbit, 2);
-        assertStepTooltip(Strings.EQUIP_ICE_OR_SMITHS_GLOVES);
+        setFurnaceCount(barVarbit, 26);
+        assertStepTooltip(Strings.EQUIP_ICE_OR_SMITHS_GLOVES, 0);
 
         equipGloves(true);
-        assertStepTooltip(Strings.COLLECT_BARS);
+        assertStepTooltip(Strings.COLLECT_BARS, 0);
 
         collectBars(barID, barVarbit);
-        assertStepTooltip(Strings.OPEN_BANK);
+        assertStepTooltip(Strings.OPEN_BANK, 0);
 
         setAtBank(true);
-        assertStepTooltip(Strings.DEPOSIT_BARS_AND_ORES);
+        assertStepTooltip(Strings.DEPOSIT_BARS_AND_ORES, 0);
 
         setInventoryCount(barID, 0);
-        assertStepTooltip(Strings.WITHDRAW_GOLD_ORE);
-
-        setInventoryCount(ItemID.GOLD_ORE, 1);
-        assertStepTooltip(Strings.REFILL_COAL_BAG);
+        assertStepTooltip(Strings.REFILL_COAL_BAG, 0);
 
         setCoalBag(Strings.FILL);
-        assertStepTooltip(Strings.PUT_ORE_ONTO_CONVEYOR_BELT);
+        assertStepTooltip(Strings.EQUIP_GOLDSMITH_GAUNTLETS, 0);
+
+        equipGloves(false);
+        assertStepTooltip(Strings.WITHDRAW_GOLD_ORE, 0);
+
+        setInventoryCount(ItemID.GOLD_ORE, 1);
+        assertStepTooltip(Strings.PUT_ORE_ONTO_CONVEYOR_BELT, 0);
 
         setAtBank(false);
-        assertStepTooltip(Strings.EQUIP_GOLDSMITH_GAUNTLETS);
     }
 
     private void hybridTickPerfect(int oreID, int barVarbit, int coalPer)
@@ -694,11 +794,33 @@ public class EasyBlastFurnacePluginTest {
         setWorldPoint(atConveyorBelt);
         setInventoryCount(oreID, 0);
         setFurnaceCount(barVarbit, 1);
-        assertStepTooltip(Strings.GO_TO_DISPENSER_AND_EQUIP_ICE_OR_SMITHS_GLOVES);
+        assertStepTooltip(Strings.GO_TO_DISPENSER, 0);
+
+        setWorldPoint(notAtConveyorBelt);
+        assertStepTooltip(Strings.EQUIP_ICE_OR_SMITHS_GLOVES, 0);
 
         setWorldPoint(atBarDispenser);
         setFurnaceCount(barVarbit, 1);
-        assertStepTooltip(Strings.EQUIP_GOLDSMITH_GAUNTLETS_AFTER_COLLECT_BARS);
+        assertStepTooltip(Strings.COLLECT_BARS, 0);
+
+        setFurnaceCount(barVarbit, 0);
+        setFurnaceCount(BarsOres.COAL.getVarbit(), 0);
+        setAtBank(true);
+        setCoalBag(Strings.FILL);
+        setInventoryCount(ItemID.GOLD_ORE, 26);
+        setAtBank(false);
+        setWorldPoint(atConveyorBelt);
+        setCoalBag(Strings.EMPTY);
+        setInventoryCount(ItemID.GOLD_ORE, 0);
+        setFurnaceCount(BarsOres.GOLD_BAR.getVarbit(), 28);
+        setFurnaceCount(BarsOres.GOLD_ORE.getVarbit(), 26);
+        setWorldPoint(atBarDispenser);
+        equipGloves(true);
+        assertStepTooltip(Strings.EQUIP_GOLDSMITH_GAUNTLETS_AFTER_COLLECT_BARS, 0);
+
+        setFurnaceCount(BarsOres.GOLD_BAR.getVarbit(), 0);
+        setFurnaceCount(barVarbit, 27);
+        assertStepTooltip(Strings.WAIT_FOR_BARS, 0);
     }
 
     private void collectBars(int barID, int barVarbit)
@@ -708,12 +830,11 @@ public class EasyBlastFurnacePluginTest {
         setFurnaceCount(barVarbit, 0);
     }
 
-    private void goToAndLoadFurnace(int oreID, int oreVarbit)
+    private void goToAndLoadConveyorBelt(int oreID)
     {
         setAtBank(false);
         setWorldPoint(atConveyorBelt);
         setInventoryCount(oreID, 0);
-        setFurnaceCount(oreVarbit, 1);
     }
 
     private void setInventoryCount(int itemID, int count)
@@ -751,10 +872,10 @@ public class EasyBlastFurnacePluginTest {
         easyBlastFurnacePlugin.onItemContainerChanged(event);
     }
 
-    private void assertStepTooltip(String expectedStrings)
+    private void assertStepTooltip(String expectedStrings, int index)
     {
         MethodStep[] steps = methodHandler.getSteps();
-        assertEquals(expectedStrings, steps[steps.length - 1].getTooltip());
+        assertEquals(expectedStrings, steps[index].getTooltip());
 
     }
 
