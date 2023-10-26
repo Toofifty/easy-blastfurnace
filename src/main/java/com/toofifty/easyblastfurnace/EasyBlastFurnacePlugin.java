@@ -93,6 +93,10 @@ public class EasyBlastFurnacePlugin extends Plugin
     @Getter
     private boolean isEnabled = false;
 
+    @Getter
+    private int lastCheckTick = 0;
+    private int oreOntoConveyorCount = 0;
+
     @Override
     protected void startUp()
     {
@@ -208,22 +212,24 @@ public class EasyBlastFurnacePlugin extends Plugin
 
         if (emptyMatcher.matches()) {
             state.getCoalBag().empty();
+        }
 
-        } else if (filledMatcher.matches()) {
-            state.getCoalBag().fill();
+        if (filledMatcher.matches()) {
+            int addedCoal = Integer.parseInt(filledMatcher.group(1));
+            state.getCoalBag().setCoal(state.getCoalBag().getCoal() + addedCoal);
         }
 
         if (message.equals("All your ore goes onto the conveyor belt.")) {
             if (state.getInventory().has(ItemID.COAL)) {
-                state.getCoalBag().coalOntoConveyor();
+                oreOntoConveyorCount++;
             } else {
-                state.getCoalBag().coalOntoConveyor(1);
+                oreOntoConveyorCount = 1;
             }
         }
 
         // After emptying coal bag onto conveyor, ensure coal amount is 0.
-        if (maxConveyorCount == state.getCoalBag().getCoalOntoConveyorCount()) {
-            state.getCoalBag().coalOntoConveyor(0);
+        if (maxConveyorCount == oreOntoConveyorCount) {
+            oreOntoConveyorCount = 0;
             if (state.getCoalBag().getCoal() > 1) state.getCoalBag().setCoal(0);
         }
 
@@ -236,9 +242,17 @@ public class EasyBlastFurnacePlugin extends Plugin
     {
         if (!isEnabled) return;
 
-        if (event.getMenuOption().equals(Strings.FILL)) state.getCoalBag().fill();
-        if (event.getMenuOption().equals(Strings.EMPTY)) state.getCoalBag().empty();
         if (event.getMenuOption().equals(Strings.DRINK)) statistics.drinkStamina();
+
+        // Because menu option events can happen multiple times per tick, this is needed to prevent duplicate coal bag empty events.
+        final int currentTick = client.getTickCount();
+        if (lastCheckTick == currentTick)
+        {
+            return;
+        }
+        lastCheckTick = currentTick;
+
+        if (event.getMenuOption().equals(Strings.EMPTY)) state.getCoalBag().empty();
 
         // handle coal bag changes
         methodHandler.next();

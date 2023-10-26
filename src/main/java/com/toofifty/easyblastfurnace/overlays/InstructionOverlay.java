@@ -52,18 +52,27 @@ public class InstructionOverlay extends OverlayPanel
         if (!config.showStepOverlay()) return null;
 
         Method method = methodHandler.getMethod();
-        MethodStep step = methodHandler.getStep();
+        MethodStep[] steps = methodHandler.getSteps();
+        int index = 0;
 
-        String methodName = method != null ? method.getName() : "No method selected";
-        String tooltip = state.getPlayer().isOnBlastFurnaceWorld()
-            ? (step != null
-            ? step.getTooltip()
-            : "Withdraw an ore from the bank to start. You can start a hybrid method by also withdrawing gold ore.")
-            : "You need to be on a Blast Furnace themed world to use this plugin.";
+        if (steps == null) return null;
 
-        panelComponent.getChildren().add(TitleComponent.builder().text("Easy Blast Furnace").build());
-        panelComponent.getChildren().add(LineComponent.builder().left(methodName).leftColor(config.itemOverlayColor()).build());
-        panelComponent.getChildren().add(LineComponent.builder().left(tooltip).leftColor(TOOLTIP_COLOR).build());
+        for (MethodStep step : steps) {
+            String methodName = method != null ? method.getName() : "No method selected";
+            String tooltip = state.getPlayer().isOnBlastFurnaceWorld()
+                    ? (step != null
+                    ? step.getTooltip()
+                    : "Withdraw an ore from the bank to start. You can start a hybrid method by also withdrawing gold ore.")
+                    : "You need to be on a Blast Furnace themed world to use this plugin.";
+
+            if (index == 0) {
+                panelComponent.getChildren().add(TitleComponent.builder().text("Easy Blast Furnace").build());
+                panelComponent.getChildren().add(LineComponent.builder().left(methodName).leftColor(config.itemOverlayColor()).build());
+            }
+
+            index++;
+            panelComponent.getChildren().add(LineComponent.builder().left(tooltip).leftColor(TOOLTIP_COLOR).build());
+        }
 
         return super.render(graphics);
     }

@@ -3,11 +3,13 @@ package com.toofifty.easyblastfurnace.methods;
 import com.toofifty.easyblastfurnace.state.BlastFurnaceState;
 import com.toofifty.easyblastfurnace.steps.MethodStep;
 import com.toofifty.easyblastfurnace.utils.Strings;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemID;
 
+@Slf4j
 public class GoldBarMethod extends Method
 {
-    private MethodStep checkPrerequisite(BlastFurnaceState state)
+    private MethodStep[] checkPrerequisite(BlastFurnaceState state)
     {
         // ensure player has both ice gloves & goldsmith gauntlets either in inventory or equipped
 
@@ -45,49 +47,79 @@ public class GoldBarMethod extends Method
     }
 
     @Override
-    public MethodStep next(BlastFurnaceState state)
+    public MethodStep[] next(BlastFurnaceState state)
     {
-        MethodStep prerequisite = checkPrerequisite(state);
+        MethodStep[] prerequisite = checkPrerequisite(state);
         if (prerequisite != null) return prerequisite;
         boolean oreOnConveyor = state.getPlayer().hasOreOnConveyor();
         boolean furnaceHasBar = state.getFurnace().has(ItemID.GOLD_BAR);
-
-        if (state.getInventory().has(ItemID.GOLD_ORE)) {
-
-            if (!state.getEquipment().hasGoldsmithEffect()) {
-                return equipGoldsmithGauntlets;
-            }
-
-            return putOntoConveyorBelt;
-        }
-
-		if (!state.getConfig().tickPerfectMethod() && oreOnConveyor) {
-			return waitForBars;
-		}
-
-
-
-		if (state.getConfig().tickPerfectMethod() && furnaceHasBar && oreOnConveyor ||
-			!state.getConfig().tickPerfectMethod() && furnaceHasBar) {
-			if (!state.getEquipment().hasIceGlovesEffect()) {
-				return equipIceOrSmithsGloves;
-			}
-			return collectBars;
-		}
-
+        boolean furnaceHasOre = state.getFurnace().has(ItemID.GOLD_ORE);
+        boolean tickPerfectMethod = state.getConfig().tickPerfectMethod();
+        boolean atBarDispenser = state.getPlayer().isAtBarDispenser();
+        boolean atConveyorBelt = state.getPlayer().isAtConveyorBelt();
+        boolean useDepositInventory = state.getConfig().useDepositInventory();
 
         if (state.getBank().isOpen()) {
+            if (furnaceHasOre && furnaceHasBar || (!tickPerfectMethod && furnaceHasBar)) {
+                if (state.getInventory().has(ItemID.GOLD_BAR, ItemID.GOLD_ORE)) {
+                    return useDepositInventory ? depositInventory : depositBarsAndOres;
+                }
+                return collectBars;
+            }
+
             if (state.getInventory().has(ItemID.GOLD_BAR)) {
                 return state.getConfig().useDepositInventory() ? depositInventory : depositBarsAndOres;
             }
 
-            if (!state.getConfig().tickPerfectMethod() && !state.getEquipment().hasGoldsmithEffect()) {
+            if (tickPerfectMethod && !state.getEquipment().hasGoldsmithEffect() && !state.getEquipment().hasIceGlovesEffect()) {
+                return equipGoldsmithGauntlets;
+            }
+
+            if (!tickPerfectMethod && !state.getEquipment().hasGoldsmithEffect()) {
                 return equipGoldsmithGauntlets;
             }
 
             if (!state.getInventory().has(ItemID.GOLD_ORE)) {
                 return withdrawGoldOre;
             }
+        }
+
+        if (tickPerfectMethod && state.getInventory().has(ItemID.GOLD_ORE)) {
+            if (furnaceHasBar) {
+                return putOntoConveyorBelt;
+            } else {
+                return putOntoConveyorBeltAndEquipGoldsmithGauntlets;
+            }
+        }
+
+        if (tickPerfectMethod && (oreOnConveyor || furnaceHasOre) && furnaceHasBar) {
+            if (atConveyorBelt) {
+                return goToDispenser;
+            }
+
+            if (!atBarDispenser) {
+                return goToDispenserAndEquipIceOrSmithsGloves;
+            }
+
+            return collectBarsAndEquipGoldsmithGauntlets;
+        }
+
+        if (!tickPerfectMethod && state.getInventory().has(ItemID.GOLD_ORE)) {
+            if (!state.getEquipment().hasGoldsmithEffect()) {
+                return equipGoldsmithGauntlets;
+            }
+            return putOntoConveyorBelt;
+        }
+
+		if (!tickPerfectMethod && (oreOnConveyor || furnaceHasOre)) {
+			return waitForGoldBars;
+		}
+
+        if (!tickPerfectMethod && furnaceHasBar) {
+            if (!state.getEquipment().hasIceGlovesEffect()) {
+                return equipIceOrSmithsGloves;
+            }
+            return collectBars;
         }
 
         return openBank;

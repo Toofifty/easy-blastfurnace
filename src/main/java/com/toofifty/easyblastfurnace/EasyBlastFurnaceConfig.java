@@ -116,8 +116,8 @@ public interface EasyBlastFurnaceConfig extends Config
 	@ConfigItem(
 		position = 8,
 		keyName = "leaveBarInDispenser",
-		name = "Toggle tick perfect method",
-		description = "Continues to the next step when there is 1 bar in the dispenser rather than 0",
+		name = "Toggle tick perfect methods",
+		description = "Enable tick perfect gold method and efficient metal/gold hybrid methods.",
 		section = guidanceOverlays
 	)
 	default boolean tickPerfectMethod() { return false; }

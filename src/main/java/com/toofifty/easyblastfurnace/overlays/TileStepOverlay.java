@@ -36,48 +36,51 @@ public class TileStepOverlay extends Overlay
     {
         if (!config.showObjectOverlays()) return null;
 
-        MethodStep step = methodHandler.getStep();
+        MethodStep[] steps = methodHandler.getSteps();
 
-        if (step == null) return null;
-        if (!(step instanceof TileStep)) return null;
+        if (steps == null) return null;
 
-        Color color = config.objectOverlayColor();
+        for (MethodStep step : steps) {
+            if (!(step instanceof TileStep)) continue;
 
-        LocalPoint localPoint = LocalPoint.fromWorld(client, ((TileStep) step).getWorldPoint());
-        if (localPoint == null) return null;
+            Color color = config.objectOverlayColor();
 
-        Polygon polygon = Perspective.getCanvasTilePoly(client, localPoint);
+            LocalPoint localPoint = LocalPoint.fromWorld(client, ((TileStep) step).getWorldPoint());
+            if (localPoint == null) continue;
 
-        graphics.setColor(color);
-        graphics.draw(polygon);
-        graphics.setColor(new Color(color.getRed(), color.getBlue(), color.getGreen(), 20));
-        graphics.fill(polygon);
+            Polygon polygon = Perspective.getCanvasTilePoly(client, localPoint);
 
-        if (config.objectOverlayTextMode() == HighlightOverlayTextSetting.NONE) return null;
+            graphics.setColor(color);
+            graphics.draw(polygon);
+            graphics.setColor(new Color(color.getRed(), color.getBlue(), color.getGreen(), 20));
+            graphics.fill(polygon);
 
-        TextComponent textComponent = new TextComponent();
-        Rectangle bounds = polygon.getBounds();
+            if (config.objectOverlayTextMode() == HighlightOverlayTextSetting.NONE) continue;
 
-        FontMetrics fontMetrics = graphics.getFontMetrics();
-        int textWidth = fontMetrics.stringWidth(step.getTooltip());
-        int textHeight = fontMetrics.getHeight();
+            TextComponent textComponent = new TextComponent();
+            Rectangle bounds = polygon.getBounds();
 
-        if (config.objectOverlayTextMode() == HighlightOverlayTextSetting.ABOVE) {
-            textComponent.setPosition(new Point(
-                bounds.x + bounds.width / 2 - textWidth / 2,
-                bounds.y - textHeight
-            ));
-        } else {
-            textComponent.setPosition(new Point(
-                bounds.x + bounds.width / 2 - textWidth / 2,
-                bounds.y + bounds.height
-            ));
+            FontMetrics fontMetrics = graphics.getFontMetrics();
+            int textWidth = fontMetrics.stringWidth(step.getTooltip());
+            int textHeight = fontMetrics.getHeight();
+
+            if (config.objectOverlayTextMode() == HighlightOverlayTextSetting.ABOVE) {
+                textComponent.setPosition(new Point(
+                        bounds.x + bounds.width / 2 - textWidth / 2,
+                        bounds.y - textHeight
+                ));
+            } else {
+                textComponent.setPosition(new Point(
+                        bounds.x + bounds.width / 2 - textWidth / 2,
+                        bounds.y + bounds.height
+                ));
+            }
+
+            textComponent.setColor(color);
+            textComponent.setText(step.getTooltip());
+
+            textComponent.render(graphics);
         }
-
-        textComponent.setColor(color);
-        textComponent.setText(step.getTooltip());
-
-        textComponent.render(graphics);
 
         return null;
     }

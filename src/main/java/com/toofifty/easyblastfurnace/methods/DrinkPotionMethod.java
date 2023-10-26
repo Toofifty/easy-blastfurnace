@@ -10,44 +10,44 @@ import net.runelite.api.ItemID;
 public class DrinkPotionMethod extends Method
 {
     // Stamina
-    private final MethodStep withdrawStaminaPotion1 = new BankItemStep(Strings.WITHDRAW_STAMINA_POTION, ItemID.STAMINA_POTION1);
-    private final MethodStep withdrawStaminaPotion2 = new BankItemStep(Strings.WITHDRAW_STAMINA_POTION, ItemID.STAMINA_POTION2);
-    private final MethodStep withdrawStaminaPotion3 = new BankItemStep(Strings.WITHDRAW_STAMINA_POTION, ItemID.STAMINA_POTION3);
-    private final MethodStep withdrawStaminaPotion4 = new BankItemStep(Strings.WITHDRAW_STAMINA_POTION, ItemID.STAMINA_POTION4);
+    private final MethodStep[] withdrawStaminaPotion1 = new MethodStep[] { new BankItemStep(Strings.WITHDRAW_STAMINA_POTION, ItemID.STAMINA_POTION1) };
+    private final MethodStep[] withdrawStaminaPotion2 = new MethodStep[] { new BankItemStep(Strings.WITHDRAW_STAMINA_POTION, ItemID.STAMINA_POTION2) };
+    private final MethodStep[] withdrawStaminaPotion3 = new MethodStep[] { new BankItemStep(Strings.WITHDRAW_STAMINA_POTION, ItemID.STAMINA_POTION3) };
+    private final MethodStep[] withdrawStaminaPotion4 = new MethodStep[] { new BankItemStep(Strings.WITHDRAW_STAMINA_POTION, ItemID.STAMINA_POTION4) };
 
-    private final MethodStep drinkStaminaPotion1 = new ItemStep(Strings.DRINK_STAMINA_POTION, ItemID.STAMINA_POTION1);
-    private final MethodStep drinkStaminaPotion2 = new ItemStep(Strings.DRINK_STAMINA_POTION, ItemID.STAMINA_POTION2);
-    private final MethodStep drinkStaminaPotion3 = new ItemStep(Strings.DRINK_STAMINA_POTION, ItemID.STAMINA_POTION3);
-    private final MethodStep drinkStaminaPotion4 = new ItemStep(Strings.DRINK_STAMINA_POTION, ItemID.STAMINA_POTION4);
-    private final MethodStep getMoreStaminaPotions = new ItemStep(Strings.GET_MORE_STAMINA_POTIONS, ItemID.COAL_BAG_12019);
+    private final MethodStep[] drinkStaminaPotion1 = new MethodStep[] { new ItemStep(Strings.DRINK_STAMINA_POTION, ItemID.STAMINA_POTION1) };
+    private final MethodStep[] drinkStaminaPotion2 = new MethodStep[] { new ItemStep(Strings.DRINK_STAMINA_POTION, ItemID.STAMINA_POTION2) };
+    private final MethodStep[] drinkStaminaPotion3 = new MethodStep[] { new ItemStep(Strings.DRINK_STAMINA_POTION, ItemID.STAMINA_POTION3) };
+    private final MethodStep[] drinkStaminaPotion4 = new MethodStep[] { new ItemStep(Strings.DRINK_STAMINA_POTION, ItemID.STAMINA_POTION4) };
+    private final MethodStep[] getMoreStaminaPotions = new MethodStep[] { new ItemStep(Strings.GET_MORE_STAMINA_POTIONS, ItemID.COAL_BAG_12019) };
 
 
     // Super Energy
-    private final MethodStep withdrawSuperEnergyPotion1 = new BankItemStep(Strings.WITHDRAW_SUPER_ENERGY_POTION, ItemID.SUPER_ENERGY1);
-    private final MethodStep withdrawSuperEnergyPotion2 = new BankItemStep(Strings.WITHDRAW_SUPER_ENERGY_POTION, ItemID.SUPER_ENERGY2);
-    private final MethodStep withdrawSuperEnergyPotion3 = new BankItemStep(Strings.WITHDRAW_SUPER_ENERGY_POTION, ItemID.SUPER_ENERGY3);
-    private final MethodStep withdrawSuperEnergyPotion4 = new BankItemStep(Strings.WITHDRAW_SUPER_ENERGY_POTION, ItemID.SUPER_ENERGY4);
+    private final MethodStep[] withdrawSuperEnergyPotion1 = new MethodStep[] { new BankItemStep(Strings.WITHDRAW_SUPER_ENERGY_POTION, ItemID.SUPER_ENERGY1) };
+    private final MethodStep[] withdrawSuperEnergyPotion2 = new MethodStep[] { new BankItemStep(Strings.WITHDRAW_SUPER_ENERGY_POTION, ItemID.SUPER_ENERGY2) };
+    private final MethodStep[] withdrawSuperEnergyPotion3 = new MethodStep[] { new BankItemStep(Strings.WITHDRAW_SUPER_ENERGY_POTION, ItemID.SUPER_ENERGY3) };
+    private final MethodStep[] withdrawSuperEnergyPotion4 = new MethodStep[] { new BankItemStep(Strings.WITHDRAW_SUPER_ENERGY_POTION, ItemID.SUPER_ENERGY4) };
 
-    private final MethodStep drinkSuperEnergyPotion1 = new ItemStep(Strings.DRINK_SUPER_ENERGY_POTION, ItemID.SUPER_ENERGY1);
-    private final MethodStep drinkSuperEnergyPotion2 = new ItemStep(Strings.DRINK_SUPER_ENERGY_POTION, ItemID.SUPER_ENERGY2);
-    private final MethodStep drinkSuperEnergyPotion3 = new ItemStep(Strings.DRINK_SUPER_ENERGY_POTION, ItemID.SUPER_ENERGY3);
-    private final MethodStep drinkSuperEnergyPotion4 = new ItemStep(Strings.DRINK_SUPER_ENERGY_POTION, ItemID.SUPER_ENERGY4);
-    private final MethodStep getMoreSuperEnergyPotions = new ItemStep(Strings.GET_MORE_SUPER_ENERGY_POTIONS, ItemID.COAL_BAG_12019);
+    private final MethodStep[] drinkSuperEnergyPotion1 = new MethodStep[] { new ItemStep(Strings.DRINK_SUPER_ENERGY_POTION, ItemID.SUPER_ENERGY1) };
+    private final MethodStep[] drinkSuperEnergyPotion2 = new MethodStep[] { new ItemStep(Strings.DRINK_SUPER_ENERGY_POTION, ItemID.SUPER_ENERGY2) };
+    private final MethodStep[] drinkSuperEnergyPotion3 = new MethodStep[] { new ItemStep(Strings.DRINK_SUPER_ENERGY_POTION, ItemID.SUPER_ENERGY3) };
+    private final MethodStep[] drinkSuperEnergyPotion4 = new MethodStep[] { new ItemStep(Strings.DRINK_SUPER_ENERGY_POTION, ItemID.SUPER_ENERGY4) };
+    private final MethodStep[] getMoreSuperEnergyPotions = new MethodStep[] { new ItemStep(Strings.GET_MORE_SUPER_ENERGY_POTIONS, ItemID.COAL_BAG_12019) };
 
     // Energy
-    private final MethodStep withdrawEnergyPotion1 = new BankItemStep(Strings.WITHDRAW_ENERGY_POTION, ItemID.ENERGY_POTION1);
-    private final MethodStep withdrawEnergyPotion2 = new BankItemStep(Strings.WITHDRAW_ENERGY_POTION, ItemID.ENERGY_POTION2);
-    private final MethodStep withdrawEnergyPotion3 = new BankItemStep(Strings.WITHDRAW_ENERGY_POTION, ItemID.ENERGY_POTION3);
-    private final MethodStep withdrawEnergyPotion4 = new BankItemStep(Strings.WITHDRAW_ENERGY_POTION, ItemID.ENERGY_POTION4);
+    private final MethodStep[] withdrawEnergyPotion1 = new MethodStep[] { new BankItemStep(Strings.WITHDRAW_ENERGY_POTION, ItemID.ENERGY_POTION1) };
+    private final MethodStep[] withdrawEnergyPotion2 = new MethodStep[] { new BankItemStep(Strings.WITHDRAW_ENERGY_POTION, ItemID.ENERGY_POTION2) };
+    private final MethodStep[] withdrawEnergyPotion3 = new MethodStep[] { new BankItemStep(Strings.WITHDRAW_ENERGY_POTION, ItemID.ENERGY_POTION3) };
+    private final MethodStep[] withdrawEnergyPotion4 = new MethodStep[] { new BankItemStep(Strings.WITHDRAW_ENERGY_POTION, ItemID.ENERGY_POTION4) };
 
-    private final MethodStep drinkEnergyPotion1 = new ItemStep(Strings.DRINK_ENERGY_POTION, ItemID.ENERGY_POTION1);
-    private final MethodStep drinkEnergyPotion2 = new ItemStep(Strings.DRINK_ENERGY_POTION, ItemID.ENERGY_POTION2);
-    private final MethodStep drinkEnergyPotion3 = new ItemStep(Strings.DRINK_ENERGY_POTION, ItemID.ENERGY_POTION3);
-    private final MethodStep drinkEnergyPotion4 = new ItemStep(Strings.DRINK_ENERGY_POTION, ItemID.ENERGY_POTION4);
-    private final MethodStep getMoreEnergyPotions = new ItemStep(Strings.GET_MORE_ENERGY_POTIONS, ItemID.COAL_BAG_12019);
+    private final MethodStep[] drinkEnergyPotion1 = new MethodStep[] { new ItemStep(Strings.DRINK_ENERGY_POTION, ItemID.ENERGY_POTION1) };
+    private final MethodStep[] drinkEnergyPotion2 = new MethodStep[] { new ItemStep(Strings.DRINK_ENERGY_POTION, ItemID.ENERGY_POTION2) };
+    private final MethodStep[] drinkEnergyPotion3 = new MethodStep[] { new ItemStep(Strings.DRINK_ENERGY_POTION, ItemID.ENERGY_POTION3) };
+    private final MethodStep[] drinkEnergyPotion4 = new MethodStep[] { new ItemStep(Strings.DRINK_ENERGY_POTION, ItemID.ENERGY_POTION4) };
+    private final MethodStep[] getMoreEnergyPotions = new MethodStep[] { new ItemStep(Strings.GET_MORE_ENERGY_POTIONS, ItemID.COAL_BAG_12019) };
 
     @Override
-    public MethodStep next(BlastFurnaceState state)
+    public MethodStep[] next(BlastFurnaceState state)
     {
         switch(state.getConfig().potionOverlayMode()) {
             case SUPER_ENERGY: return GetSuperEnergyStep(state);
@@ -56,7 +56,7 @@ public class DrinkPotionMethod extends Method
         }
     }
 
-    private MethodStep GetStaminaStep(BlastFurnaceState state) {
+    private MethodStep[] GetStaminaStep(BlastFurnaceState state) {
         if (state.getPlayer().hasEnoughEnergy() &&
                 (state.getInventory().has(ItemID.VIAL, ItemID.STAMINA_POTION1, ItemID.STAMINA_POTION2, ItemID.STAMINA_POTION3, ItemID.STAMINA_POTION4))) {
             return state.getConfig().useDepositInventory() ? depositInventory : depositStaminaPotions;
@@ -104,7 +104,7 @@ public class DrinkPotionMethod extends Method
         return getMoreStaminaPotions;
     }
 
-    private MethodStep GetSuperEnergyStep(BlastFurnaceState state) {
+    private MethodStep[] GetSuperEnergyStep(BlastFurnaceState state) {
         if (state.getPlayer().hasEnoughEnergy() &&
                 (state.getInventory().has(ItemID.VIAL, ItemID.SUPER_ENERGY1, ItemID.SUPER_ENERGY2, ItemID.SUPER_ENERGY3, ItemID.SUPER_ENERGY4))) {
             return state.getConfig().useDepositInventory() ? depositInventory : depositSuperEnergyPotions;
@@ -154,7 +154,7 @@ public class DrinkPotionMethod extends Method
         return getMoreSuperEnergyPotions;
     }
 
-    private MethodStep GetEnergyStep(BlastFurnaceState state) {
+    private MethodStep[] GetEnergyStep(BlastFurnaceState state) {
         if (state.getPlayer().hasEnoughEnergy() &&
                 (state.getInventory().has(ItemID.VIAL, ItemID.ENERGY_POTION1, ItemID.ENERGY_POTION2, ItemID.ENERGY_POTION3, ItemID.ENERGY_POTION4))) {
             return state.getConfig().useDepositInventory() ? depositInventory : depositEnergyPotions;

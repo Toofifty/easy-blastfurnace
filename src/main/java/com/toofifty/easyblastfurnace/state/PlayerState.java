@@ -16,6 +16,7 @@ import java.util.Arrays;
 public class PlayerState
 {
     private static final WorldPoint LOAD_POSITION = new WorldPoint(1942, 4967, 0);
+    private static final WorldPoint COLLECT_POSITION = new WorldPoint(1940, 4962, 0);
     private static final int[] BLAST_FURNACE_WORLDS = new int[]{
         352, 355, 356, 357, 358, 386, 387, 395, 424, 466, 494, 495, 496, 515, 516
     };
@@ -46,6 +47,15 @@ public class PlayerState
 
         WorldPoint location = player.getWorldLocation();
         return location.distanceTo(LOAD_POSITION) < 2;
+    }
+
+    public boolean isAtBarDispenser()
+    {
+        Player player = client.getLocalPlayer();
+        assert player != null;
+
+        WorldPoint location = player.getWorldLocation();
+        return location.distanceTo(COLLECT_POSITION) < 2;
     }
 
     public boolean hasEnoughEnergy()

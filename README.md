@@ -5,7 +5,7 @@ Helps you train at the blast furnace more efficiently
 ## Features
 
 - Supports multiple different methods
-    - Gold bars
+    - Gold bars (tick perfect method is an option in the settings)
     - [Steel/Mithril/Adamant/Rune bars](https://oldschool.runescape.wiki/w/Blast_Furnace#Bar_Patterns)
     - [Gold + metal bar hybrid](https://oldschool.runescape.wiki/w/Blast_Furnace#Hybrid_Method_(Gold/Mithril+))
 - Shows next item/object to click
