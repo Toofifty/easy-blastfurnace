@@ -28,7 +28,6 @@ public class Strings {
     public static String EQUIP_MAX_CAPE = "Equip Max cape";
     public static String DEPOSIT_INVENTORY = "Deposit inventory";
     public static String PUT_ORE_ONTO_CONVEYOR_BELT = "Put ore onto conveyor belt";
-    public static String PUT_ORE_ONTO_CONVEYOR_BELT_AND_EQUIP_GOLDSMITH_GAUNTLETS = "Put ore onto conveyor belt and equip goldsmith gauntlets";
     public static String OPEN_BANK  = "Open bank chest";
     public static String COLLECT_BARS = "Collect bars";
     public static String WAIT_FOR_BARS = "Wait for bars to smelt";
@@ -47,6 +46,7 @@ public class Strings {
 
     // Patterns
     public static String COAL_FULL = "^The coal bag contains (\\d+) pieces of coal.$";
+    public static String COAL_EMPTY = "^The coal bag is now empty.$";
 
     // Actions
     public static String FILL = "Fill";

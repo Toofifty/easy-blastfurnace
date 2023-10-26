@@ -40,6 +40,7 @@ public class EasyBlastFurnacePlugin extends Plugin
     public static final WorldPoint PICKUP_POSITION = new WorldPoint(1940, 4962, 0);
 
     private static final Pattern COAL_FULL_MESSAGE = Pattern.compile(Strings.COAL_FULL);
+    private static final Pattern COAL_EMPTY_MESSAGE = Pattern.compile(Strings.COAL_EMPTY);
 
     @Inject
     private Client client;
@@ -94,6 +95,7 @@ public class EasyBlastFurnacePlugin extends Plugin
 
     @Getter
     private int lastCheckTick = 0;
+    private int oreOntoConveyorCount = 0;
 
     @Override
     protected void startUp()
@@ -204,13 +206,34 @@ public class EasyBlastFurnacePlugin extends Plugin
         if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM) return;
 
         String message = event.getMessage();
+        int maxConveyorCount = state.getCoalBag().getMaxCoal() == 27 ? 2 : 3;
+        Matcher emptyMatcher = COAL_EMPTY_MESSAGE.matcher(message);
         Matcher filledMatcher = COAL_FULL_MESSAGE.matcher(message);
 
         if (filledMatcher.matches() && state.getBank().isOpen()) {
             state.getCoalBag().fill();
         } else if (filledMatcher.matches()) {
+        if (emptyMatcher.matches()) {
+            state.getCoalBag().empty();
+        }
+
+        if (filledMatcher.matches()) {
             int addedCoal = Integer.parseInt(filledMatcher.group(1));
             state.getCoalBag().setCoal(state.getCoalBag().getCoal() + addedCoal);
+        }
+
+        if (message.equals("All your ore goes onto the conveyor belt.")) {
+            if (state.getInventory().has(ItemID.COAL)) {
+                oreOntoConveyorCount++;
+            } else {
+                oreOntoConveyorCount = 1;
+            }
+        }
+
+        // After emptying coal bag onto conveyor, ensure coal amount is 0.
+        if (maxConveyorCount == oreOntoConveyorCount) {
+            oreOntoConveyorCount = 0;
+            if (state.getCoalBag().getCoal() > 1) state.getCoalBag().setCoal(0);
         }
 
         // handle coal bag changes
@@ -224,6 +247,9 @@ public class EasyBlastFurnacePlugin extends Plugin
 
         if (event.getMenuOption().equals(Strings.DRINK)) statistics.drinkStamina();
         if (event.getMenuOption().equals(Strings.FILL)) state.getCoalBag().fill();
+        if (event.getMenuOption().equals(Strings.FILL)) {
+            state.getCoalBag().fill();
+        }
 
         // Because menu option events can happen multiple times per tick, this is needed to prevent duplicate coal bag empty events.
         final int currentTick = client.getTickCount();

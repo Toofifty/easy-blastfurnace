@@ -31,13 +31,13 @@ public abstract class Method
     protected final MethodStep[] withdrawMaxCape = new MethodStep[] { new BankItemStep(Strings.WITHDRAW_MAX_CAPE, ItemID.MAX_CAPE) };
     protected final MethodStep[] equipSmithingCape = new MethodStep[] { new ItemStep(Strings.EQUIP_SMITHING_CAPE, ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET) };
     protected final MethodStep[] equipMaxCape = new MethodStep[] { new ItemStep(Strings.EQUIP_MAX_CAPE, ItemID.MAX_CAPE) };
-    protected final MethodStep[] depositBarsAndOres = new MethodStep[] { new ItemStep(Strings.DEPOSIT_BARS_AND_ORES, BarsOres.getAllIds()) };
+    protected final MethodStep[] depositBarsAndOres = new MethodStep[] { new ItemStep(Strings.DEPOSIT_BARS_AND_ORES, BarsOres.getAllIds()), new ObjectStep(Strings.OPEN_BANK, EasyBlastFurnacePlugin.BANK_CHEST) };
     protected final MethodStep[] depositStaminaPotions = new MethodStep[] { new ItemStep(Strings.DEPOSIT_STAMINA_POTIONS, ItemID.VIAL, ItemID.STAMINA_POTION1, ItemID.STAMINA_POTION2, ItemID.STAMINA_POTION3, ItemID.STAMINA_POTION4) };
     protected final MethodStep[] depositSuperEnergyPotions = new MethodStep[] { new ItemStep(Strings.DEPOSIT_SUPER_ENERGY_POTIONS, ItemID.VIAL, ItemID.SUPER_ENERGY1, ItemID.SUPER_ENERGY2, ItemID.SUPER_ENERGY3, ItemID.SUPER_ENERGY4) };
     protected final MethodStep[] depositEnergyPotions = new MethodStep[] { new ItemStep(Strings.DEPOSIT_ENERGY_POTIONS, ItemID.VIAL, ItemID.ENERGY_POTION1, ItemID.ENERGY_POTION2, ItemID.ENERGY_POTION3, ItemID.ENERGY_POTION4) };
 
     // objects
-    protected final MethodStep[] depositInventory = new MethodStep[] { new WidgetStep(Strings.DEPOSIT_INVENTORY, WidgetInfo.BANK_DEPOSIT_INVENTORY) };
+    protected final MethodStep[] depositInventory = new MethodStep[] { new WidgetStep(Strings.DEPOSIT_INVENTORY, WidgetInfo.BANK_DEPOSIT_INVENTORY), new ObjectStep(Strings.OPEN_BANK, EasyBlastFurnacePlugin.BANK_CHEST) };
     protected final MethodStep[] putOntoConveyorBelt = new MethodStep[] { new ObjectStep(Strings.PUT_ORE_ONTO_CONVEYOR_BELT, EasyBlastFurnacePlugin.CONVEYOR_BELT) };
     protected final MethodStep[] putOntoConveyorBeltAndEquipGoldsmithGauntlets = new MethodStep[] { new ItemStep(Strings.EQUIP_GOLDSMITH_GAUNTLETS, ItemID.GOLDSMITH_GAUNTLETS), new ObjectStep(Strings.PUT_ORE_ONTO_CONVEYOR_BELT, EasyBlastFurnacePlugin.CONVEYOR_BELT) };
     protected final MethodStep[] openBank = new MethodStep[] { new ObjectStep(Strings.OPEN_BANK, EasyBlastFurnacePlugin.BANK_CHEST) };

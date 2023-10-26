@@ -10,6 +10,9 @@ public class CoalBagState
     private static final int MIN_COAL = 0;
 
     @Inject
+    private Client client;
+
+    @Inject
     private InventoryState inventory;
 
     @Inject
@@ -20,6 +23,8 @@ public class CoalBagState
 
     @Getter
     private int maxCoal = 27;
+
+    public boolean recentlyEmptiedCoalBag = false;
 
     public void setMaxCoal(int quantity)
     {
@@ -47,7 +52,7 @@ public class CoalBagState
             setCoal(MIN_COAL);
             return;
         }
-
+        recentlyEmptiedCoalBag = true;
         setCoal(coal - inventory.getFreeSlots());
     }
 

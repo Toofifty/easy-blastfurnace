@@ -5,6 +5,7 @@ import com.toofifty.easyblastfurnace.steps.MethodStep;
 import com.toofifty.easyblastfurnace.utils.Strings;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemID;
+
 @Slf4j
 public class GoldBarMethod extends Method
 {
@@ -59,7 +60,7 @@ public class GoldBarMethod extends Method
         boolean useDepositInventory = state.getConfig().useDepositInventory();
 
         if (state.getBank().isOpen()) {
-            if (furnaceHasOre && furnaceHasBar) {
+            if (furnaceHasOre && furnaceHasBar || (!tickPerfectMethod && furnaceHasBar)) {
                 if (state.getInventory().has(ItemID.GOLD_BAR, ItemID.GOLD_ORE)) {
                     return useDepositInventory ? depositInventory : depositBarsAndOres;
                 }
@@ -110,7 +111,7 @@ public class GoldBarMethod extends Method
             return putOntoConveyorBelt;
         }
 
-		if (!tickPerfectMethod && oreOnConveyor) {
+		if (!tickPerfectMethod && (oreOnConveyor || furnaceHasOre)) {
 			return waitForGoldBars;
 		}
 
