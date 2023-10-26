@@ -210,9 +210,6 @@ public class EasyBlastFurnacePlugin extends Plugin
         Matcher emptyMatcher = COAL_EMPTY_MESSAGE.matcher(message);
         Matcher filledMatcher = COAL_FULL_MESSAGE.matcher(message);
 
-        if (filledMatcher.matches() && state.getBank().isOpen()) {
-            state.getCoalBag().fill();
-        } else if (filledMatcher.matches()) {
         if (emptyMatcher.matches()) {
             state.getCoalBag().empty();
         }
@@ -247,9 +244,6 @@ public class EasyBlastFurnacePlugin extends Plugin
 
         if (event.getMenuOption().equals(Strings.DRINK)) statistics.drinkStamina();
         if (event.getMenuOption().equals(Strings.FILL)) state.getCoalBag().fill();
-        if (event.getMenuOption().equals(Strings.FILL)) {
-            state.getCoalBag().fill();
-        }
 
         // Because menu option events can happen multiple times per tick, this is needed to prevent duplicate coal bag empty events.
         final int currentTick = client.getTickCount();

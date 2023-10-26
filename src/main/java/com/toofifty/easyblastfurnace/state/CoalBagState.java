@@ -10,9 +10,6 @@ public class CoalBagState
     private static final int MIN_COAL = 0;
 
     @Inject
-    private Client client;
-
-    @Inject
     private InventoryState inventory;
 
     @Inject
