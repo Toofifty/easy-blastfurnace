@@ -243,7 +243,6 @@ public class EasyBlastFurnacePlugin extends Plugin
         if (!isEnabled) return;
 
         if (event.getMenuOption().equals(Strings.DRINK)) statistics.drinkStamina();
-        if (event.getMenuOption().equals(Strings.FILL)) state.getCoalBag().fill();
 
         // Because menu option events can happen multiple times per tick, this is needed to prevent duplicate coal bag empty events.
         final int currentTick = client.getTickCount();
