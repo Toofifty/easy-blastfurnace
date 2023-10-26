@@ -129,7 +129,7 @@ abstract public class GoldHybridMethod extends MetalBarMethod
             return putOntoConveyorBelt;
         }
 
-        if (!barDispenserFull && ((coalBagFull && atConveyorBelt) || (!coalBagEmpty && smithingCapeEquipped)) ) {
+        if (!barDispenserFull && atConveyorBelt && (coalBagFull || (!coalBagEmpty && smithingCapeEquipped)) ) {
             return emptyCoalBag;
         }
 
