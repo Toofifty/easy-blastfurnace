@@ -66,10 +66,6 @@ abstract public class MetalBarMethod extends Method
                 return collectBars;
             }
 
-            if (state.getCoalBag().isEmpty()) {
-                return fillCoalBag;
-            }
-
             if (coalRun && !state.getInventory().has(ItemID.COAL)) {
                 return withdrawCoal;
             }
@@ -77,6 +73,10 @@ abstract public class MetalBarMethod extends Method
             if (!coalRun && !state.getInventory().has(oreItem())) {
                 return withdrawOre();
             }
+
+			if (state.getCoalBag().isEmpty()) {
+				return fillCoalBag;
+			}
         }
 
         if (!barDispenserFull && (state.getCoalBag().recentlyEmptiedCoalBag || state.getInventory().has(ItemID.COAL, oreItem()))) {
