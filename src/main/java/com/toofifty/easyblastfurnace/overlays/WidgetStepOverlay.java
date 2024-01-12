@@ -49,7 +49,7 @@ public class WidgetStepOverlay extends Overlay
         for (MethodStep step : steps) {
             if (!(step instanceof WidgetStep)) continue;
 
-            Widget widget = client.getWidget(((WidgetStep) step).getWidgetInfo());
+            Widget widget = client.getWidget(((WidgetStep) step).getComponentId());
             if (widget == null) continue;
 
 

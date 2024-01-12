@@ -6,7 +6,7 @@ import com.toofifty.easyblastfurnace.steps.*;
 import com.toofifty.easyblastfurnace.utils.BarsOres;
 import com.toofifty.easyblastfurnace.utils.Strings;
 import net.runelite.api.ItemID;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.ComponentID;
 
 public abstract class Method
 {
@@ -37,7 +37,7 @@ public abstract class Method
     protected final MethodStep[] depositEnergyPotions = new MethodStep[] { new ItemStep(Strings.DEPOSIT_ENERGY_POTIONS, ItemID.VIAL, ItemID.ENERGY_POTION1, ItemID.ENERGY_POTION2, ItemID.ENERGY_POTION3, ItemID.ENERGY_POTION4) };
 
     // objects
-    protected final MethodStep[] depositInventory = new MethodStep[] { new WidgetStep(Strings.DEPOSIT_INVENTORY, WidgetInfo.BANK_DEPOSIT_INVENTORY), new ObjectStep(Strings.OPEN_BANK, EasyBlastFurnacePlugin.BANK_CHEST) };
+    protected final MethodStep[] depositInventory = new MethodStep[] { new WidgetStep(Strings.DEPOSIT_INVENTORY, ComponentID.BANK_DEPOSIT_INVENTORY), new ObjectStep(Strings.OPEN_BANK, EasyBlastFurnacePlugin.BANK_CHEST) };
     protected final MethodStep[] putOntoConveyorBelt = new MethodStep[] { new ObjectStep(Strings.PUT_ORE_ONTO_CONVEYOR_BELT, EasyBlastFurnacePlugin.CONVEYOR_BELT) };
     protected final MethodStep[] putOntoConveyorBeltAndEquipGoldsmithGauntlets = new MethodStep[] { new ItemStep(Strings.EQUIP_GOLDSMITH_GAUNTLETS, ItemID.GOLDSMITH_GAUNTLETS), new ObjectStep(Strings.PUT_ORE_ONTO_CONVEYOR_BELT, EasyBlastFurnacePlugin.CONVEYOR_BELT) };
     protected final MethodStep[] openBank = new MethodStep[] { new ObjectStep(Strings.OPEN_BANK, EasyBlastFurnacePlugin.BANK_CHEST) };
