@@ -14,8 +14,8 @@ import com.toofifty.easyblastfurnace.utils.StaminaHelper;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.events.OverlayMenuClicked;
@@ -113,7 +113,7 @@ public class EasyBlastFurnacePluginTest {
         when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(inventoryContainer);
         when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipmentContainer);
 
-        when(client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER)).thenReturn(bankWidget);
+        when(client.getWidget(ComponentID.BANK_ITEM_CONTAINER)).thenReturn(bankWidget);
 
         when(client.getLocalPlayer()).thenReturn(localPlayer);
         when(localPlayer.getWorldLocation()).thenReturn(new WorldPoint(1949, 4967, 0));

@@ -1,16 +1,15 @@
 package com.toofifty.easyblastfurnace.steps;
 
 import lombok.Getter;
-import net.runelite.api.widgets.WidgetInfo;
 
 public class WidgetStep extends MethodStep
 {
     @Getter
-    private final WidgetInfo widgetInfo;
+    private final int componentId;
 
-    public WidgetStep(String tooltip, WidgetInfo widgetInfo)
+    public WidgetStep(String tooltip, int componentId)
     {
         super(tooltip);
-        this.widgetInfo = widgetInfo;
+        this.componentId = componentId;
     }
 }
