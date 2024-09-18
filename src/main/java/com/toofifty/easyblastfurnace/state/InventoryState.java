@@ -28,11 +28,16 @@ public class InventoryState
         }
     }
 
-    private int getPreviousQuantity(int itemId)
+    private int getPreviousQuantity(int ...itemIds)
     {
-        Optional<Item> item = Arrays.stream(previousInventory).filter(i -> i.getId() == itemId).findFirst();
+        int total = 0;
 
-        return item.map(Item::getQuantity).orElse(0);
+        for (int itemId : itemIds) {
+            Optional<Item> item = Arrays.stream(previousInventory).filter(i -> i.getId() == itemId).findFirst();
+            total += item.map(Item::getQuantity).orElse(0);
+        }
+
+        return total;
     }
 
     public void update()
@@ -44,14 +49,22 @@ public class InventoryState
         }
     }
 
-    public int getChange(int itemId)
+    public int getChange(int ...itemIds)
     {
-        return getQuantity(itemId) - getPreviousQuantity(itemId);
+        if (inventory == null) return 0;
+
+        int totalChange = 0;
+
+        for (int itemId : itemIds) {
+            totalChange += getQuantity(itemId) - getPreviousQuantity(itemId);
+        }
+
+        return totalChange;
     }
 
-    public boolean hasChanged(int itemId)
+    public boolean hasChanged(int ...itemIds)
     {
-        return getChange(itemId) != 0;
+        return getChange(itemIds) != 0;
     }
 
     public int getQuantity(int ...itemIds)

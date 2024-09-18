@@ -21,8 +21,7 @@ public class CoalBagState
     @Getter
     private int maxCoal = 27;
 
-    @Getter
-    private int oreOntoConveyorCount = 0;
+    public boolean recentlyEmptiedCoalBag = false;
 
     public void setMaxCoal(int quantity)
     {
@@ -50,7 +49,7 @@ public class CoalBagState
             setCoal(MIN_COAL);
             return;
         }
-
+        recentlyEmptiedCoalBag = true;
         setCoal(coal - inventory.getFreeSlots());
     }
 
@@ -60,16 +59,6 @@ public class CoalBagState
             setCoal(maxCoal);
             return;
         }
-        oreOntoConveyorCount = 0;
         setCoal(coal + inventory.getQuantity(ItemID.COAL));
-    }
-
-    public void oreOntoConveyor(int ...override)
-    {
-        if (override.length > 0) {
-            oreOntoConveyorCount = override[0];
-        } else {
-            oreOntoConveyorCount++;
-        }
     }
 }

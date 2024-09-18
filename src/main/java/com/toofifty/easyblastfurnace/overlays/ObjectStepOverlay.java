@@ -38,48 +38,51 @@ public class ObjectStepOverlay extends Overlay
     {
         if (!config.showObjectOverlays()) return null;
 
-        MethodStep step = methodHandler.getStep();
+        MethodStep[] steps = methodHandler.getSteps();
 
-        if (step == null) return null;
-        if (!(step instanceof ObjectStep)) return null;
+        if (steps == null) return null;
 
-        Color color = config.objectOverlayColor();
+        for (MethodStep step : steps) {
+            if (!(step instanceof ObjectStep)) continue;
 
-        GameObject object = objectManager.get(((ObjectStep) step).getObjectId());
-        Shape clickBox = object.getClickbox();
+            Color color = config.objectOverlayColor();
 
-        if (clickBox == null) return null;
+            GameObject object = objectManager.get(((ObjectStep) step).getObjectId());
+            Shape clickBox = object.getClickbox();
 
-        graphics.setColor(color);
-        graphics.draw(clickBox);
-        graphics.setColor(new Color(color.getRed(), color.getBlue(), color.getGreen(), 20));
-        graphics.fill(clickBox);
+            if (clickBox == null) continue;
 
-        if (config.objectOverlayTextMode() == HighlightOverlayTextSetting.NONE) return null;
+            graphics.setColor(color);
+            graphics.draw(clickBox);
+            graphics.setColor(new Color(color.getRed(), color.getBlue(), color.getGreen(), 20));
+            graphics.fill(clickBox);
 
-        TextComponent textComponent = new TextComponent();
-        Rectangle bounds = object.getClickbox().getBounds();
+            if (config.objectOverlayTextMode() == HighlightOverlayTextSetting.NONE) continue;
 
-        FontMetrics fontMetrics = graphics.getFontMetrics();
-        int textWidth = fontMetrics.stringWidth(step.getTooltip());
-        int textHeight = fontMetrics.getHeight();
+            TextComponent textComponent = new TextComponent();
+            Rectangle bounds = object.getClickbox().getBounds();
 
-        if (config.objectOverlayTextMode() == HighlightOverlayTextSetting.ABOVE) {
-            textComponent.setPosition(new Point(
-                bounds.x + bounds.width / 2 - textWidth / 2,
-                bounds.y - textHeight
-            ));
-        } else {
-            textComponent.setPosition(new Point(
-                bounds.x + bounds.width / 2 - textWidth / 2,
-                bounds.y + bounds.height
-            ));
+            FontMetrics fontMetrics = graphics.getFontMetrics();
+            int textWidth = fontMetrics.stringWidth(step.getTooltip());
+            int textHeight = fontMetrics.getHeight();
+
+            if (config.objectOverlayTextMode() == HighlightOverlayTextSetting.ABOVE) {
+                textComponent.setPosition(new Point(
+                        bounds.x + bounds.width / 2 - textWidth / 2,
+                        bounds.y - textHeight
+                ));
+            } else {
+                textComponent.setPosition(new Point(
+                        bounds.x + bounds.width / 2 - textWidth / 2,
+                        bounds.y + bounds.height
+                ));
+            }
+
+            textComponent.setColor(color);
+            textComponent.setText(step.getTooltip());
+
+            textComponent.render(graphics);
         }
-
-        textComponent.setColor(color);
-        textComponent.setText(step.getTooltip());
-
-        textComponent.render(graphics);
 
         return null;
     }

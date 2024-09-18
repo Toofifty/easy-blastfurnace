@@ -47,58 +47,61 @@ public class ItemStepOverlay extends WidgetItemOverlay
     {
         if (config.itemOverlayMode() == ItemOverlaySetting.NONE) return;
 
-        MethodStep step = methodHandler.getStep();
+        MethodStep[] steps = methodHandler.getSteps();
         int finalItemId = itemId;
 
-        if (step == null) return;
-        if (!(step instanceof ItemStep)) return;
+        if (steps == null) return;
 
-        // This ensures we only highlight one item, i.e. the first ore in an inventory full of ores.
-        if (currentWidgetItem != null) {
-            widgetItem = currentWidgetItem;
-            itemId = widgetItem.getWidget().getItemId();
-        } else if (Arrays.stream(((ItemStep) step).getItemIds()).noneMatch(id -> id == finalItemId)) {
-             return;
+        for (MethodStep step : steps) {
+            if (!(step instanceof ItemStep)) continue;
+
+            // This ensures we only highlight one item, i.e. the first ore in an inventory full of ores.
+            if (currentWidgetItem != null) {
+                widgetItem = currentWidgetItem;
+                itemId = widgetItem.getWidget().getItemId();
+            } else if (Arrays.stream(((ItemStep) step).getItemIds()).noneMatch(id -> id == finalItemId)) {
+                continue;
+            }
+
+            currentWidgetItem = widgetItem;
+
+            Color color = config.itemOverlayColor();
+
+            Rectangle bounds = widgetItem.getCanvasBounds();
+
+            if (config.itemOverlayMode() == ItemOverlaySetting.OUTLINE) {
+                BufferedImage outline = itemManager.getItemOutline(itemId, widgetItem.getQuantity(), color);
+                ImageComponent imageComponent = new ImageComponent(outline);
+                imageComponent.setPreferredLocation(new Point(bounds.x, bounds.y));
+                imageComponent.render(graphics);
+            } else {
+                graphics.setColor(color);
+                graphics.draw(bounds);
+            }
+
+            if (config.itemOverlayTextMode() == HighlightOverlayTextSetting.NONE) continue;
+
+            TextComponent textComponent = new TextComponent();
+            textComponent.setColor(color);
+            textComponent.setText(step.getTooltip());
+
+            FontMetrics fontMetrics = graphics.getFontMetrics();
+            int textWidth = fontMetrics.stringWidth(step.getTooltip());
+            int textHeight = fontMetrics.getHeight();
+
+            if (config.itemOverlayTextMode() == HighlightOverlayTextSetting.BELOW) {
+                textComponent.setPosition(new Point(
+                        bounds.x + bounds.width / 2 - textWidth / 2,
+                        bounds.y + bounds.height + textHeight
+                ));
+            } else {
+                textComponent.setPosition(new Point(
+                        bounds.x + bounds.width / 2 - textWidth / 2,
+                        bounds.y - textHeight / 2
+                ));
+            }
+
+            textComponent.render(graphics);
         }
-
-        currentWidgetItem = widgetItem;
-
-        Color color = config.itemOverlayColor();
-
-        Rectangle bounds = widgetItem.getCanvasBounds();
-
-        if (config.itemOverlayMode() == ItemOverlaySetting.OUTLINE) {
-            BufferedImage outline = itemManager.getItemOutline(itemId, widgetItem.getQuantity(), color);
-            ImageComponent imageComponent = new ImageComponent(outline);
-            imageComponent.setPreferredLocation(new Point(bounds.x, bounds.y));
-            imageComponent.render(graphics);
-        } else {
-            graphics.setColor(color);
-            graphics.draw(bounds);
-        }
-
-        if (config.itemOverlayTextMode() == HighlightOverlayTextSetting.NONE) return;
-
-        TextComponent textComponent = new TextComponent();
-        textComponent.setColor(color);
-        textComponent.setText(step.getTooltip());
-
-        FontMetrics fontMetrics = graphics.getFontMetrics();
-        int textWidth = fontMetrics.stringWidth(step.getTooltip());
-        int textHeight = fontMetrics.getHeight();
-
-        if (config.itemOverlayTextMode() == HighlightOverlayTextSetting.BELOW) {
-            textComponent.setPosition(new Point(
-                bounds.x + bounds.width / 2 - textWidth / 2,
-                bounds.y + bounds.height + textHeight
-            ));
-        } else {
-            textComponent.setPosition(new Point(
-                bounds.x + bounds.width / 2 - textWidth / 2,
-                bounds.y - textHeight / 2
-            ));
-        }
-
-        textComponent.render(graphics);
     }
 }

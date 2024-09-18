@@ -2,6 +2,7 @@ package com.toofifty.easyblastfurnace.state;
 
 import com.toofifty.easyblastfurnace.EasyBlastFurnaceConfig;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemID;
 
 import javax.inject.Inject;
@@ -9,6 +10,7 @@ import javax.inject.Singleton;
 
 @Getter
 @Singleton
+@Slf4j
 public class BlastFurnaceState
 {
     @Inject
@@ -32,29 +34,25 @@ public class BlastFurnaceState
     @Inject
     private EasyBlastFurnaceConfig config;
 
+    private int lastPositiveChange = 0;
     public void update()
     {
-        if (player.isAtConveyorBelt() &&
-            (inventory.hasChanged(ItemID.GOLD_ORE) ||
-                inventory.hasChanged(ItemID.IRON_ORE) ||
-                inventory.hasChanged(ItemID.MITHRIL_ORE) ||
-                inventory.hasChanged(ItemID.ADAMANTITE_ORE) ||
-                inventory.hasChanged(ItemID.RUNITE_ORE))) {
-            player.hasLoadedOres(true);
+        int invChange = inventory.getChange(ItemID.GOLD_ORE, ItemID.IRON_ORE, ItemID.MITHRIL_ORE, ItemID.ADAMANTITE_ORE, ItemID.RUNITE_ORE);
+
+        if (invChange > 0) {
+            lastPositiveChange = invChange;
         }
 
-        if (furnace.has(ItemID.GOLD_BAR, ItemID.STEEL_BAR, ItemID.MITHRIL_BAR, ItemID.ADAMANTITE_BAR, ItemID.RUNITE_BAR)) {
-            player.hasLoadedOres(false);
+        if (player.isAtConveyorBelt() && invChange == -1) { // invChange is always -1 when adding ores to the conveyor belt.
+            furnace.setOresOnConveyorBelt(lastPositiveChange);
+            lastPositiveChange = 0;
+            player.hasOreOnConveyor(true);
         }
 
         if (equipment.equipped(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET, ItemID.MAX_CAPE)) {
             coalBag.setMaxCoal(36);
         } else {
             coalBag.setMaxCoal(27);
-        }
-
-        if (coalBag.getOreOntoConveyorCount() > 0 && bank.isOpen() && inventory.hasChanged(ItemID.COAL) && inventory.has(ItemID.COAL)) {
-            coalBag.oreOntoConveyor(0);
         }
 
         inventory.update();

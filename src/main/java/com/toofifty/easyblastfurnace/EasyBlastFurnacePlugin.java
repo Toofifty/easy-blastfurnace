@@ -13,13 +13,16 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,6 +44,9 @@ public class EasyBlastFurnacePlugin extends Plugin
 
     @Inject
     private Client client;
+
+    @Inject
+    private ClientThread clientThread;
 
     @Inject
     private OverlayManager overlayManager;
@@ -86,6 +92,10 @@ public class EasyBlastFurnacePlugin extends Plugin
 
     @Getter
     private boolean isEnabled = false;
+
+    @Getter
+    private int lastCheckTick = 0;
+    private int oreOntoConveyorCount = 0;
 
     @Override
     protected void startUp()
@@ -183,6 +193,13 @@ public class EasyBlastFurnacePlugin extends Plugin
     }
 
     @Subscribe
+    public void onConfigChanged(ConfigChanged event) {
+        if(Objects.equals(event.getGroup(), "easy-blastfurnace") && Objects.equals(event.getKey(), "potionMode")) {
+            clientThread.invokeLater(() -> methodHandler.next());
+        }
+    }
+
+    @Subscribe
     public void onChatMessage(ChatMessage event)
     {
         if (!isEnabled) return;
@@ -195,22 +212,24 @@ public class EasyBlastFurnacePlugin extends Plugin
 
         if (emptyMatcher.matches()) {
             state.getCoalBag().empty();
+        }
 
-        } else if (filledMatcher.matches()) {
-            state.getCoalBag().fill();
+        if (filledMatcher.matches()) {
+            int addedCoal = Integer.parseInt(filledMatcher.group(1));
+            state.getCoalBag().setCoal(state.getCoalBag().getCoal() + addedCoal);
         }
 
         if (message.equals("All your ore goes onto the conveyor belt.")) {
             if (state.getInventory().has(ItemID.COAL)) {
-                state.getCoalBag().oreOntoConveyor();
+                oreOntoConveyorCount++;
             } else {
-                state.getCoalBag().oreOntoConveyor(1);
+                oreOntoConveyorCount = 1;
             }
         }
 
         // After emptying coal bag onto conveyor, ensure coal amount is 0.
-        if (maxConveyorCount == state.getCoalBag().getOreOntoConveyorCount()) {
-            state.getCoalBag().oreOntoConveyor(0);
+        if (maxConveyorCount == oreOntoConveyorCount) {
+            oreOntoConveyorCount = 0;
             if (state.getCoalBag().getCoal() > 1) state.getCoalBag().setCoal(0);
         }
 
@@ -223,9 +242,17 @@ public class EasyBlastFurnacePlugin extends Plugin
     {
         if (!isEnabled) return;
 
-        if (event.getMenuOption().equals(Strings.FILL)) state.getCoalBag().fill();
-        if (event.getMenuOption().equals(Strings.EMPTY)) state.getCoalBag().empty();
         if (event.getMenuOption().equals(Strings.DRINK)) statistics.drinkStamina();
+
+        // Because menu option events can happen multiple times per tick, this is needed to prevent duplicate coal bag empty events.
+        final int currentTick = client.getTickCount();
+        if (lastCheckTick == currentTick)
+        {
+            return;
+        }
+        lastCheckTick = currentTick;
+
+        if (event.getMenuOption().equals(Strings.EMPTY)) state.getCoalBag().empty();
 
         // handle coal bag changes
         methodHandler.next();
