@@ -46,7 +46,11 @@ public class CoalBagOverlay extends WidgetItemOverlay
         TextComponent textComponent = new TextComponent();
 
         textComponent.setPosition(new Point(bounds.x - 1, bounds.y + 8));
-        textComponent.setColor(color);
+        if (state.getCoalBag().isFull()) {
+            textComponent.setColor(Color.red);
+        } else {
+            textComponent.setColor(color);
+        }
         textComponent.setText(Integer.toString(state.getCoalBag().getCoal()));
 
         textComponent.render(graphics);
