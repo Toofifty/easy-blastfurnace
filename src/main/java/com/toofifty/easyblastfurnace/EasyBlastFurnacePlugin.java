@@ -10,9 +10,17 @@ import com.toofifty.easyblastfurnace.utils.SessionStatistics;
 import com.toofifty.easyblastfurnace.utils.Strings;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.GameObject;
+import net.runelite.api.GameState;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -22,7 +30,10 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,9 +44,10 @@ import java.util.regex.Pattern;
 )
 public class EasyBlastFurnacePlugin extends Plugin
 {
-    public static final int CONVEYOR_BELT = ObjectID.CONVEYOR_BELT;
-    public static final int BAR_DISPENSER = NullObjectID.NULL_9092;
-    public static final int BANK_CHEST = ObjectID.BANK_CHEST_26707;
+	public static final int CONVEYOR_BELT = ObjectID.BLAST_FURNACE_CONVEYER_BELT_CLICKABLE;
+	public static final int BAR_DISPENSER = ObjectID.BLAST_FURNACE_DISPENSER;
+	public static final int BANK_CHEST = ObjectID.BLAST_BANK_CHEST;
+
 
     public static final WorldPoint PICKUP_POSITION = new WorldPoint(1940, 4962, 0);
 
@@ -92,6 +104,12 @@ public class EasyBlastFurnacePlugin extends Plugin
 
     @Getter
     private boolean isEnabled = false;
+
+    @Getter
+    private int lastCheckTick = 0;
+    private int oreOntoConveyorCount = 0;
+	private boolean cachePotions = true;
+	private Set<Integer> potionStoreVars;
 
     @Override
     protected void startUp()
@@ -167,7 +185,7 @@ public class EasyBlastFurnacePlugin extends Plugin
     {
         if (!isEnabled) return;
 
-        if (event.getContainerId() == InventoryID.INVENTORY.getId()) {
+        if (event.getContainerId() == InventoryID.INV) {
             methodHandler.setMethodFromInventory();
             state.update();
         }
@@ -177,9 +195,14 @@ public class EasyBlastFurnacePlugin extends Plugin
     }
 
     @Subscribe
-    public void onVarbitChanged(VarbitChanged event)
+    public void onVarbitChanged(VarbitChanged varbitChanged)
     {
         if (!isEnabled) return;
+
+		if (potionStoreVars != null && potionStoreVars.contains(varbitChanged.getVarpId()))
+		{
+			cachePotions = true;
+		}
 
         statistics.onFurnaceUpdate();
         state.update();
@@ -190,7 +213,7 @@ public class EasyBlastFurnacePlugin extends Plugin
 
     @Subscribe
     public void onConfigChanged(ConfigChanged event) {
-        if(Objects.equals(event.getGroup(), "easy-blastfurnace") && Objects.equals(event.getKey(), "potionMode")) {
+        if (Objects.equals(event.getGroup(), "easy-blastfurnace") && Objects.equals(event.getKey(), "potionMode")) {
             clientThread.invokeLater(() -> methodHandler.next());
         }
     }
@@ -208,22 +231,24 @@ public class EasyBlastFurnacePlugin extends Plugin
 
         if (emptyMatcher.matches()) {
             state.getCoalBag().empty();
+        }
 
-        } else if (filledMatcher.matches()) {
-            state.getCoalBag().fill();
+        if (filledMatcher.matches()) {
+            int addedCoal = Integer.parseInt(filledMatcher.group(1));
+            state.getCoalBag().setCoal(state.getCoalBag().getCoal() + addedCoal);
         }
 
         if (message.equals("All your ore goes onto the conveyor belt.")) {
             if (state.getInventory().has(ItemID.COAL)) {
-                state.getCoalBag().coalOntoConveyor();
+                oreOntoConveyorCount++;
             } else {
-                state.getCoalBag().coalOntoConveyor(1);
+                oreOntoConveyorCount = 1;
             }
         }
 
         // After emptying coal bag onto conveyor, ensure coal amount is 0.
-        if (maxConveyorCount == state.getCoalBag().getCoalOntoConveyorCount()) {
-            state.getCoalBag().coalOntoConveyor(0);
+        if (maxConveyorCount == oreOntoConveyorCount) {
+            oreOntoConveyorCount = 0;
             if (state.getCoalBag().getCoal() > 1) state.getCoalBag().setCoal(0);
         }
 
@@ -236,9 +261,17 @@ public class EasyBlastFurnacePlugin extends Plugin
     {
         if (!isEnabled) return;
 
-        if (event.getMenuOption().equals(Strings.FILL)) state.getCoalBag().fill();
-        if (event.getMenuOption().equals(Strings.EMPTY)) state.getCoalBag().empty();
         if (event.getMenuOption().equals(Strings.DRINK)) statistics.drinkStamina();
+
+        // Because menu option events can happen multiple times per tick, this is needed to prevent duplicate coal bag empty events.
+        final int currentTick = client.getTickCount();
+        if (lastCheckTick == currentTick)
+        {
+            return;
+        }
+        lastCheckTick = currentTick;
+
+        if (event.getMenuOption().equals(Strings.EMPTY)) state.getCoalBag().empty();
 
         // handle coal bag changes
         methodHandler.next();
@@ -256,6 +289,25 @@ public class EasyBlastFurnacePlugin extends Plugin
             statistics.clear();
         }
     }
+
+	@Subscribe
+	public void onClientTick(ClientTick event)
+	{
+		if (state.getBank().isOpen() && cachePotions)
+		{
+			cachePotions = false;
+			state.getBank().updatePotionStorage();
+
+			Widget potionStoreItems = client.getWidget(InterfaceID.Bankmain.POTIONSTORE_ITEMS);
+			if (potionStoreItems != null && potionStoreVars == null)
+			{
+				// cache varps to update potions when one is updated
+				int[] trigger = potionStoreItems.getVarTransmitTrigger();
+				potionStoreVars = new HashSet<>();
+				Arrays.stream(trigger).forEach(potionStoreVars::add);
+			}
+		}
+	}
 
     @Provides
     EasyBlastFurnaceConfig provideConfig(ConfigManager configManager)

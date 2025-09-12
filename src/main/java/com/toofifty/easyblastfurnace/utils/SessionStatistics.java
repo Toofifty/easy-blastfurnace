@@ -6,10 +6,11 @@ import com.toofifty.easyblastfurnace.methods.MetalBarMethod;
 import com.toofifty.easyblastfurnace.methods.Method;
 import com.toofifty.easyblastfurnace.state.BlastFurnaceState;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -17,8 +18,10 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Singleton
+@Slf4j
 public class SessionStatistics
 {
     @Inject
@@ -73,7 +76,11 @@ public class SessionStatistics
         double xp = 0;
         for (int itemId : outputs.keySet()) {
             int quantity = outputs.getOrDefault(itemId, 0);
-            xp += XpRecord.get(itemId).getXp() * quantity;
+			if (state.getConfig().stopUsingGoldGauntlets()) {
+				xp += Objects.requireNonNull(XpRecord.get(itemId)).getXp() * quantity;
+			} else {
+				xp += Objects.requireNonNull(XpRecord.get(itemId)).getGauntletXp() * quantity;
+			}
         }
         return xp;
     }
@@ -117,7 +124,11 @@ public class SessionStatistics
 
     private double getXpBanked(XpRecord xpRecord)
     {
-        return getActionsBanked(xpRecord) * xpRecord.getXp();
+		if (state.getConfig().stopUsingGoldGauntlets()) {
+			return getActionsBanked(xpRecord) * xpRecord.getXp();
+		} else {
+			return getActionsBanked(xpRecord) * xpRecord.getGauntletXp();
+		}
     }
 
     public int getTotalActionsBanked()
@@ -166,15 +177,25 @@ public class SessionStatistics
             ItemID.GOLD_BAR, ItemID.STEEL_BAR, ItemID.MITHRIL_BAR, ItemID.ADAMANTITE_BAR, ItemID.RUNITE_BAR
         };
 
+        int[] ores = new int[]{
+            ItemID.GOLD_ORE, ItemID.IRON_ORE, ItemID.MITHRIL_ORE, ItemID.ADAMANTITE_ORE, ItemID.RUNITE_ORE
+        };
+
+        for (int oreId : ores) {
+            int diff = state.getFurnace().getChange(oreId);
+            if (diff > 0) {
+                state.getFurnace().setOresOnConveyorBelt(Math.max(state.getFurnace().getOresOnConveyorBelt() - diff, 0));
+                if (state.getFurnace().getOresOnConveyorBelt() == 0) {
+                    state.getPlayer().hasOreOnConveyor(false);
+                }
+            }
+        }
+
         for (int barId : bars) {
             int diff = state.getFurnace().getChange(barId);
             if (diff > 0) {
                 int totalBars = outputs.getOrDefault(barId, 0) + diff;
                 outputs.put(barId, totalBars);
-                state.getFurnace().setOresOnConveyorBelt(state.getFurnace().getOresOnConveyorBelt() - diff);
-                if (state.getFurnace().getOresOnConveyorBelt() <= 0) {
-                    state.getPlayer().hasOreOnConveyor(false);
-                }
             }
         }
     }

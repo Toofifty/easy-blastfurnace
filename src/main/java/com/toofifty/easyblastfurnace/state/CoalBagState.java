@@ -1,7 +1,8 @@
 package com.toofifty.easyblastfurnace.state;
 
 import lombok.Getter;
-import net.runelite.api.ItemID;
+import lombok.Setter;
+import net.runelite.api.gameval.ItemID;
 
 import javax.inject.Inject;
 
@@ -18,18 +19,13 @@ public class CoalBagState
     @Getter
     private int coal;
 
-    @Getter
+    @Setter
+	@Getter
     private int maxCoal = 27;
 
-    @Getter
-    private int coalOntoConveyorCount = 0;
+    public boolean recentlyEmptiedCoalBag = false;
 
-    public void setMaxCoal(int quantity)
-    {
-        maxCoal = quantity;
-    }
-
-    public void setCoal(int quantity)
+	public void setCoal(int quantity)
     {
         coal = Math.min(Math.max(quantity, MIN_COAL), maxCoal);
     }
@@ -50,7 +46,7 @@ public class CoalBagState
             setCoal(MIN_COAL);
             return;
         }
-
+        recentlyEmptiedCoalBag = true;
         setCoal(coal - inventory.getFreeSlots());
     }
 
@@ -60,16 +56,6 @@ public class CoalBagState
             setCoal(maxCoal);
             return;
         }
-        coalOntoConveyorCount = 0;
         setCoal(coal + inventory.getQuantity(ItemID.COAL));
-    }
-
-    public void coalOntoConveyor(int ...override)
-    {
-        if (override.length > 0) {
-            coalOntoConveyorCount = override[0];
-        } else {
-            coalOntoConveyorCount++;
-        }
     }
 }

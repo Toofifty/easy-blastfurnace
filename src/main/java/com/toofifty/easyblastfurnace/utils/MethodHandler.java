@@ -8,7 +8,7 @@ import com.toofifty.easyblastfurnace.overlays.ItemStepOverlay;
 import com.toofifty.easyblastfurnace.state.BlastFurnaceState;
 import com.toofifty.easyblastfurnace.steps.MethodStep;
 import lombok.Getter;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 
 @Singleton
 public class MethodHandler
@@ -26,7 +26,7 @@ public class MethodHandler
     private Method method;
 
     @Getter
-    private MethodStep step;
+    private MethodStep[] steps;
 
     public void next()
     {
@@ -34,14 +34,14 @@ public class MethodHandler
         if (!state.getPlayer().isOnBlastFurnaceWorld()) return;
         ItemStepOverlay.currentWidgetItem = null;
 
-        step = drinkPotionMethod.next(state);
-        if (step == null) step = method.next(state);
+        steps = drinkPotionMethod.next(state);
+        if (steps == null) steps = method.next(state);
     }
 
     public void clear()
     {
         method = null;
-        step = null;
+        steps = null;
     }
 
     private boolean inInventory(int itemId)

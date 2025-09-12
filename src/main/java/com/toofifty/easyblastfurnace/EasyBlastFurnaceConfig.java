@@ -116,11 +116,29 @@ public interface EasyBlastFurnaceConfig extends Config
 	@ConfigItem(
 		position = 8,
 		keyName = "leaveBarInDispenser",
-		name = "Toggle tick perfect method",
-		description = "Continues to the next step when there is 1 bar in the dispenser rather than 0",
+		name = "Toggle tick perfect methods",
+		description = "Enable tick perfect gold method and efficient metal/gold hybrid methods.",
 		section = guidanceOverlays
 	)
 	default boolean tickPerfectMethod() { return false; }
+
+	@ConfigItem(
+			position = 9,
+			keyName = "stopUsingGoldGauntlets",
+			name = "Do not use gold gauntlets",
+			description = "If for some reason you do not want or are unable to acquire goldsmith gauntlets, you can disable the step where you must equip them here.",
+			section = guidanceOverlays
+	)
+	default boolean stopUsingGoldGauntlets() { return false; }
+
+	@ConfigItem(
+			position = 10,
+			keyName = "stopUsingCoalBag",
+			name = "Do not use coal bag",
+			description = "If for some reason you do not want or are unable to acquire the coal bag, you can disable the step where you must withdraw it here.",
+			section = guidanceOverlays
+	)
+	default boolean stopUsingCoalBag() { return false; }
 
     @ConfigSection(
         name = "Coal bag overlay",

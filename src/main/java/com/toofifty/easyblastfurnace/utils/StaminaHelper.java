@@ -3,7 +3,10 @@ package com.toofifty.easyblastfurnace.utils;
 import com.toofifty.easyblastfurnace.methods.Method;
 import com.toofifty.easyblastfurnace.state.BlastFurnaceState;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.Skill;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.util.RSTimeUnit;
 
@@ -54,12 +57,16 @@ public class StaminaHelper {
 
     private double getLossRate(int weight)
     {
-        return ((Math.min(Math.max(weight, 0), 64)) * 67 / 64.0 + 67) / 100 * lossRateMultiplier;
+		final int effectiveWeight = Math.min(Math.max(weight, 0), 64);
+
+		int energyUnitsLost = (int) ((60 + (67 * effectiveWeight / 64.0)) * (1 - client.getBoostedSkillLevel(Skill.AGILITY) / 300.0));
+
+		return energyUnitsLost / 100.0 * lossRateMultiplier;
     }
 
     private double getMinimumEnergyRecovered(int ticksSpentIdle)
     {
-        double energyRecoveryPerSecond = ((48 + client.getBoostedSkillLevel(Skill.AGILITY)) / 360.0);
+		double energyRecoveryPerSecond = (25 + client.getBoostedSkillLevel(Skill.AGILITY) / 6.0) / 100;
         int boost = 0;
 
         for (Graceful graceful : Graceful.values()) {
@@ -114,7 +121,7 @@ public class StaminaHelper {
 
     private void calculateStaminaDuration(int ticksSpentIdle)
     {
-        Duration staminaDuration = Duration.of(10L * client.getVarbitValue(Varbits.STAMINA_EFFECT), RSTimeUnit.GAME_TICKS);
+        Duration staminaDuration = Duration.of(10L * client.getVarbitValue(VarbitID.STAMINA_DURATION), RSTimeUnit.GAME_TICKS);
         double baseDrain = isWearingSufficientlyChargedRingOfEndurance() ? 0.85 : 1; // ROE reduces energy depletion to 85% when no stamina potion is active
         lossRateMultiplier = staminaDuration.isZero() ? baseDrain : 0.3; // Stamina effect reduces energy depletion to 30%
         int timeForNextRun = 10800 + ticksSpentIdle * 600;

@@ -3,12 +3,12 @@ package com.toofifty.easyblastfurnace.methods;
 import com.toofifty.easyblastfurnace.steps.MethodStep;
 import com.toofifty.easyblastfurnace.utils.CoalPer;
 import com.toofifty.easyblastfurnace.utils.Strings;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 
 public class MithrilBarMethod extends MetalBarMethod
 {
     @Override
-    protected MethodStep withdrawOre()
+    protected MethodStep[] withdrawOre()
     {
         return withdrawMithrilOre;
     }
