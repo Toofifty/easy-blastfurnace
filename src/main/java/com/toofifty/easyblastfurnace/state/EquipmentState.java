@@ -41,7 +41,7 @@ public class EquipmentState
 
     public boolean hasGoldsmithEffect()
     {
-        return equipped(ItemID.GAUNTLETS_OF_GOLDSMITHING, ItemID.SKILLCAPE_SMITHING, ItemID.SKILLCAPE_SMITHING_TRIMMED, ItemID.SKILLCAPE_MAX);
+        return equipped(ItemID.GAUNTLETS_OF_GOLDSMITHING, ItemID.SKILLCAPE_SMITHING, ItemID.SKILLCAPE_SMITHING_TRIMMED, ItemID.SKILLCAPE_MAX, ItemID.SKILLCAPE_MAX);
     }
 
     public boolean hasIceGlovesEffect()

@@ -22,7 +22,7 @@ abstract public class MetalBarMethod extends Method
 
     private MethodStep[] checkPrerequisite(BlastFurnaceState state)
     {
-        if (!state.getInventory().has(ItemID.COAL_BAG, ItemID.COAL_BAG_OPEN)) {
+        if (!state.getInventory().has(ItemID.COAL_BAG, ItemID.COAL_BAG_OPEN)) { // TODO: implement stop using coal bag config item
             if (state.getInventory().has(oreItem())) {
                 return state.getConfig().useDepositInventory() ? depositInventory : depositBarsAndOres;
             }
