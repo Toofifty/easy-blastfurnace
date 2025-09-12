@@ -1,6 +1,7 @@
 package com.toofifty.easyblastfurnace.state;
 
 import com.toofifty.easyblastfurnace.EasyBlastFurnaceConfig;
+import com.toofifty.easyblastfurnace.utils.Equipment;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.gameval.ItemID;
@@ -49,7 +50,7 @@ public class BlastFurnaceState
             player.hasOreOnConveyor(true);
         }
 
-        if (equipment.equipped(ItemID.SKILLCAPE_SMITHING, ItemID.SKILLCAPE_SMITHING_TRIMMED, ItemID.SKILLCAPE_MAX)) {
+        if (equipment.equipped(Equipment.merge(Equipment.SMITHING_CAPE.items, Equipment.MAX_CAPE.items))) {
             coalBag.setMaxCoal(36);
         } else {
             coalBag.setMaxCoal(27);

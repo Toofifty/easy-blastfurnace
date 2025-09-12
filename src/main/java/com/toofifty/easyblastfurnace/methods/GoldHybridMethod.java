@@ -2,6 +2,7 @@ package com.toofifty.easyblastfurnace.methods;
 
 import com.toofifty.easyblastfurnace.state.BlastFurnaceState;
 import com.toofifty.easyblastfurnace.steps.MethodStep;
+import com.toofifty.easyblastfurnace.utils.Equipment;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.gameval.ItemID;
 
@@ -9,46 +10,46 @@ import net.runelite.api.gameval.ItemID;
 abstract public class GoldHybridMethod extends MetalBarMethod
 {
 	protected boolean lastInvWasGold = false;
-    private MethodStep[] checkPrerequisite(BlastFurnaceState state)
+    private MethodStep[] checkPrerequisite(BlastFurnaceState state, boolean hasCoalBag, boolean hasGoldsmithEquipment)
     {
-        if (!state.getInventory().has(ItemID.COAL_BAG, ItemID.COAL_BAG_OPEN)) {
+        if (hasCoalBag && !state.getInventory().has(ItemID.COAL_BAG, ItemID.COAL_BAG_OPEN)) {
 			if (state.getInventory().has(oreItem(), ItemID.GOLD_ORE)) {
 				return state.getConfig().useDepositInventory() ? depositInventory : depositBarsAndOres;
 			}
             return state.getBank().isOpen() ? withdrawCoalBag : openBank;
         }
 
-        if (!state.getInventory().has(ItemID.ICE_GLOVES, ItemID.SMITHING_UNIFORM_GLOVES_ICE) && !state.getEquipment().hasIceGlovesEffect()) {
+        if (!state.getInventory().has(Equipment.ICE_GLOVES.items) && !state.getEquipment().hasIceGlovesEffect()) {
             return state.getBank().isOpen() ? withdrawIceOrSmithsGloves : openBank;
         }
 
-        if (state.getBank().has(ItemID.SKILLCAPE_MAX) &&
-            !state.getInventory().has(ItemID.SKILLCAPE_MAX) &&
-            !state.getEquipment().equipped(ItemID.SKILLCAPE_MAX)) {
+        if (state.getBank().has(Equipment.MAX_CAPE.items) &&
+            !state.getInventory().has(Equipment.MAX_CAPE.items) &&
+            !state.getEquipment().equipped(Equipment.MAX_CAPE.items)) {
             return state.getBank().isOpen() ? withdrawMaxCape : openBank;
         }
 
-        if (state.getInventory().has(ItemID.SKILLCAPE_MAX) &&
-            !state.getEquipment().equipped(ItemID.SKILLCAPE_MAX)) {
+        if (state.getInventory().has(Equipment.MAX_CAPE.items) &&
+            !state.getEquipment().equipped(Equipment.MAX_CAPE.items)) {
             return equipMaxCape;
         }
 
-        if (state.getBank().has(ItemID.SKILLCAPE_SMITHING, ItemID.SKILLCAPE_SMITHING_TRIMMED) &&
-            !state.getInventory().has(ItemID.SKILLCAPE_SMITHING, ItemID.SKILLCAPE_SMITHING_TRIMMED) &&
-            !state.getEquipment().equipped(ItemID.SKILLCAPE_SMITHING, ItemID.SKILLCAPE_SMITHING_TRIMMED, ItemID.SKILLCAPE_MAX)) {
+        if (state.getBank().has(Equipment.SMITHING_CAPE.items) &&
+            !state.getInventory().has(Equipment.SMITHING_CAPE.items) &&
+            !state.getEquipment().equipped(Equipment.merge(Equipment.SMITHING_CAPE.items, Equipment.MAX_CAPE.items))) {
             return state.getBank().isOpen() ? withdrawSmithingCape : openBank;
         }
 
-        if (state.getInventory().has(ItemID.SKILLCAPE_SMITHING, ItemID.SKILLCAPE_SMITHING_TRIMMED) &&
-            !state.getEquipment().equipped(ItemID.SKILLCAPE_SMITHING, ItemID.SKILLCAPE_SMITHING_TRIMMED, ItemID.SKILLCAPE_MAX)) {
+        if (state.getInventory().has(Equipment.SMITHING_CAPE.items) &&
+            !state.getEquipment().equipped(Equipment.merge(Equipment.SMITHING_CAPE.items, Equipment.MAX_CAPE.items))) {
             return equipSmithingCape;
         }
 
-        if (!state.getInventory().has(ItemID.GAUNTLETS_OF_GOLDSMITHING) && !state.getEquipment().hasGoldsmithEffect()) {
+        if (hasGoldsmithEquipment && !state.getInventory().has(Equipment.GOLDSMITH.items) && !state.getEquipment().hasGoldsmithEffect()) {
             return state.getBank().isOpen() ? withdrawGoldsmithGauntlets : openBank;
         }
 
-        if (!state.getEquipment().hasIceGlovesEffect() && !state.getEquipment().hasGoldsmithEffect()) {
+        if (hasGoldsmithEquipment && !state.getEquipment().hasIceGlovesEffect() && !state.getEquipment().hasGoldsmithEffect()) {
             return equipGoldsmithGauntlets;
         }
 
@@ -58,9 +59,11 @@ abstract public class GoldHybridMethod extends MetalBarMethod
     @Override
     public MethodStep[] next(BlastFurnaceState state)
     {
-        MethodStep[] prerequisite = checkPrerequisite(state);
+        boolean hasCoalBag = Equipment.hasCoalBag(state);
+        boolean hasGoldsmithEquipment = Equipment.hasGoldsmithEquipment(state);
+        MethodStep[] prerequisite = checkPrerequisite(state, hasCoalBag, hasGoldsmithEquipment);
         if (prerequisite != null) return prerequisite;
-        boolean smithingCapeEquipped = state.getEquipment().equipped(ItemID.SKILLCAPE_SMITHING, ItemID.SKILLCAPE_SMITHING_TRIMMED);
+        boolean smithingCapeEquipped = state.getEquipment().equipped(Equipment.SMITHING_CAPE.items);
         int maxCoalInventory = state.getInventory().getFreeSlotsIncludingOresAndBars();
         boolean coalRun = state.getFurnace().getQuantity(ItemID.COAL) < maxCoalInventory * (coalPer() - state.getFurnace().getCoalOffset());
 		boolean oreOnConveyor = state.getPlayer().hasOreOnConveyor();
@@ -89,7 +92,7 @@ abstract public class GoldHybridMethod extends MetalBarMethod
 				return collectBars;
 			}
 
-			if (state.getCoalBag().isFull() && state.getInventory().has(oreItem(), ItemID.GOLD_ORE)) {
+			if ((hasCoalBag && state.getCoalBag().isFull()) && state.getInventory().has(oreItem(), ItemID.GOLD_ORE)) {
 				return putOntoConveyorBelt;
 			}
 
@@ -97,11 +100,11 @@ abstract public class GoldHybridMethod extends MetalBarMethod
 				return useDepositInventory ? depositInventory : depositBarsAndOres;
 			}
 
-			if (!useDepositInventory && !coalBagFull) {
+			if (hasCoalBag && !useDepositInventory && !coalBagFull) {
 				return coalBagEmpty ? fillCoalBag : refillCoalBag;
 			}
 
-			if (!useDepositInventory && coalRun && !state.getEquipment().hasGoldsmithEffect()) {
+			if (hasGoldsmithEquipment && !useDepositInventory && coalRun && !state.getEquipment().hasGoldsmithEffect()) {
 				return equipGoldsmithGauntlets;
 			}
 
@@ -115,12 +118,12 @@ abstract public class GoldHybridMethod extends MetalBarMethod
 				return withdrawOre();
 			}
 
-			if (useDepositInventory && !coalBagFull) {
+			if (hasCoalBag && useDepositInventory && !coalBagFull) {
 				return coalBagEmpty ? fillCoalBag : refillCoalBag;
 			}
 		}
 
-        if (state.getInventory().has(ItemID.GOLD_ORE) && !state.getEquipment().hasGoldsmithEffect()) {
+        if (hasGoldsmithEquipment && state.getInventory().has(ItemID.GOLD_ORE) && !state.getEquipment().hasGoldsmithEffect()) {
             return equipGoldsmithGauntlets;
         }
 
@@ -129,11 +132,11 @@ abstract public class GoldHybridMethod extends MetalBarMethod
             return putOntoConveyorBelt;
         }
 
-        if (!barDispenserFull && atConveyorBelt && (coalBagFull || (!coalBagEmpty && smithingCapeEquipped)) ) {
+        if (hasCoalBag && !barDispenserFull && atConveyorBelt && (coalBagFull || (!coalBagEmpty && smithingCapeEquipped)) ) {
             return emptyCoalBag;
         }
 
-		if (barDispenserFull && state.getInventory().has(ItemID.COAL) && !state.getCoalBag().isFull()) {
+		if (hasCoalBag && barDispenserFull && state.getInventory().has(ItemID.COAL) && !state.getCoalBag().isFull()) {
 			return fillCoalBag;
 		}
 

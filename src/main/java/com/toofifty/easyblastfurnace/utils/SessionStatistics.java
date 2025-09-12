@@ -76,7 +76,7 @@ public class SessionStatistics
         double xp = 0;
         for (int itemId : outputs.keySet()) {
             int quantity = outputs.getOrDefault(itemId, 0);
-			if (state.getConfig().stopUsingGoldGauntlets()) {
+			if (!Equipment.hasGoldsmithEquipment(state)) {
 				xp += Objects.requireNonNull(XpRecord.get(itemId)).getXp() * quantity;
 			} else {
 				xp += Objects.requireNonNull(XpRecord.get(itemId)).getGauntletXp() * quantity;
@@ -124,7 +124,7 @@ public class SessionStatistics
 
     private double getXpBanked(XpRecord xpRecord)
     {
-		if (state.getConfig().stopUsingGoldGauntlets()) {
+		if (!Equipment.hasGoldsmithEquipment(state)) {
 			return getActionsBanked(xpRecord) * xpRecord.getXp();
 		} else {
 			return getActionsBanked(xpRecord) * xpRecord.getGauntletXp();

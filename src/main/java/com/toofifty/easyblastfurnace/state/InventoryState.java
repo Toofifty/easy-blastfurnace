@@ -69,7 +69,12 @@ public class InventoryState
     }
 
     public boolean has(int ...itemIds) {
-        return getQuantity(itemIds) > 0;
+        load();
+        if (inventory == null) return false;
+        for (int itemId : itemIds) {
+            if (inventory.count(itemId) > 0) return true;
+        }
+        return false;
     }
 
     public int getFreeSlots()

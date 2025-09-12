@@ -2,6 +2,7 @@ package com.toofifty.easyblastfurnace.methods;
 
 import com.toofifty.easyblastfurnace.state.BlastFurnaceState;
 import com.toofifty.easyblastfurnace.steps.MethodStep;
+import com.toofifty.easyblastfurnace.utils.Equipment;
 import net.runelite.api.gameval.ItemID;
 
 /**
@@ -20,21 +21,20 @@ abstract public class MetalBarMethod extends Method
 
     protected abstract int coalPer();
 
-    private MethodStep[] checkPrerequisite(BlastFurnaceState state)
+    private MethodStep[] checkPrerequisite(BlastFurnaceState state, boolean hasCoalBag)
     {
-        if (!state.getInventory().has(ItemID.COAL_BAG, ItemID.COAL_BAG_OPEN)) { // TODO: implement stop using coal bag config item
+        if (hasCoalBag && !state.getInventory().has(ItemID.COAL_BAG, ItemID.COAL_BAG_OPEN)) {
             if (state.getInventory().has(oreItem())) {
                 return state.getConfig().useDepositInventory() ? depositInventory : depositBarsAndOres;
             }
             return state.getBank().isOpen() ? withdrawCoalBag : openBank;
         }
 
-        if (!state.getInventory().has(ItemID.ICE_GLOVES, ItemID.SMITHING_UNIFORM_GLOVES_ICE) &&
-            !state.getEquipment().equipped(ItemID.ICE_GLOVES, ItemID.SMITHING_UNIFORM_GLOVES_ICE)) {
+        if (!state.getInventory().has(Equipment.ICE_GLOVES.items) && !state.getEquipment().equipped(Equipment.ICE_GLOVES.items)) {
             return state.getBank().isOpen() ? withdrawIceOrSmithsGloves : openBank;
         }
 
-        if (state.getInventory().has(ItemID.ICE_GLOVES, ItemID.SMITHING_UNIFORM_GLOVES_ICE)) {
+        if (state.getInventory().has(Equipment.ICE_GLOVES.items) && !state.getEquipment().equipped(Equipment.ICE_GLOVES.items)) {
             return equipIceOrSmithsGloves;
         }
 
@@ -44,7 +44,8 @@ abstract public class MetalBarMethod extends Method
     @Override
     public MethodStep[] next(BlastFurnaceState state)
     {
-        MethodStep[] prerequisite = checkPrerequisite(state);
+        boolean hasCoalBag = Equipment.hasCoalBag(state);
+        MethodStep[] prerequisite = checkPrerequisite(state, hasCoalBag);
         if (prerequisite != null) return prerequisite;
         boolean coalRun = state.getFurnace().getQuantity(ItemID.COAL) < 27 * (coalPer() - state.getFurnace().getCoalOffset());
         boolean oreOnConveyor = state.getPlayer().hasOreOnConveyor();
@@ -74,7 +75,7 @@ abstract public class MetalBarMethod extends Method
                 return withdrawOre();
             }
 
-			if (state.getCoalBag().isEmpty()) {
+			if (hasCoalBag && state.getCoalBag().isEmpty()) {
 				return fillCoalBag;
 			}
         }
@@ -84,11 +85,11 @@ abstract public class MetalBarMethod extends Method
             return putOntoConveyorBelt;
         }
 
-        if (!barDispenserFull && state.getPlayer().isAtConveyorBelt() && !state.getCoalBag().isEmpty()) {
+        if (hasCoalBag && !barDispenserFull && state.getPlayer().isAtConveyorBelt() && !state.getCoalBag().isEmpty()) {
             return emptyCoalBag;
         }
 
-        if (barDispenserFull && state.getInventory().has(ItemID.COAL) && !state.getCoalBag().isFull()) {
+        if (hasCoalBag && barDispenserFull && state.getInventory().has(ItemID.COAL) && !state.getCoalBag().isFull()) {
             return fillCoalBag;
         }
 

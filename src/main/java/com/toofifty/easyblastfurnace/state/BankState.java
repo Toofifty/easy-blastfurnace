@@ -53,7 +53,14 @@ public class BankState
         return total;
     }
 
-    public boolean has(int ...itemIds) { return getQuantity(itemIds) > 0; }
+    public boolean has(int ...itemIds) {
+        load();
+        if (bank == null) return false;
+        for (int itemId : itemIds) {
+            if (bank.count(itemId) > 0) return true;
+        }
+        return false;
+    }
 
 	public void updatePotionStorage() {
 		EnumComposition potionStorePotions = client.getEnum(EnumID.POTIONSTORE_POTIONS);

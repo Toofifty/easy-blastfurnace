@@ -122,24 +122,6 @@ public interface EasyBlastFurnaceConfig extends Config
 	)
 	default boolean tickPerfectMethod() { return false; }
 
-	@ConfigItem(
-			position = 9,
-			keyName = "stopUsingGoldGauntlets",
-			name = "Do not use gold gauntlets",
-			description = "If for some reason you do not want or are unable to acquire goldsmith gauntlets, you can disable the step where you must equip them here.",
-			section = guidanceOverlays
-	)
-	default boolean stopUsingGoldGauntlets() { return false; }
-
-	@ConfigItem(
-			position = 10,
-			keyName = "stopUsingCoalBag",
-			name = "Do not use coal bag",
-			description = "If for some reason you do not want or are unable to acquire the coal bag, you can disable the step where you must withdraw it here.",
-			section = guidanceOverlays
-	)
-	default boolean stopUsingCoalBag() { return false; }
-
     @ConfigSection(
         name = "Coal bag overlay",
         description = "Configure coal bag overlay",
