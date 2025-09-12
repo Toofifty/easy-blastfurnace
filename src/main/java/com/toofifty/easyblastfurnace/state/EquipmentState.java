@@ -1,9 +1,10 @@
 package com.toofifty.easyblastfurnace.state;
 
+import com.toofifty.easyblastfurnace.EasyBlastFurnaceConfig;
+import com.toofifty.easyblastfurnace.utils.Equipment;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 
 import javax.inject.Inject;
 
@@ -12,11 +13,14 @@ public class EquipmentState
     @Inject
     private Client client;
 
+	@Inject
+	private EasyBlastFurnaceConfig config;
+
     private ItemContainer equipment;
 
     private void load()
     {
-        ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+        ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
         if (equipment != null) {
             this.equipment = equipment;
         }
@@ -25,23 +29,22 @@ public class EquipmentState
     public boolean equipped(int ...itemIds)
     {
         load();
-        int total = 0;
         if (equipment == null) return false;
 
         for (int itemId : itemIds) {
-            total += equipment.count(itemId);
+            if (equipment.count(itemId) > 0) return true;
         }
 
-        return total > 0;
+        return false;
     }
 
     public boolean hasGoldsmithEffect()
     {
-        return equipped(ItemID.GOLDSMITH_GAUNTLETS, ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET, ItemID.MAX_CAPE);
+        return equipped(Equipment.merge(Equipment.GOLDSMITH.items, Equipment.MAX_CAPE.items, Equipment.SMITHING_CAPE.items));
     }
 
     public boolean hasIceGlovesEffect()
     {
-        return equipped(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I);
+        return equipped(Equipment.ICE_GLOVES.items);
     }
 }

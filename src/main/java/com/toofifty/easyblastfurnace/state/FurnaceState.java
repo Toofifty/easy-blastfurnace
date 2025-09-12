@@ -6,7 +6,7 @@ import com.toofifty.easyblastfurnace.utils.BarsOres;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 
 import javax.inject.Inject;
 import java.util.Arrays;

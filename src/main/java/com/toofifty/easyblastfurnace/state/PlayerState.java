@@ -29,7 +29,7 @@ public class PlayerState
     @Accessors(fluent = true)
     @Getter
     @Setter
-    private boolean needsToDrinkEnergyPotion = false;
+    private boolean needsToIngest = false;
 
     @Inject
     private Client client;
@@ -68,29 +68,38 @@ public class PlayerState
             return (client.getEnergy() / 100.0 - staminaHelper.getEnergyNeededForNextRun()) > config.requireStaminaThreshold();
         }
 
-        //Handles requiring 1 or more energy potion doses
-        if ((client.getEnergy() / 100.0) <= config.requireStaminaThreshold() && !needsToDrinkEnergyPotion) {
-            needsToDrinkEnergyPotion = true;
+		// Handles requiring more than one consume step
+        if ((client.getEnergy() / 100.0) <= config.requireStaminaThreshold() && !needsToIngest) {
+            needsToIngest = true;
             return false;
         }
 
         // Checks If the player needs to drink more super energy potions
-        if(config.potionOverlayMode() == PotionOverlaySetting.SUPER_ENERGY && needsToDrinkEnergyPotion) {
+        if(config.potionOverlayMode() == PotionOverlaySetting.SUPER_ENERGY && needsToIngest) {
             if ((client.getEnergy() / 100.0) >= 80) {
-                needsToDrinkEnergyPotion = false;
+                needsToIngest = false;
             } else {
                 return false;
             }
         }
 
         // Checks If the player needs to drink more energy potions
-        if(config.potionOverlayMode() == PotionOverlaySetting.ENERGY && needsToDrinkEnergyPotion) {
+        if(config.potionOverlayMode() == PotionOverlaySetting.ENERGY && needsToIngest) {
             if ((client.getEnergy() / 100.0) >= 90) {
-                needsToDrinkEnergyPotion = false;
+                needsToIngest = false;
             } else {
                 return false;
             }
         }
+
+		// Checks If the player needs to eat a strange fruit
+		if(config.potionOverlayMode() == PotionOverlaySetting.STRANGE_FRUIT && needsToIngest) {
+			if ((client.getEnergy() / 100.0) >= 70) {
+				needsToIngest = false;
+			} else {
+				return false;
+			}
+		}
 
         return true;
     }

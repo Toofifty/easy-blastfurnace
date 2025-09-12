@@ -1,9 +1,10 @@
 package com.toofifty.easyblastfurnace.state;
 
 import com.toofifty.easyblastfurnace.EasyBlastFurnaceConfig;
+import com.toofifty.easyblastfurnace.utils.Equipment;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -43,13 +44,13 @@ public class BlastFurnaceState
             lastPositiveChange = invChange;
         }
 
-        if (player.isAtConveyorBelt() && invChange == -1) { // invChange is always -1 when adding ores to the conveyor belt.
+        if (player.isAtConveyorBelt() && invChange <= -1) { // invChange is always <= -1 when adding ores to the conveyor belt.
             furnace.setOresOnConveyorBelt(lastPositiveChange);
             lastPositiveChange = 0;
             player.hasOreOnConveyor(true);
         }
 
-        if (equipment.equipped(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET, ItemID.MAX_CAPE)) {
+        if (equipment.equipped(Equipment.merge(Equipment.SMITHING_CAPE.items, Equipment.MAX_CAPE.items))) {
             coalBag.setMaxCoal(36);
         } else {
             coalBag.setMaxCoal(27);

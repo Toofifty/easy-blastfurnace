@@ -8,9 +8,9 @@ import com.toofifty.easyblastfurnace.state.BlastFurnaceState;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -18,6 +18,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Singleton
 @Slf4j
@@ -75,7 +76,11 @@ public class SessionStatistics
         double xp = 0;
         for (int itemId : outputs.keySet()) {
             int quantity = outputs.getOrDefault(itemId, 0);
-            xp += XpRecord.get(itemId).getXp() * quantity;
+			if (!Equipment.hasGoldsmithEquipment(state)) {
+				xp += Objects.requireNonNull(XpRecord.get(itemId)).getXp() * quantity;
+			} else {
+				xp += Objects.requireNonNull(XpRecord.get(itemId)).getGauntletXp() * quantity;
+			}
         }
         return xp;
     }
@@ -119,7 +124,11 @@ public class SessionStatistics
 
     private double getXpBanked(XpRecord xpRecord)
     {
-        return getActionsBanked(xpRecord) * xpRecord.getXp();
+		if (!Equipment.hasGoldsmithEquipment(state)) {
+			return getActionsBanked(xpRecord) * xpRecord.getXp();
+		} else {
+			return getActionsBanked(xpRecord) * xpRecord.getGauntletXp();
+		}
     }
 
     public int getTotalActionsBanked()

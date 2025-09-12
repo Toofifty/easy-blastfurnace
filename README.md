@@ -17,9 +17,12 @@ Helps you train at the blast furnace more efficiently
 ## Requirements
 
 - Ice gloves or Smiths Gloves (i)
-- Goldsmith gauntlets or Smithing/Max cape (for gold bar & hybrid methods)
 - Coal bag (for metal bar & hybrid methods)
 - Stamina potions easily accessible in bank
+
+## Optional
+- Goldsmith gauntlets or Smithing/Max cape (for gold bar & hybrid methods)
+    - They must be used by default. You can disable their use in the EasyBlastFurnace config settings.
 
 ## Getting started
 
@@ -34,6 +37,10 @@ Helps you train at the blast furnace more efficiently
         * Allows you to use shift-click to fill your coal bag and drink stamina doses without closing the bank.
     * Item Swaps → __Bank Withdraw Shift-Click__: Set to __Withdraw-All__
         * Optional - you can also just change your default withdraw amount in the bank itself.
+* __Bank Tags__ (Runelite) - __enable__
+    * Lets you have all your potions, ores, gear etc. showing in the same place at the same time.
+* __Inventory Setups__ (Runelite) - __enable__
+  * Can be used alongside Bank Tags, allows for more setups for different skilling/bossing activities
 
 ### Setup
 
@@ -41,5 +48,5 @@ Helps you train at the blast furnace more efficiently
     1. You can reset the method at any time by __shift-right clicking__ the method overlay
 2. Deposit the ores.
 3. Withdraw/equip required items as prompted by the plugin.
-4. Clear coal bag/glove placeholders and fill your bank with bank fillers, so you can use the deposit inventory button.
-   5. Optional - Don't fill your bank with fillers and instead disable the `Use deposit inventory` option to highlight individual items in your inventory
+4. Optional - Enable the `Use deposit inventory` option to highlight individual items in your inventory
+   1. Right click & lock slot for your coal bag/gloves so you don't deposit those with your bars.
