@@ -60,7 +60,7 @@ public enum Equipment {
 
     public static boolean hasGoldsmithEquipment(BlastFurnaceState state)
     {
-        int[] goldsmithEquipment = merge(GOLDSMITH.items, MAX_CAPE.items);
+        int[] goldsmithEquipment = merge(GOLDSMITH.items, MAX_CAPE.items, SMITHING_CAPE.items);
         return state.getInventory().has(goldsmithEquipment) || state.getBank().has(goldsmithEquipment) || state.getEquipment().equipped(goldsmithEquipment);
     }
 

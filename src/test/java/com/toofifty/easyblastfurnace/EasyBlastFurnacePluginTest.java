@@ -614,15 +614,15 @@ public class EasyBlastFurnacePluginTest {
         setFurnaceCount(oreVarbit, 0);
         setFurnaceCount(barVarbit, 0);
         setFurnaceCount(BarsOres.COAL.getVarbit(), 0);
-		assertStepTooltip(Strings.WITHDRAW_COAL);
+        assertStepTooltip(Strings.FILL_COAL_BAG);
+        setCoalBag(coalBagFillMessage);
 
+		assertStepTooltip(Strings.WITHDRAW_COAL);
 		setFurnaceCount(BarsOres.COAL.getVarbit(), 27 * (coalPer - state.getFurnace().getCoalOffset()));
 		assertStepTooltip(withdrawOreText);
 
 		setInventoryCount(oreID, 27);
-        assertStepTooltip(Strings.FILL_COAL_BAG);
 
-        setCoalBag(coalBagFillMessage);
 		assertEquals(state.getCoalBag().getMaxCoal(), state.getCoalBag().getCoal());
 
         assertStepTooltip(Strings.PUT_ORE_ONTO_CONVEYOR_BELT);

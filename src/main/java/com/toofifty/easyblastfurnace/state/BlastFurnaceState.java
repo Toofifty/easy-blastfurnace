@@ -44,7 +44,7 @@ public class BlastFurnaceState
             lastPositiveChange = invChange;
         }
 
-        if (player.isAtConveyorBelt() && invChange == -1) { // invChange is always -1 when adding ores to the conveyor belt.
+        if (player.isAtConveyorBelt() && invChange <= -1) { // invChange is always <= -1 when adding ores to the conveyor belt.
             furnace.setOresOnConveyorBelt(lastPositiveChange);
             lastPositiveChange = 0;
             player.hasOreOnConveyor(true);
