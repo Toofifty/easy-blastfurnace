@@ -27,7 +27,7 @@ dependencies {
 }
 
 group = 'com.toofifty'
-version = '1.4.5'
+version = '1.5.0'
 sourceCompatibility = '1.8'
 
 tasks.withType(JavaCompile) {
