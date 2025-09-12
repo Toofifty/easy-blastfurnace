@@ -351,4 +351,12 @@ public interface EasyBlastFurnaceConfig extends Config
         description = "Ensure there is always more coal than needed in the furnace. This avoids stalls while bars are created."
     )
     default boolean addCoalBuffer() { return false; }
+
+	@ConfigItem(
+			position = 5,
+			keyName = "stopUsingGoldGauntlets",
+			name = "Do not use gold gauntlets",
+			description = "If for some reason you do not want or are unable to acquire goldsmith gauntlets, you can disable the step where you must equip them here."
+	)
+	default boolean stopUsingGoldGauntlets() { return false; }
 }

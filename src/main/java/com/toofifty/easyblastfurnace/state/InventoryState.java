@@ -1,14 +1,12 @@
 package com.toofifty.easyblastfurnace.state;
 
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 
 import javax.inject.Inject;
-import java.util.Arrays;
-import java.util.Optional;
 import java.util.stream.IntStream;
 
 public class InventoryState
@@ -22,23 +20,19 @@ public class InventoryState
 
     private void load()
     {
-        ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+        ItemContainer inventory = client.getItemContainer(InventoryID.INV);
         if (inventory != null) {
             this.inventory = inventory;
         }
     }
 
-    private int getPreviousQuantity(int ...itemIds)
-    {
-        int total = 0;
-
-        for (int itemId : itemIds) {
-            Optional<Item> item = Arrays.stream(previousInventory).filter(i -> i.getId() == itemId).findFirst();
-            total += item.map(Item::getQuantity).orElse(0);
-        }
-
-        return total;
-    }
+	private int getPreviousQuantity(int itemId)
+	{
+		int total = 0;
+		for (Item i : previousInventory)
+			if (i != null && i.getId() == itemId) total += i.getQuantity();
+		return total;
+	}
 
     public void update()
     {
@@ -60,11 +54,6 @@ public class InventoryState
         }
 
         return totalChange;
-    }
-
-    public boolean hasChanged(int ...itemIds)
-    {
-        return getChange(itemIds) != 0;
     }
 
     public int getQuantity(int ...itemIds)

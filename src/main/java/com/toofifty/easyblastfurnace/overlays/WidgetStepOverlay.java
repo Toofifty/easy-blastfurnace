@@ -11,7 +11,6 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.TextComponent;
 
 import javax.inject.Inject;
@@ -34,7 +33,7 @@ public class WidgetStepOverlay extends Overlay
     {
         setPosition(OverlayPosition.DYNAMIC);
         setLayer(OverlayLayer.ALWAYS_ON_TOP);
-        setPriority(OverlayPriority.HIGHEST);
+        setPriority(100F);
     }
 
     @Override
@@ -49,7 +48,7 @@ public class WidgetStepOverlay extends Overlay
         for (MethodStep step : steps) {
             if (!(step instanceof WidgetStep)) continue;
 
-            Widget widget = client.getWidget(((WidgetStep) step).getComponentId());
+            Widget widget = client.getWidget(((WidgetStep) step).getPackedWidgetId());
             if (widget == null) continue;
 
 

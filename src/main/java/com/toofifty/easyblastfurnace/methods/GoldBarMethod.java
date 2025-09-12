@@ -4,7 +4,7 @@ import com.toofifty.easyblastfurnace.state.BlastFurnaceState;
 import com.toofifty.easyblastfurnace.steps.MethodStep;
 import com.toofifty.easyblastfurnace.utils.Strings;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 
 @Slf4j
 public class GoldBarMethod extends Method
@@ -13,33 +13,33 @@ public class GoldBarMethod extends Method
     {
         // ensure player has both ice gloves & goldsmith gauntlets either in inventory or equipped
 
-        if (!state.getInventory().has(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I) && !state.getEquipment().hasIceGlovesEffect()) {
+        if (!state.getInventory().has(ItemID.ICE_GLOVES, ItemID.SMITHING_UNIFORM_GLOVES_ICE) && !state.getEquipment().hasIceGlovesEffect()) {
             return state.getBank().isOpen() ? withdrawIceOrSmithsGloves : openBank;
         }
 
-        if (state.getBank().has(ItemID.MAX_CAPE) &&
-                !state.getInventory().has(ItemID.MAX_CAPE) &&
-                !state.getEquipment().equipped(ItemID.MAX_CAPE)) {
+        if (state.getBank().has(ItemID.SKILLCAPE_MAX) &&
+                !state.getInventory().has(ItemID.SKILLCAPE_MAX) &&
+                !state.getEquipment().equipped(ItemID.SKILLCAPE_MAX)) {
             return state.getBank().isOpen() ? withdrawMaxCape : openBank;
         }
 
-        if (state.getInventory().has(ItemID.MAX_CAPE) &&
-                !state.getEquipment().equipped(ItemID.MAX_CAPE)) {
+        if (state.getInventory().has(ItemID.SKILLCAPE_MAX) &&
+                !state.getEquipment().equipped(ItemID.SKILLCAPE_MAX)) {
             return equipMaxCape;
         }
 
-        if (state.getBank().has(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET) &&
-            !state.getInventory().has(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET) &&
-            !state.getEquipment().equipped(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET, ItemID.MAX_CAPE)) {
+        if (state.getBank().has(ItemID.SKILLCAPE_SMITHING, ItemID.SKILLCAPE_SMITHING_TRIMMED) &&
+            !state.getInventory().has(ItemID.SKILLCAPE_SMITHING, ItemID.SKILLCAPE_SMITHING_TRIMMED) &&
+            !state.getEquipment().equipped(ItemID.SKILLCAPE_SMITHING, ItemID.SKILLCAPE_SMITHING_TRIMMED, ItemID.SKILLCAPE_MAX)) {
             return state.getBank().isOpen() ? withdrawSmithingCape : openBank;
         }
 
-        if (state.getInventory().has(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET) &&
-            !state.getEquipment().equipped(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET, ItemID.MAX_CAPE)) {
+        if (state.getInventory().has(ItemID.SKILLCAPE_SMITHING, ItemID.SKILLCAPE_SMITHING_TRIMMED) &&
+            !state.getEquipment().equipped(ItemID.SKILLCAPE_SMITHING, ItemID.SKILLCAPE_SMITHING_TRIMMED, ItemID.SKILLCAPE_MAX)) {
             return equipSmithingCape;
         }
 
-        if (!state.getInventory().has(ItemID.GOLDSMITH_GAUNTLETS) && !state.getEquipment().hasGoldsmithEffect()) {
+        if (!state.getInventory().has(ItemID.GAUNTLETS_OF_GOLDSMITHING) && !state.getEquipment().hasGoldsmithEffect()) {
             return state.getBank().isOpen() ? withdrawGoldsmithGauntlets : openBank;
         }
 

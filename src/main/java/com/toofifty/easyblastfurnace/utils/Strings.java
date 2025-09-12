@@ -16,6 +16,7 @@ public class Strings {
     public static String DEPOSIT_STAMINA_POTIONS = "Deposit stamina potions";
     public static String DEPOSIT_SUPER_ENERGY_POTIONS = "Deposit Super Energy potions";
     public static String DEPOSIT_ENERGY_POTIONS = "Deposit Energy potions";
+	public static String DEPOSIT_STRANGE_FRUIT = "Deposit Strange Fruit";
     public static String WITHDRAW_ICE_OR_SMITHS_GLOVES = "Withdraw ice gloves or smiths gloves (i)";
     public static String EQUIP_ICE_OR_SMITHS_GLOVES = "Equip ice gloves or smiths gloves (i)";
     public static String EQUIP_GOLDSMITH_GAUNTLETS_AFTER_COLLECT_BARS = "Equip after collecting bars";
@@ -49,12 +50,12 @@ public class Strings {
     public static String COAL_EMPTY = "^The coal bag is now empty.$";
 
     // Actions
-    public static String FILL = "Fill";
     public static String EMPTY = "Empty";
     public static String DRINK = "Drink";
 
     // Stamina
     public static String WITHDRAW_STAMINA_POTION = "Withdraw stamina potion";
+	public static String WITHDRAW_FROM_POTION_STORAGE = " from potion storage";
     public static String DRINK_STAMINA_POTION = "Drink stamina potion";
     public static String GET_MORE_STAMINA_POTIONS = "Get more stamina potions! Check settings to disable this";
 
@@ -65,4 +66,8 @@ public class Strings {
     public static String WITHDRAW_ENERGY_POTION = "Withdraw Energy potion";
     public static String DRINK_ENERGY_POTION = "Drink Energy potion";
     public static String GET_MORE_ENERGY_POTIONS = "Get more Energy potions! Check settings to disable this";
+
+	public static String WITHDRAW_STRANGE_FRUIT = "Withdraw Strange Fruit";
+	public static String EAT_STRANGE_FRUIT = "Eat Strange Fruit";
+	public static String GET_MORE_STRANGE_FRUIT = "Get more Strange Fruit! Check settings to disable this";
 }

@@ -2,7 +2,7 @@ package com.toofifty.easyblastfurnace.methods;
 
 import com.toofifty.easyblastfurnace.state.BlastFurnaceState;
 import com.toofifty.easyblastfurnace.steps.MethodStep;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 
 /**
  * Represents a basic method for all regular bars (using coal)
@@ -22,19 +22,19 @@ abstract public class MetalBarMethod extends Method
 
     private MethodStep[] checkPrerequisite(BlastFurnaceState state)
     {
-        if (!state.getInventory().has(ItemID.COAL_BAG_12019, ItemID.OPEN_COAL_BAG)) {
+        if (!state.getInventory().has(ItemID.COAL_BAG, ItemID.COAL_BAG_OPEN)) {
             if (state.getInventory().has(oreItem())) {
                 return state.getConfig().useDepositInventory() ? depositInventory : depositBarsAndOres;
             }
             return state.getBank().isOpen() ? withdrawCoalBag : openBank;
         }
 
-        if (!state.getInventory().has(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I) &&
-            !state.getEquipment().equipped(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I)) {
+        if (!state.getInventory().has(ItemID.ICE_GLOVES, ItemID.SMITHING_UNIFORM_GLOVES_ICE) &&
+            !state.getEquipment().equipped(ItemID.ICE_GLOVES, ItemID.SMITHING_UNIFORM_GLOVES_ICE)) {
             return state.getBank().isOpen() ? withdrawIceOrSmithsGloves : openBank;
         }
 
-        if (state.getInventory().has(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I)) {
+        if (state.getInventory().has(ItemID.ICE_GLOVES, ItemID.SMITHING_UNIFORM_GLOVES_ICE)) {
             return equipIceOrSmithsGloves;
         }
 

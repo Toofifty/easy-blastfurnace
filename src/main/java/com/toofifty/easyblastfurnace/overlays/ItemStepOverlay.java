@@ -34,7 +34,6 @@ public class ItemStepOverlay extends WidgetItemOverlay
     @Inject
     private MethodHandler methodHandler;
 
-    public static boolean itemInBank = true;
     public static WidgetItem currentWidgetItem;
 
     ItemStepOverlay()

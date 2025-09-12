@@ -1,7 +1,8 @@
 package com.toofifty.easyblastfurnace.state;
 
 import lombok.Getter;
-import net.runelite.api.ItemID;
+import lombok.Setter;
+import net.runelite.api.gameval.ItemID;
 
 import javax.inject.Inject;
 
@@ -18,17 +19,13 @@ public class CoalBagState
     @Getter
     private int coal;
 
-    @Getter
+    @Setter
+	@Getter
     private int maxCoal = 27;
 
     public boolean recentlyEmptiedCoalBag = false;
 
-    public void setMaxCoal(int quantity)
-    {
-        maxCoal = quantity;
-    }
-
-    public void setCoal(int quantity)
+	public void setCoal(int quantity)
     {
         coal = Math.min(Math.max(quantity, MIN_COAL), maxCoal);
     }

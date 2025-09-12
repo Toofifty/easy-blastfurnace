@@ -3,7 +3,7 @@ package com.toofifty.easyblastfurnace.state;
 import com.toofifty.easyblastfurnace.EasyBlastFurnaceConfig;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -49,7 +49,7 @@ public class BlastFurnaceState
             player.hasOreOnConveyor(true);
         }
 
-        if (equipment.equipped(ItemID.SMITHING_CAPE, ItemID.SMITHING_CAPET, ItemID.MAX_CAPE)) {
+        if (equipment.equipped(ItemID.SKILLCAPE_SMITHING, ItemID.SKILLCAPE_SMITHING_TRIMMED, ItemID.SKILLCAPE_MAX)) {
             coalBag.setMaxCoal(36);
         } else {
             coalBag.setMaxCoal(27);

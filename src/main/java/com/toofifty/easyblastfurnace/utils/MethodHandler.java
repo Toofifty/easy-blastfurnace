@@ -8,7 +8,7 @@ import com.toofifty.easyblastfurnace.overlays.ItemStepOverlay;
 import com.toofifty.easyblastfurnace.state.BlastFurnaceState;
 import com.toofifty.easyblastfurnace.steps.MethodStep;
 import lombok.Getter;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 
 @Singleton
 public class MethodHandler
