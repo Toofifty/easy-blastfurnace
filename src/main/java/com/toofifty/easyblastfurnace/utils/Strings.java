@@ -8,6 +8,7 @@ public class Strings {
     public static String WITHDRAW_COAL_BAG = "Withdraw coal bag";
     public static String WITHDRAW_COAL = "Withdraw coal";
     public static String WITHDRAW_GOLD_ORE = "Withdraw gold ore";
+    public static String WITHDRAW_SILVER_ORE = "Withdraw silver ore";
     public static String WITHDRAW_IRON_ORE = "Withdraw iron ore";
     public static String WITHDRAW_MITHRIL_ORE = "Withdraw mithril ore";
     public static String WITHDRAW_ADAMANTITE_ORE = "Withdraw adamantite ore";
@@ -34,16 +35,22 @@ public class Strings {
     public static String WAIT_FOR_BARS = "Wait for bars to smelt";
     public static String GO_TO_DISPENSER = "Go to bar dispenser";
     public static String DRINK_STAMINA = null;
+	public static String ADD_ITEM_EXPLANATION = "Keep one inventory slot filled with any non-ore, non-bar item (e.g. hammer, spade). Tick perfect methods fail if you add 28 ores at once.";
+	public static String ADD_DUMMY_ITEM = "Add dummy item";
 
     // Bars
-    public static String ADAMANTITEHYBRID = "Gold + adamantite bars";
+    public static String ADAMANTITE_GOLD_HYBRID = "Gold + adamantite bars";
+    public static String ADAMANTITE_SILVER_HYBRID = "Silver + adamantite bars";
     public static String ADAMANTITE = "Adamantite bars";
     public static String GOLD = "Gold bars";
-    public static String MITHRIL = "Mithril bars";
-    public static String MITHRILHYBRID = "Gold + mithril bars";
-    public static String RUNITE = "Runite bars";
-    public static String RUNITEHYBRID = "Gold + runite bars";
+    public static String SILVER = "Silver bars";
     public static String STEEL = "Steel bars";
+    public static String MITHRIL = "Mithril bars";
+    public static String MITHRIL_GOLD_HYBRID = "Gold + mithril bars";
+    public static String MITHRIL_SILVER_HYBRID = "Silver + mithril bars";
+    public static String RUNITE = "Runite bars";
+    public static String RUNITE_GOLD_HYBRID = "Gold + runite bars";
+    public static String RUNITE_SILVER_HYBRID = "Silver + runite bars";
 
     // Patterns
     public static String COAL_FULL = "^The coal bag contains (\\d+) pieces of coal.$";

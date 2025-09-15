@@ -117,7 +117,7 @@ public interface EasyBlastFurnaceConfig extends Config
 		position = 8,
 		keyName = "leaveBarInDispenser",
 		name = "Toggle tick perfect methods",
-		description = "Enable tick perfect gold method and efficient metal/gold hybrid methods.",
+		description = "Enable tick perfect methods. Does nothing for making steel bars.",
 		section = guidanceOverlays
 	)
 	default boolean tickPerfectMethod() { return false; }
