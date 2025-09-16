@@ -56,6 +56,23 @@ abstract public class GoldHybridMethod extends MetalBarMethod
         return null;
     }
 
+	private MethodStep[] clearInventoryAndBarDispenser(BlastFurnaceState state, boolean needToCollectBars, boolean useDepositInventory, boolean andOres)
+	{
+		if (needToCollectBars) {
+			if (state.getInventory().has(oreItem(), ItemID.GOLD_ORE, barItem(), ItemID.GOLD_BAR)) {
+				return useDepositInventory ? depositInventory : depositBarsAndOres;
+			}
+			lastInvWasGold = true;
+			return collectBars;
+		}
+
+		int[] itemsToDeposit = andOres ? new int[]{ ItemID.GOLD_BAR, ItemID.GOLD_ORE, barItem(), oreItem() } : new int[]{ ItemID.GOLD_BAR, barItem() };
+		if (state.getInventory().has(itemsToDeposit)) {
+			return useDepositInventory ? depositInventory : depositBarsAndOres;
+		}
+		return null;
+	}
+
     @Override
     public MethodStep[] next(BlastFurnaceState state)
     {
@@ -63,7 +80,7 @@ abstract public class GoldHybridMethod extends MetalBarMethod
         boolean hasGoldsmithEquipment = Equipment.hasGoldsmithEquipment(state);
         MethodStep[] prerequisite = checkPrerequisite(state, hasCoalBag, hasGoldsmithEquipment);
         if (prerequisite != null) return prerequisite;
-        boolean smithingCapeEquipped = state.getEquipment().equipped(Equipment.SMITHING_CAPE.items);
+        boolean maxCoalIsThirtySix = state.getEquipment().equipped(Equipment.merge(Equipment.MAX_CAPE.items, Equipment.SMITHING_CAPE.items));
         int maxCoalInventory = state.getInventory().getFreeSlotsIncludingOresAndBars();
         boolean coalRun = state.getFurnace().getQuantity(ItemID.COAL) < maxCoalInventory * (coalPer() - state.getFurnace().getCoalOffset());
 		boolean oreOnConveyor = state.getPlayer().hasOreOnConveyor();
@@ -72,25 +89,25 @@ abstract public class GoldHybridMethod extends MetalBarMethod
 		boolean furnaceHasMetalBar = state.getFurnace().has(barItem());
 		boolean furnaceHasMetalOre = state.getFurnace().has(oreItem());
 		boolean furnaceHasBar = state.getFurnace().has(barItem(), ItemID.GOLD_BAR);
-        boolean tickPerfectMethod = state.getConfig().tickPerfectMethod();
         boolean coalBagFull = state.getCoalBag().isFull();
         boolean coalBagEmpty = state.getCoalBag().isEmpty();
 		boolean atBarDispenser = state.getPlayer().isAtBarDispenser();
 		boolean atConveyorBelt = state.getPlayer().isAtConveyorBelt();
+        boolean tickPerfectMethod = state.getConfig().tickPerfectMethod();
 		boolean useDepositInventory = state.getConfig().useDepositInventory();
 		boolean fullOfMetalBarsAndOres = (state.getFurnace().getQuantity(oreItem(), barItem()) >= 28);
 		boolean barDispenserFull = (furnaceHasMetalBar && furnaceHasGoldBar) || (furnaceHasGoldOre && furnaceHasGoldBar) || fullOfMetalBarsAndOres;
 		boolean needToCollectBars = (barDispenserFull || (!tickPerfectMethod && furnaceHasBar));
 
-		if (state.getBank().isOpen()) {
+		if (tickPerfectMethod && state.getInventory().getFreeSlotsIncludingOresAndBars() == 28) {
+			MethodStep[] clearBarsAndOres = clearInventoryAndBarDispenser(state, needToCollectBars, useDepositInventory, true);
+			if (clearBarsAndOres != null) return clearBarsAndOres;
+			return state.getBank().isOpen() ? addDummyItemToInventory : openBank;
+		}
 
-			if (needToCollectBars) {
-				if (state.getInventory().has(oreItem(), ItemID.GOLD_ORE, barItem(), ItemID.GOLD_BAR)) {
-					return useDepositInventory ? depositInventory : depositBarsAndOres;
-				}
-				lastInvWasGold = true;
-				return collectBars;
-			}
+		if (state.getBank().isOpen()) {
+			MethodStep[] clearBarsAndOres = clearInventoryAndBarDispenser(state, needToCollectBars, useDepositInventory, false);
+			if (clearBarsAndOres != null) return clearBarsAndOres;
 
 			if ((hasCoalBag && state.getCoalBag().isFull()) && state.getInventory().has(oreItem(), ItemID.GOLD_ORE)) {
 				return putOntoConveyorBelt;
@@ -132,7 +149,7 @@ abstract public class GoldHybridMethod extends MetalBarMethod
             return putOntoConveyorBelt;
         }
 
-        if (hasCoalBag && !barDispenserFull && atConveyorBelt && (coalBagFull || (!coalBagEmpty && smithingCapeEquipped)) ) {
+        if (hasCoalBag && !barDispenserFull && atConveyorBelt && (coalBagFull || (!coalBagEmpty && maxCoalIsThirtySix)) ) {
             return emptyCoalBag;
         }
 
@@ -141,15 +158,15 @@ abstract public class GoldHybridMethod extends MetalBarMethod
 		}
 
 		if (needToCollectBars && state.getInventory().has(ItemID.COAL, oreItem(), barItem(), ItemID.GOLD_ORE)) {
-			return state.getConfig().useDepositInventory() ? depositInventory : depositBarsAndOres;
+			return useDepositInventory ? depositInventory : depositBarsAndOres;
 		}
 
 		// 1. Add gold and go to bank
 		// 2. Add gold and pick up prev run's bars until enough coal
-		// 3. Add adamantite and pick up gold
+		// 3. Add metal ore and pick up gold
 
 		// 4. Add gold and pick up gold until enough coal
-		// 5. Add adamantite and pick up adamantite bars
+		// 5. Add metal ore and pick up metal bars
 		// 6. Repeat steps 4 & 5
 
 		if (tickPerfectMethod && (

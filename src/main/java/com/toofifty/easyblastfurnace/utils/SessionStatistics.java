@@ -1,9 +1,6 @@
 package com.toofifty.easyblastfurnace.utils;
 
-import com.toofifty.easyblastfurnace.methods.GoldBarMethod;
-import com.toofifty.easyblastfurnace.methods.GoldHybridMethod;
-import com.toofifty.easyblastfurnace.methods.MetalBarMethod;
-import com.toofifty.easyblastfurnace.methods.Method;
+import com.toofifty.easyblastfurnace.methods.*;
 import com.toofifty.easyblastfurnace.state.BlastFurnaceState;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -140,13 +137,23 @@ public class SessionStatistics
                 getActionsBanked(((GoldHybridMethod) method).oreItem());
         }
 
-        if (method instanceof MetalBarMethod) {
+		if (method instanceof SilverHybridMethod) {
+			return getActionsBanked(ItemID.SILVER_ORE) +
+				getActionsBanked(((SilverHybridMethod) method).oreItem());
+		}
+
+
+		if (method instanceof MetalBarMethod) {
             return getActionsBanked(((MetalBarMethod) method).oreItem());
         }
 
         if (method instanceof GoldBarMethod) {
             return getActionsBanked(ItemID.GOLD_ORE);
         }
+
+		if (method instanceof SilverBarMethod) {
+			return getActionsBanked(ItemID.SILVER_ORE);
+		}
 
         return 0;
     }
@@ -160,6 +167,11 @@ public class SessionStatistics
                 getXpBanked(((GoldHybridMethod) method).oreItem());
         }
 
+		if (method instanceof SilverHybridMethod) {
+			return getXpBanked(ItemID.SILVER_ORE) +
+					getXpBanked(((SilverHybridMethod) method).oreItem());
+		}
+
         if (method instanceof MetalBarMethod) {
             return getXpBanked(((MetalBarMethod) method).oreItem());
         }
@@ -168,17 +180,21 @@ public class SessionStatistics
             return getXpBanked(ItemID.GOLD_ORE);
         }
 
+		if (method instanceof SilverBarMethod) {
+			return getXpBanked(ItemID.SILVER_ORE);
+		}
+
         return 0;
     }
 
     public void onFurnaceUpdate()
     {
         int[] bars = new int[]{
-            ItemID.GOLD_BAR, ItemID.STEEL_BAR, ItemID.MITHRIL_BAR, ItemID.ADAMANTITE_BAR, ItemID.RUNITE_BAR
+            ItemID.GOLD_BAR, ItemID.SILVER_BAR, ItemID.STEEL_BAR, ItemID.MITHRIL_BAR, ItemID.ADAMANTITE_BAR, ItemID.RUNITE_BAR
         };
 
         int[] ores = new int[]{
-            ItemID.GOLD_ORE, ItemID.IRON_ORE, ItemID.MITHRIL_ORE, ItemID.ADAMANTITE_ORE, ItemID.RUNITE_ORE
+            ItemID.GOLD_ORE, ItemID.SILVER_ORE, ItemID.IRON_ORE, ItemID.MITHRIL_ORE, ItemID.ADAMANTITE_ORE, ItemID.RUNITE_ORE
         };
 
         for (int oreId : ores) {

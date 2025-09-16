@@ -97,8 +97,8 @@ public class InventoryState
 
         int freeSlots = 28;
         int[] barsAndOres = new int[]{
-            ItemID.IRON_BAR, ItemID.MITHRIL_BAR, ItemID.ADAMANTITE_BAR, ItemID.RUNITE_BAR, ItemID.GOLD_BAR, ItemID.STEEL_BAR,
-            ItemID.IRON_ORE, ItemID.MITHRIL_ORE, ItemID.ADAMANTITE_ORE, ItemID.RUNITE_ORE, ItemID.GOLD_ORE, ItemID.COAL
+            ItemID.IRON_BAR, ItemID.SILVER_BAR, ItemID.MITHRIL_BAR, ItemID.ADAMANTITE_BAR, ItemID.RUNITE_BAR, ItemID.GOLD_BAR, ItemID.STEEL_BAR,
+            ItemID.IRON_ORE, ItemID.SILVER_ORE, ItemID.MITHRIL_ORE, ItemID.ADAMANTITE_ORE, ItemID.RUNITE_ORE, ItemID.GOLD_ORE, ItemID.COAL
         };
 
         for (Item item : inventory.getItems()) {
