@@ -3,6 +3,8 @@ package com.toofifty.easyblastfurnace.state;
 import com.toofifty.easyblastfurnace.EasyBlastFurnaceConfig;
 import com.toofifty.easyblastfurnace.utils.BarsOres;
 
+import com.toofifty.easyblastfurnace.utils.MethodHandler;
+import com.toofifty.easyblastfurnace.utils.Strings;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -13,6 +15,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Objects;
 
 public class FurnaceState
 {
@@ -21,6 +24,9 @@ public class FurnaceState
 
     @Inject
     private EasyBlastFurnaceConfig config;
+
+	@Inject
+	private MethodHandler methodHandler;
 
     private final Map<Integer, Integer> previousQuantity = new HashMap<>();
 
@@ -43,7 +49,8 @@ public class FurnaceState
 
     public int getCoalOffset()
     {
-        if (config.addCoalBuffer()) {
+		boolean isSteelMethod = Objects.equals(methodHandler.getMethod().getName(), Strings.STEEL);
+		if (isSteelMethod || config.addCoalBuffer()) {
             return 0;
         }
         return 1;

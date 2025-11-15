@@ -105,6 +105,10 @@ abstract public class GoldHybridMethod extends MetalBarMethod
 			return state.getBank().isOpen() ? addDummyItemToInventory : openBank;
 		}
 
+		if (!state.getBank().isOpen() && coalRun && state.getInventory().has(oreItem())) {
+			return openBank;
+		}
+
 		if (state.getBank().isOpen()) {
 			MethodStep[] clearBarsAndOres = clearInventoryAndBarDispenser(state, needToCollectBars, useDepositInventory, false);
 			if (clearBarsAndOres != null) return clearBarsAndOres;

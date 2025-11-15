@@ -350,5 +350,5 @@ public interface EasyBlastFurnaceConfig extends Config
         name = "Add coal buffer",
         description = "Ensure there is always more coal than needed in the furnace. This avoids stalls while bars are created."
     )
-    default boolean addCoalBuffer() { return false; }
+    default boolean addCoalBuffer() { return true; }
 }
