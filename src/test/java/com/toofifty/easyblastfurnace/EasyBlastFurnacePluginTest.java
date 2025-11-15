@@ -121,6 +121,7 @@ public class EasyBlastFurnacePluginTest {
         when(localPlayer.getWorldLocation()).thenReturn(new WorldPoint(1949, 4967, 0));
         when(easyBlastFurnaceConfig.addCoalBuffer()).thenReturn(true);
         when(easyBlastFurnaceConfig.potionOverlayMode()).thenReturn(PotionOverlaySetting.STAMINA);
+		when(easyBlastFurnaceConfig.enableSkillCapes()).thenReturn(true);
         assertTrue(easyBlastFurnacePlugin.isEnabled());
     }
 

@@ -113,15 +113,6 @@ public interface EasyBlastFurnaceConfig extends Config
         return Color.CYAN;
     }
 
-	@ConfigItem(
-		position = 8,
-		keyName = "leaveBarInDispenser",
-		name = "Toggle tick perfect methods",
-		description = "Enable tick perfect methods. Does nothing for making steel bars.",
-		section = guidanceOverlays
-	)
-	default boolean tickPerfectMethod() { return false; }
-
     @ConfigSection(
         name = "Coal bag overlay",
         description = "Configure coal bag overlay",
@@ -198,23 +189,57 @@ public interface EasyBlastFurnaceConfig extends Config
     }
 
     @ConfigSection(
+        name = "Efficiency settings",
+        description = "Configure settings that help with efficiency",
+        position = 3
+    )
+    String efficiencySettings = "efficiencySettings";
+
+	@ConfigItem(
+		position = 0,
+		keyName = "leaveBarInDispenser",
+		name = "Toggle tick perfect methods",
+		description = "Enable tick perfect methods. Does nothing for making steel bars.",
+		section = efficiencySettings
+	)
+	default boolean tickPerfectMethod() { return false; }
+
+	@ConfigItem(
+		position = 1,
+		keyName = "enableSkillCapes",
+		name = "Use skill capes",
+		description = "Uncheck this to stop using your smithing/max cape. Using them is more efficient, the choice is yours.",
+		section = efficiencySettings
+	)
+	default boolean enableSkillCapes() { return true; }
+
+	@ConfigItem(
+		position = 2,
+		keyName = "addCoalBuffer",
+		name = "Add coal buffer",
+		description = "Ensure there is always more coal than needed in the furnace. This avoids stalls while bars are created.",
+		section = efficiencySettings
+	)
+	default boolean addCoalBuffer() { return true; }
+
+	@ConfigSection(
         name = "Statistics overlay",
         description = "Configure statistics overlay",
-        position = 3
+        position = 4
     )
     String statisticsOverlay = "statisticsOverlay";
 
-    @ConfigItem(
-        position = 0,
-        keyName = "showStatisticsOverlay",
-        name = "Show statistics",
-        description = "Show an overlay with statistics such as bars todo/done, XP banked & stamina doses used.",
-        section = statisticsOverlay
-    )
-    default boolean showStatisticsOverlay()
-    {
-        return true;
-    }
+	@ConfigItem(
+		position = 0,
+		keyName = "showStatisticsOverlay",
+		name = "Show statistics",
+		description = "Show an overlay with statistics such as bars todo/done, XP banked & stamina doses used.",
+		section = statisticsOverlay
+	)
+	default boolean showStatisticsOverlay()
+	{
+		return true;
+	}
 
     @ConfigItem(
         position = 1,
@@ -343,12 +368,4 @@ public interface EasyBlastFurnaceConfig extends Config
     {
         return true;
     }
-
-    @ConfigItem(
-        position = 5,
-        keyName = "addCoalBuffer",
-        name = "Add coal buffer",
-        description = "Ensure there is always more coal than needed in the furnace. This avoids stalls while bars are created."
-    )
-    default boolean addCoalBuffer() { return false; }
 }

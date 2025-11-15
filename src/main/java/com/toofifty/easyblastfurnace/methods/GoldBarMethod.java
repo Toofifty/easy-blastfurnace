@@ -12,28 +12,33 @@ public class GoldBarMethod extends Method
 {
     private MethodStep[] checkPrerequisite(BlastFurnaceState state, boolean hasGoldsmithEquipment)
     {
+		boolean skillCapesEnabled = state.getConfig().enableSkillCapes();
         if (!state.getInventory().has(Equipment.ICE_GLOVES.items) && !state.getEquipment().hasIceGlovesEffect()) {
             return state.getBank().isOpen() ? withdrawIceOrSmithsGloves : openBank;
         }
 
-        if (state.getBank().has(Equipment.MAX_CAPE.items) &&
+        if (skillCapesEnabled &&
+			state.getBank().has(Equipment.MAX_CAPE.items) &&
             !state.getInventory().has(Equipment.MAX_CAPE.items) &&
             !state.getEquipment().equipped(Equipment.MAX_CAPE.items)) {
             return state.getBank().isOpen() ? withdrawMaxCape : openBank;
         }
 
-        if (state.getInventory().has(Equipment.MAX_CAPE.items) &&
+        if (skillCapesEnabled &&
+			state.getInventory().has(Equipment.MAX_CAPE.items) &&
             !state.getEquipment().equipped(Equipment.MAX_CAPE.items)) {
             return equipMaxCape;
         }
 
-        if (state.getBank().has(Equipment.SMITHING_CAPE.items) &&
+        if (skillCapesEnabled &&
+			state.getBank().has(Equipment.SMITHING_CAPE.items) &&
             !state.getInventory().has(Equipment.SMITHING_CAPE.items) &&
             !state.getEquipment().equipped(Equipment.merge(Equipment.SMITHING_CAPE.items, Equipment.MAX_CAPE.items))) {
             return state.getBank().isOpen() ? withdrawSmithingCape : openBank;
         }
 
-        if (state.getInventory().has(Equipment.SMITHING_CAPE.items) &&
+        if (skillCapesEnabled &&
+			state.getInventory().has(Equipment.SMITHING_CAPE.items) &&
             !state.getEquipment().equipped(Equipment.merge(Equipment.SMITHING_CAPE.items, Equipment.MAX_CAPE.items))) {
             return equipSmithingCape;
         }

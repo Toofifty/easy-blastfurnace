@@ -12,6 +12,7 @@ abstract public class SilverHybridMethod extends MetalBarMethod
 	protected boolean lastInvWasSilver = false;
 	private MethodStep[] checkPrerequisite(BlastFurnaceState state, boolean hasCoalBag)
 	{
+		boolean skillCapesEnabled = state.getConfig().enableSkillCapes();
 		if (hasCoalBag && !state.getInventory().has(ItemID.COAL_BAG, ItemID.COAL_BAG_OPEN)) {
 			if (state.getInventory().has(oreItem(), ItemID.SILVER_ORE)) {
 				return state.getConfig().useDepositInventory() ? depositInventory : depositBarsAndOres;
@@ -27,24 +28,24 @@ abstract public class SilverHybridMethod extends MetalBarMethod
 			return equipIceOrSmithsGloves;
 		}
 
-		if (state.getBank().has(Equipment.MAX_CAPE.items) &&
+		if (skillCapesEnabled && state.getBank().has(Equipment.MAX_CAPE.items) &&
 				!state.getInventory().has(Equipment.MAX_CAPE.items) &&
 				!state.getEquipment().equipped(Equipment.MAX_CAPE.items)) {
 			return state.getBank().isOpen() ? withdrawMaxCape : openBank;
 		}
 
-		if (state.getInventory().has(Equipment.MAX_CAPE.items) &&
+		if (skillCapesEnabled && state.getInventory().has(Equipment.MAX_CAPE.items) &&
 				!state.getEquipment().equipped(Equipment.MAX_CAPE.items)) {
 			return equipMaxCape;
 		}
 
-		if (state.getBank().has(Equipment.SMITHING_CAPE.items) &&
+		if (skillCapesEnabled && state.getBank().has(Equipment.SMITHING_CAPE.items) &&
 				!state.getInventory().has(Equipment.SMITHING_CAPE.items) &&
 				!state.getEquipment().equipped(Equipment.merge(Equipment.SMITHING_CAPE.items, Equipment.MAX_CAPE.items))) {
 			return state.getBank().isOpen() ? withdrawSmithingCape : openBank;
 		}
 
-		if (state.getInventory().has(Equipment.SMITHING_CAPE.items) &&
+		if (skillCapesEnabled && state.getInventory().has(Equipment.SMITHING_CAPE.items) &&
 				!state.getEquipment().equipped(Equipment.merge(Equipment.SMITHING_CAPE.items, Equipment.MAX_CAPE.items))) {
 			return equipSmithingCape;
 		}
@@ -97,6 +98,10 @@ abstract public class SilverHybridMethod extends MetalBarMethod
 			MethodStep[] clearBarsAndOres = clearInventoryAndBarDispenser(state, needToCollectBars, useDepositInventory, true);
 			if (clearBarsAndOres != null) return clearBarsAndOres;
 			return state.getBank().isOpen() ? addDummyItemToInventory : openBank;
+		}
+
+		if (!state.getBank().isOpen() && coalRun && state.getInventory().has(oreItem())) {
+			return openBank;
 		}
 
 		if (state.getBank().isOpen()) {

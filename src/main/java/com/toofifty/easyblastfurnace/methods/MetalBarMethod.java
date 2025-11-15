@@ -24,8 +24,9 @@ abstract public class MetalBarMethod extends Method
 
     protected abstract int coalPer();
 
-    private MethodStep[] checkPrerequisite(BlastFurnaceState state, boolean hasCoalBag)
+    private MethodStep[] checkPrerequisite(BlastFurnaceState state, boolean hasCoalBag, boolean isNotSteelMethod)
     {
+		boolean skillCapesEnabled = (state.getConfig().enableSkillCapes() && isNotSteelMethod);
         if (hasCoalBag && !state.getInventory().has(ItemID.COAL_BAG, ItemID.COAL_BAG_OPEN)) {
             if (state.getInventory().has(oreItem())) {
                 return state.getConfig().useDepositInventory() ? depositInventory : depositBarsAndOres;
@@ -41,24 +42,24 @@ abstract public class MetalBarMethod extends Method
             return equipIceOrSmithsGloves;
         }
 
-		if (state.getBank().has(Equipment.MAX_CAPE.items) &&
+		if (skillCapesEnabled && state.getBank().has(Equipment.MAX_CAPE.items) &&
 				!state.getInventory().has(Equipment.MAX_CAPE.items) &&
 				!state.getEquipment().equipped(Equipment.MAX_CAPE.items)) {
 			return state.getBank().isOpen() ? withdrawMaxCape : openBank;
 		}
 
-		if (state.getInventory().has(Equipment.MAX_CAPE.items) &&
+		if (skillCapesEnabled && state.getInventory().has(Equipment.MAX_CAPE.items) &&
 				!state.getEquipment().equipped(Equipment.MAX_CAPE.items)) {
 			return equipMaxCape;
 		}
 
-		if (state.getBank().has(Equipment.SMITHING_CAPE.items) &&
+		if (skillCapesEnabled && state.getBank().has(Equipment.SMITHING_CAPE.items) &&
 				!state.getInventory().has(Equipment.SMITHING_CAPE.items) &&
 				!state.getEquipment().equipped(Equipment.merge(Equipment.SMITHING_CAPE.items, Equipment.MAX_CAPE.items))) {
 			return state.getBank().isOpen() ? withdrawSmithingCape : openBank;
 		}
 
-		if (state.getInventory().has(Equipment.SMITHING_CAPE.items) &&
+		if (skillCapesEnabled && state.getInventory().has(Equipment.SMITHING_CAPE.items) &&
 				!state.getEquipment().equipped(Equipment.merge(Equipment.SMITHING_CAPE.items, Equipment.MAX_CAPE.items))) {
 			return equipSmithingCape;
 		}
@@ -84,7 +85,8 @@ abstract public class MetalBarMethod extends Method
     public MethodStep[] next(BlastFurnaceState state)
     {
         boolean hasCoalBag = Equipment.hasCoalBag(state);
-        MethodStep[] prerequisite = checkPrerequisite(state, hasCoalBag);
+		boolean isNotSteelMethod = !Objects.equals(getName(), Strings.STEEL);
+        MethodStep[] prerequisite = checkPrerequisite(state, hasCoalBag, isNotSteelMethod);
         if (prerequisite != null) return prerequisite;
         boolean coalRun = state.getFurnace().getQuantity(ItemID.COAL) < 27 * (coalPer() - state.getFurnace().getCoalOffset());
 		boolean maxCoalIsThirtySix = state.getEquipment().equipped(Equipment.merge(Equipment.MAX_CAPE.items, Equipment.SMITHING_CAPE.items));
@@ -93,7 +95,7 @@ abstract public class MetalBarMethod extends Method
         boolean oreOnConveyor = state.getPlayer().hasOreOnConveyor();
         boolean furnaceHasBar = state.getFurnace().has(barItem());
         boolean furnaceHasOre = state.getFurnace().has(oreItem());
-        boolean tickPerfectMethod = !Objects.equals(getName(), Strings.STEEL) && state.getConfig().tickPerfectMethod();
+        boolean tickPerfectMethod = isNotSteelMethod && state.getConfig().tickPerfectMethod();
         boolean barDispenserFull = state.getFurnace().getQuantity(barItem(), oreItem()) >= 28;
         boolean barDispenserAboutToMakeBars = !coalRun && furnaceHasOre;
 
@@ -101,6 +103,10 @@ abstract public class MetalBarMethod extends Method
 			MethodStep[] clearBarsAndOres = clearInventoryAndBarDispenser(state, barDispenserFull, coalRun, true);
 			if (clearBarsAndOres != null) return clearBarsAndOres;
 			return state.getBank().isOpen() ? addDummyItemToInventory : openBank;
+		}
+
+		if (!state.getBank().isOpen() && coalRun && state.getInventory().has(oreItem())) {
+			return openBank;
 		}
 
         if (state.getBank().isOpen()) {
