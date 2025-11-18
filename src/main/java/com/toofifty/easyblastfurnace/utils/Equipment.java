@@ -9,6 +9,7 @@ public enum Equipment {
     GOLDSMITH(new int[] {
         ItemID.GAUNTLETS_OF_GOLDSMITHING
     }),
+
     SMITHING_CAPE(new int[] {
         ItemID.SKILLCAPE_SMITHING, ItemID.SKILLCAPE_SMITHING_TRIMMED
     }),
@@ -18,6 +19,9 @@ public enum Equipment {
     MAX_CAPE(new int[] {
         ItemID.SKILLCAPE_MAX, ItemID.SKILLCAPE_MAX_WORN,
     }),
+	SKILLING_CAPE(
+		merge(SMITHING_CAPE.items, MAX_CAPE.items)
+	),
     COAL_BAG(new int[] {
         ItemID.COAL_BAG, ItemID.COAL_BAG_OPEN
     });

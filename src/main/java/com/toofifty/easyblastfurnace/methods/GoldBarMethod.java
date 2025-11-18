@@ -18,34 +18,22 @@ public class GoldBarMethod extends Method
         }
 
         if (skillCapesEnabled &&
-			state.getBank().has(Equipment.MAX_CAPE.items) &&
-            !state.getInventory().has(Equipment.MAX_CAPE.items) &&
-            !state.getEquipment().equipped(Equipment.MAX_CAPE.items)) {
-            return state.getBank().isOpen() ? withdrawMaxCape : openBank;
+			state.getBank().has(Equipment.SKILLING_CAPE.items) &&
+            !state.getInventory().has(Equipment.SKILLING_CAPE.items) &&
+            !state.getEquipment().equipped(Equipment.SKILLING_CAPE.items)) {
+            return state.getBank().isOpen() ? withdrawSkillingCape : openBank;
         }
 
         if (skillCapesEnabled &&
-			state.getInventory().has(Equipment.MAX_CAPE.items) &&
-            !state.getEquipment().equipped(Equipment.MAX_CAPE.items)) {
-            return equipMaxCape;
-        }
-
-        if (skillCapesEnabled &&
-			state.getBank().has(Equipment.SMITHING_CAPE.items) &&
-            !state.getInventory().has(Equipment.SMITHING_CAPE.items) &&
-            !state.getEquipment().equipped(Equipment.merge(Equipment.SMITHING_CAPE.items, Equipment.MAX_CAPE.items))) {
-            return state.getBank().isOpen() ? withdrawSmithingCape : openBank;
-        }
-
-        if (skillCapesEnabled &&
-			state.getInventory().has(Equipment.SMITHING_CAPE.items) &&
-            !state.getEquipment().equipped(Equipment.merge(Equipment.SMITHING_CAPE.items, Equipment.MAX_CAPE.items))) {
-            return equipSmithingCape;
+			state.getInventory().has(Equipment.SKILLING_CAPE.items) &&
+            !state.getEquipment().equipped(Equipment.SKILLING_CAPE.items)) {
+            return equipSkillingCape;
         }
 
         if (hasGoldsmithEquipment && !state.getInventory().has(Equipment.GOLDSMITH.items) && !state.getEquipment().hasGoldsmithEffect()) {
             return state.getBank().isOpen() ? withdrawGoldsmithGauntlets : openBank;
         }
+
         return null;
     }
 

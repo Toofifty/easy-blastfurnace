@@ -42,27 +42,17 @@ abstract public class MetalBarMethod extends Method
             return equipIceOrSmithsGloves;
         }
 
-		if (skillCapesEnabled && state.getBank().has(Equipment.MAX_CAPE.items) &&
-				!state.getInventory().has(Equipment.MAX_CAPE.items) &&
-				!state.getEquipment().equipped(Equipment.MAX_CAPE.items)) {
-			return state.getBank().isOpen() ? withdrawMaxCape : openBank;
+		if (skillCapesEnabled && state.getBank().has(Equipment.SKILLING_CAPE.items) &&
+				!state.getInventory().has(Equipment.SKILLING_CAPE.items) &&
+				!state.getEquipment().equipped(Equipment.SKILLING_CAPE.items)) {
+			return state.getBank().isOpen() ? withdrawSkillingCape : openBank;
 		}
 
-		if (skillCapesEnabled && state.getInventory().has(Equipment.MAX_CAPE.items) &&
-				!state.getEquipment().equipped(Equipment.MAX_CAPE.items)) {
-			return equipMaxCape;
+		if (skillCapesEnabled && state.getInventory().has(Equipment.SKILLING_CAPE.items) &&
+				!state.getEquipment().equipped(Equipment.SKILLING_CAPE.items)) {
+			return equipSkillingCape;
 		}
 
-		if (skillCapesEnabled && state.getBank().has(Equipment.SMITHING_CAPE.items) &&
-				!state.getInventory().has(Equipment.SMITHING_CAPE.items) &&
-				!state.getEquipment().equipped(Equipment.merge(Equipment.SMITHING_CAPE.items, Equipment.MAX_CAPE.items))) {
-			return state.getBank().isOpen() ? withdrawSmithingCape : openBank;
-		}
-
-		if (skillCapesEnabled && state.getInventory().has(Equipment.SMITHING_CAPE.items) &&
-				!state.getEquipment().equipped(Equipment.merge(Equipment.SMITHING_CAPE.items, Equipment.MAX_CAPE.items))) {
-			return equipSmithingCape;
-		}
         return null;
     }
 
@@ -89,7 +79,7 @@ abstract public class MetalBarMethod extends Method
         MethodStep[] prerequisite = checkPrerequisite(state, hasCoalBag, isNotSteelMethod);
         if (prerequisite != null) return prerequisite;
         boolean coalRun = state.getFurnace().getQuantity(ItemID.COAL) < 27 * (coalPer() - state.getFurnace().getCoalOffset());
-		boolean maxCoalIsThirtySix = state.getEquipment().equipped(Equipment.merge(Equipment.MAX_CAPE.items, Equipment.SMITHING_CAPE.items));
+		boolean maxCoalIsThirtySix = state.getEquipment().equipped(Equipment.SKILLING_CAPE.items);
 		boolean coalBagFull = state.getCoalBag().isFull();
 		boolean coalBagEmpty = state.getCoalBag().isEmpty();
         boolean oreOnConveyor = state.getPlayer().hasOreOnConveyor();

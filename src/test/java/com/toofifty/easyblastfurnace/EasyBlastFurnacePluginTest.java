@@ -483,19 +483,19 @@ public class EasyBlastFurnacePluginTest {
 
 		setInventoryCount(Equipment.ICE_GLOVES.items[0], 1);
 		setBankCount(Equipment.SMITHING_CAPE.items[0], 1);
-		assertStepTooltip(Strings.WITHDRAW_SMITHING_CAPE);
+		assertStepTooltip(Strings.WITHDRAW_SKILLING_CAPE);
 
 		setInventoryCount(Equipment.SMITHING_CAPE.items[0], 1);
 		setBankCount(Equipment.SMITHING_CAPE.items[0], 0);
-		assertStepTooltip(Strings.EQUIP_SMITHING_CAPE);
+		assertStepTooltip(Strings.EQUIP_SKILLING_CAPE);
 
 		setInventoryCount(Equipment.SMITHING_CAPE.items[0], 0);
 		setBankCount(Equipment.MAX_CAPE.items[0], 1);
-		assertStepTooltip(Strings.WITHDRAW_MAX_CAPE);
+		assertStepTooltip(Strings.WITHDRAW_SKILLING_CAPE);
 
 		setInventoryCount(Equipment.MAX_CAPE.items[0], 1);
 		setBankCount(Equipment.MAX_CAPE.items[0], 0);
-		assertStepTooltip(Strings.EQUIP_MAX_CAPE);
+		assertStepTooltip(Strings.EQUIP_SKILLING_CAPE);
 
 		setInventoryCount(Equipment.MAX_CAPE.items[0], 0);
 		setBankCount(Equipment.GOLDSMITH.items[0], 1);
@@ -560,19 +560,19 @@ public class EasyBlastFurnacePluginTest {
 
 		setInventoryCount(Equipment.ICE_GLOVES.items[0], 1);
 		setBankCount(Equipment.SMITHING_CAPE.items[0], 1);
-		assertStepTooltip(Strings.WITHDRAW_SMITHING_CAPE);
+		assertStepTooltip(Strings.WITHDRAW_SKILLING_CAPE);
 
-		setInventoryCount(Equipment.SMITHING_CAPE.items[0], 1);
+		setInventoryCount(Equipment.SKILLING_CAPE.items[0], 1);
 		setBankCount(Equipment.SMITHING_CAPE.items[0], 0);
-		assertStepTooltip(Strings.EQUIP_SMITHING_CAPE);
+		assertStepTooltip(Strings.EQUIP_SKILLING_CAPE);
 
 		setInventoryCount(Equipment.SMITHING_CAPE.items[0], 0);
 		setBankCount(Equipment.MAX_CAPE.items[0], 1);
-		assertStepTooltip(Strings.WITHDRAW_MAX_CAPE);
+		assertStepTooltip(Strings.WITHDRAW_SKILLING_CAPE);
 
 		setInventoryCount(Equipment.MAX_CAPE.items[0], 1);
 		setBankCount(Equipment.MAX_CAPE.items[0], 0);
-		assertStepTooltip(Strings.EQUIP_MAX_CAPE);
+		assertStepTooltip(Strings.EQUIP_SKILLING_CAPE);
 
 		setInventoryCount(Equipment.MAX_CAPE.items[0], 0);
 		setBankCount(Equipment.GOLDSMITH.items[0], 1);
@@ -930,19 +930,19 @@ public class EasyBlastFurnacePluginTest {
 
         setInventoryCount(Equipment.ICE_GLOVES.items[0], 1);
         setBankCount(Equipment.SMITHING_CAPE.items[0], 1);
-        assertStepTooltip(Strings.WITHDRAW_SMITHING_CAPE);
+        assertStepTooltip(Strings.WITHDRAW_SKILLING_CAPE);
 
         setInventoryCount(Equipment.SMITHING_CAPE.items[0], 1);
         setBankCount(Equipment.SMITHING_CAPE.items[0], 0);
-        assertStepTooltip(Strings.EQUIP_SMITHING_CAPE);
+        assertStepTooltip(Strings.EQUIP_SKILLING_CAPE);
 
         setInventoryCount(Equipment.SMITHING_CAPE.items[0], 0);
         setBankCount(Equipment.MAX_CAPE.items[0], 1);
-        assertStepTooltip(Strings.WITHDRAW_MAX_CAPE);
+        assertStepTooltip(Strings.WITHDRAW_SKILLING_CAPE);
 
         setInventoryCount(Equipment.MAX_CAPE.items[0], 1);
         setBankCount(Equipment.MAX_CAPE.items[0], 0);
-        assertStepTooltip(Strings.EQUIP_MAX_CAPE);
+        assertStepTooltip(Strings.EQUIP_SKILLING_CAPE);
 
         setInventoryCount(Equipment.MAX_CAPE.items[0], 0);
         setBankCount(Equipment.GOLDSMITH.items[0], 1);
@@ -1107,19 +1107,19 @@ public class EasyBlastFurnacePluginTest {
 		setInventoryCount(Equipment.ICE_GLOVES.items[0], 0);
 
 		equipGloves(true);
-		assertStepTooltip(Strings.WITHDRAW_SMITHING_CAPE);
+		assertStepTooltip(Strings.WITHDRAW_SKILLING_CAPE);
 
 		setInventoryCount(Equipment.SMITHING_CAPE.items[0], 1);
 		setBankCount(Equipment.SMITHING_CAPE.items[0], 0);
-		assertStepTooltip(Strings.EQUIP_SMITHING_CAPE);
+		assertStepTooltip(Strings.EQUIP_SKILLING_CAPE);
 
 		setInventoryCount(Equipment.SMITHING_CAPE.items[0], 0);
 		setBankCount(Equipment.MAX_CAPE.items[0], 1);
-		assertStepTooltip(Strings.WITHDRAW_MAX_CAPE);
+		assertStepTooltip(Strings.WITHDRAW_SKILLING_CAPE);
 
 		setInventoryCount(Equipment.MAX_CAPE.items[0], 1);
 		setBankCount(Equipment.MAX_CAPE.items[0], 0);
-		assertStepTooltip(Strings.EQUIP_MAX_CAPE);
+		assertStepTooltip(Strings.EQUIP_SKILLING_CAPE);
 
 		setInventoryCount(Equipment.MAX_CAPE.items[0], 0);
 
