@@ -50,7 +50,7 @@ public class BlastFurnaceState
             player.hasOreOnConveyor(true);
         }
 
-        if (equipment.equipped(Equipment.merge(Equipment.SMITHING_CAPE.items, Equipment.MAX_CAPE.items))) {
+        if (equipment.equipped(Equipment.SKILLING_CAPE.items)) {
             coalBag.setMaxCoal(36);
         } else {
             coalBag.setMaxCoal(27);

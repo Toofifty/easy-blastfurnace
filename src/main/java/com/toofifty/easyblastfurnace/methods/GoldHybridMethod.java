@@ -25,29 +25,16 @@ abstract public class GoldHybridMethod extends MetalBarMethod
         }
 
         if (skillCapesEnabled &&
-			state.getBank().has(Equipment.MAX_CAPE.items) &&
-            !state.getInventory().has(Equipment.MAX_CAPE.items) &&
-            !state.getEquipment().equipped(Equipment.MAX_CAPE.items)) {
-            return state.getBank().isOpen() ? withdrawMaxCape : openBank;
+			state.getBank().has(Equipment.SKILLING_CAPE.items) &&
+            !state.getInventory().has(Equipment.SKILLING_CAPE.items) &&
+            !state.getEquipment().equipped(Equipment.SKILLING_CAPE.items)) {
+            return state.getBank().isOpen() ? withdrawSkillingCape : openBank;
         }
 
         if (skillCapesEnabled &&
-			state.getInventory().has(Equipment.MAX_CAPE.items) &&
-            !state.getEquipment().equipped(Equipment.MAX_CAPE.items)) {
-            return equipMaxCape;
-        }
-
-        if (skillCapesEnabled &&
-			state.getBank().has(Equipment.SMITHING_CAPE.items) &&
-            !state.getInventory().has(Equipment.SMITHING_CAPE.items) &&
-            !state.getEquipment().equipped(Equipment.merge(Equipment.SMITHING_CAPE.items, Equipment.MAX_CAPE.items))) {
-            return state.getBank().isOpen() ? withdrawSmithingCape : openBank;
-        }
-
-        if (skillCapesEnabled &&
-			state.getInventory().has(Equipment.SMITHING_CAPE.items) &&
-            !state.getEquipment().equipped(Equipment.merge(Equipment.SMITHING_CAPE.items, Equipment.MAX_CAPE.items))) {
-            return equipSmithingCape;
+			state.getInventory().has(Equipment.SKILLING_CAPE.items) &&
+            !state.getEquipment().equipped(Equipment.SKILLING_CAPE.items)) {
+            return equipSkillingCape;
         }
 
         if (hasGoldsmithEquipment && !state.getInventory().has(Equipment.GOLDSMITH.items) && !state.getEquipment().hasGoldsmithEffect()) {
@@ -85,7 +72,7 @@ abstract public class GoldHybridMethod extends MetalBarMethod
         boolean hasGoldsmithEquipment = Equipment.hasGoldsmithEquipment(state);
         MethodStep[] prerequisite = checkPrerequisite(state, hasCoalBag, hasGoldsmithEquipment);
         if (prerequisite != null) return prerequisite;
-        boolean maxCoalIsThirtySix = state.getEquipment().equipped(Equipment.merge(Equipment.MAX_CAPE.items, Equipment.SMITHING_CAPE.items));
+        boolean maxCoalIsThirtySix = state.getEquipment().equipped(Equipment.SKILLING_CAPE.items);
         int maxCoalInventory = state.getInventory().getFreeSlotsIncludingOresAndBars();
         boolean coalRun = state.getFurnace().getQuantity(ItemID.COAL) < maxCoalInventory * (coalPer() - state.getFurnace().getCoalOffset());
 		boolean oreOnConveyor = state.getPlayer().hasOreOnConveyor();

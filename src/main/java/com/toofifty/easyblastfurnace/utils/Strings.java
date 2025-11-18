@@ -21,13 +21,10 @@ public class Strings {
     public static String WITHDRAW_ICE_OR_SMITHS_GLOVES = "Withdraw ice gloves or smiths gloves (i)";
     public static String EQUIP_ICE_OR_SMITHS_GLOVES = "Equip ice gloves or smiths gloves (i)";
     public static String EQUIP_GOLDSMITH_GAUNTLETS_AFTER_COLLECT_BARS = "Equip after collecting bars";
-    public static String GO_TO_DISPENSER_AND_EQUIP_ICE_OR_SMITHS_GLOVES = "Go to bar dispenser and equip ice gloves or smiths gloves (i)";
     public static String WITHDRAW_GOLDSMITH_GAUNTLETS = "Withdraw goldsmith gauntlets";
     public static String EQUIP_GOLDSMITH_GAUNTLETS = "Equip goldsmith gauntlets";
-    public static String WITHDRAW_SMITHING_CAPE = "Withdraw Smithing cape";
-    public static String WITHDRAW_MAX_CAPE = "Withdraw Max cape";
-    public static String EQUIP_SMITHING_CAPE = "Equip Smithing cape";
-    public static String EQUIP_MAX_CAPE = "Equip Max cape";
+	public static String WITHDRAW_SKILLING_CAPE = "Withdraw Smithing/Max cape";
+    public static String EQUIP_SKILLING_CAPE = "Equip Smithing/Max cape";
     public static String DEPOSIT_INVENTORY = "Deposit inventory";
     public static String PUT_ORE_ONTO_CONVEYOR_BELT = "Put ore onto conveyor belt";
     public static String OPEN_BANK  = "Open bank chest";

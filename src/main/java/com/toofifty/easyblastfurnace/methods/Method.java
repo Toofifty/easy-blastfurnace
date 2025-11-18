@@ -29,10 +29,8 @@ public abstract class Method
     protected final MethodStep[] equipIceOrSmithsGloves = new MethodStep[] { new ItemStep(Strings.EQUIP_ICE_OR_SMITHS_GLOVES, Equipment.ICE_GLOVES.items) };
     protected final MethodStep[] withdrawGoldsmithGauntlets = new MethodStep[] { new BankItemStep(Strings.WITHDRAW_GOLDSMITH_GAUNTLETS, Equipment.GOLDSMITH.items) };
     protected final MethodStep[] equipGoldsmithGauntlets = new MethodStep[] { new ItemStep(Strings.EQUIP_GOLDSMITH_GAUNTLETS, Equipment.GOLDSMITH.items) };
-    protected final MethodStep[] withdrawSmithingCape = new MethodStep[] { new BankItemStep(Strings.WITHDRAW_SMITHING_CAPE, Equipment.SMITHING_CAPE.items) };
-    protected final MethodStep[] withdrawMaxCape = new MethodStep[] { new BankItemStep(Strings.WITHDRAW_MAX_CAPE, Equipment.MAX_CAPE.items) };
-    protected final MethodStep[] equipSmithingCape = new MethodStep[] { new ItemStep(Strings.EQUIP_SMITHING_CAPE, Equipment.SMITHING_CAPE.items) };
-    protected final MethodStep[] equipMaxCape = new MethodStep[] { new ItemStep(Strings.EQUIP_MAX_CAPE, Equipment.MAX_CAPE.items) };
+	protected final MethodStep[] withdrawSkillingCape = new MethodStep[] { new BankItemStep(Strings.WITHDRAW_SKILLING_CAPE, Equipment.SKILLING_CAPE.items)};
+    protected final MethodStep[] equipSkillingCape = new MethodStep[] { new ItemStep(Strings.EQUIP_SKILLING_CAPE, Equipment.SKILLING_CAPE.items) };
     protected final MethodStep[] addDummyItemToInventory = new MethodStep[] { new BankItemStep(Strings.ADD_DUMMY_ITEM, ItemID.HAMMER, ItemID.CHISEL, ItemID.SPADE, ItemID.RAKE, ItemID.BUCKET_EMPTY, ItemID.BUCKET_WATER), new ItemStep(Strings.ADD_ITEM_EXPLANATION) };
     protected final MethodStep[] depositBarsAndOres = new MethodStep[] { new ItemStep(Strings.DEPOSIT_BARS_AND_ORES, BarsOres.getAllIds()), new ObjectStep(Strings.OPEN_BANK, EasyBlastFurnacePlugin.BANK_CHEST) };
     protected final MethodStep[] depositStaminaPotions = new MethodStep[] { new ItemStep(Strings.DEPOSIT_STAMINA_POTIONS, ItemID.VIAL_EMPTY, ItemID._1DOSESTAMINA, ItemID._2DOSESTAMINA, ItemID._3DOSESTAMINA, ItemID._4DOSESTAMINA) };
