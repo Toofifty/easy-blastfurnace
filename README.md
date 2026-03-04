@@ -5,24 +5,27 @@ Helps you train at the blast furnace more efficiently
 ## Features
 
 - Supports multiple different methods
-    - Gold bars (tick perfect method is an option in the settings)
-    - [Steel/Mithril/Adamant/Rune bars](https://oldschool.runescape.wiki/w/Blast_Furnace#Bar_Patterns)
-    - [Gold + metal bar hybrid](https://oldschool.runescape.wiki/w/Blast_Furnace#Hybrid_Method_(Gold/Mithril+))
+    - Gold bars
+    - Silver bars
+    - [Steel/Mithril/Adamant/Rune bars](https://oldschool.runescape.wiki/w/Blast_Furnace/Strategies#Bar_patterns)
+    - [Gold + metal bar hybrid](https://oldschool.runescape.wiki/w/Blast_Furnace/Strategies#Hybrid_method)
+    - Silver + metal bar hybrid
+- __Tick Perfect Methods__
+  - Optionally enabled in the config settings, aims to remove waiting times for bars.
 - Shows next item/object to click
 - Shows coal bag contents
 - Prompts to drink a stamina dose when required
     - Can be disabled in the plugin settings
-    - Can configure to use Energy Potions
+    - Can configure to use Super Energy or Energy Potions, or Strange fruit
 
 ## Requirements
 
 - Ice gloves or Smiths Gloves (i)
-- Coal bag (for metal bar & hybrid methods)
-- Stamina potions easily accessible in bank
 
 ## Optional
 - Goldsmith gauntlets or Smithing/Max cape (for gold bar & hybrid methods)
-    - They must be used by default. You can disable their use in the EasyBlastFurnace config settings.
+- Coal bag (for metal bar & hybrid methods)
+- Stamina/Super Energy/Energy potions or Strange fruit easily accessible in bank
 
 ## Getting started
 

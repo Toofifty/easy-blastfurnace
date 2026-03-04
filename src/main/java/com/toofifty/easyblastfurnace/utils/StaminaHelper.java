@@ -83,10 +83,11 @@ public class StaminaHelper {
     {
         int ticksSpentIdle = 4; // 4 ticks for banking
         boolean goldBars = methodName.equals("Gold bars");
+		boolean silverBars =  methodName.equals("Silver bars");
 
-        if (!goldBars) ticksSpentIdle += 2; // 2 ticks to unload coal bag
-        if (!goldBars && state.getCoalBag().getMaxCoal() > 27) ticksSpentIdle += 2; // 2 more ticks to unload coal bag
-        if (!coalRun || methodName.contains("Gold")) ticksSpentIdle++; // 1 tick spent collecting bars
+        if (!goldBars && !silverBars) ticksSpentIdle += 2; // 2 ticks to unload coal bag
+        if (!goldBars && !silverBars && state.getCoalBag().getMaxCoal() > 27) ticksSpentIdle += 2; // 2 more ticks to unload coal bag
+        if (!coalRun || methodName.contains("Gold") || methodName.contains("Silver")) ticksSpentIdle++; // 1 tick spent collecting bars
 
         return ticksSpentIdle;
     }
@@ -94,13 +95,13 @@ public class StaminaHelper {
     private double getWeightOfNextOresOrBarsInInventory(boolean getBars, int coalPer)
     {
         Method method = methodHandler.getMethod();
-        String ore = method.getName().toUpperCase().replace("GOLD + ", "").replace("STEEL", "IRON").replace(" BARS", "_ORE");
+        String ore = method.getName().toUpperCase().replace("GOLD + ", "").replace("SILVER + ", "").replace("STEEL", "IRON").replace(" BARS", "_ORE");
         String bars = ore.replace("IRON", "STEEL").replace("_ORE", "_BAR");
         double coalRunWeight = getBars ? BarsOres.GOLD_BAR.getWeight() : BarsOres.COAL.getWeight();
         int freeSlots = state.getInventory().getFreeSlotsIncludingOresAndBars();
 
         if (state.getFurnace().isCoalRunNext(coalPer)) {
-            freeSlots = Math.min(freeSlots, state.getBank().getQuantity(method.getName().contains("Gold") ? ItemID.GOLD_ORE : ItemID.COAL));
+            freeSlots = Math.min(freeSlots, state.getBank().getQuantity(method.getName().contains("Gold") ? ItemID.GOLD_ORE : method.getName().contains("Silver") ? ItemID.SILVER_ORE : ItemID.COAL));
             return coalRunWeight * freeSlots;
         } else {
             freeSlots = Math.min(freeSlots, state.getBank().getQuantity(BarsOres.valueOf(ore).getItemID()));
@@ -110,8 +111,8 @@ public class StaminaHelper {
 
     private int getInventoryOresAndBarsWeight() {
         double weight = 0;
-        weight += state.getInventory().getQuantity(ItemID.IRON_BAR, ItemID.STEEL_BAR, ItemID.RUNITE_BAR, ItemID.GOLD_BAR) * BarsOres.GOLD_BAR.getWeight();
-        weight += state.getInventory().getQuantity(ItemID.IRON_ORE, ItemID.COAL, ItemID.RUNITE_ORE, ItemID.GOLD_ORE) * BarsOres.COAL.getWeight();
+        weight += state.getInventory().getQuantity(ItemID.IRON_BAR, ItemID.SILVER_BAR, ItemID.STEEL_BAR, ItemID.RUNITE_BAR, ItemID.GOLD_BAR) * BarsOres.GOLD_BAR.getWeight();
+        weight += state.getInventory().getQuantity(ItemID.IRON_ORE, ItemID.SILVER_ORE, ItemID.COAL, ItemID.RUNITE_ORE, ItemID.GOLD_ORE) * BarsOres.COAL.getWeight();
         weight += state.getInventory().getQuantity(ItemID.ADAMANTITE_BAR) * BarsOres.ADAMANTITE_BAR.getWeight();
         weight += state.getInventory().getQuantity(ItemID.ADAMANTITE_ORE) * BarsOres.ADAMANTITE_ORE.getWeight();
         weight += state.getInventory().getQuantity(ItemID.MITHRIL_BAR) * BarsOres.MITHRIL_BAR.getWeight();

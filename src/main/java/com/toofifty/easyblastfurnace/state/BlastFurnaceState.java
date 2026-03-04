@@ -38,7 +38,7 @@ public class BlastFurnaceState
     private int lastPositiveChange = 0;
     public void update()
     {
-        int invChange = inventory.getChange(ItemID.GOLD_ORE, ItemID.IRON_ORE, ItemID.MITHRIL_ORE, ItemID.ADAMANTITE_ORE, ItemID.RUNITE_ORE);
+        int invChange = inventory.getChange(ItemID.GOLD_ORE, ItemID.SILVER_ORE, ItemID.IRON_ORE, ItemID.MITHRIL_ORE, ItemID.ADAMANTITE_ORE, ItemID.RUNITE_ORE);
 
         if (invChange > 0) {
             lastPositiveChange = invChange;
@@ -50,7 +50,7 @@ public class BlastFurnaceState
             player.hasOreOnConveyor(true);
         }
 
-        if (equipment.equipped(Equipment.merge(Equipment.SMITHING_CAPE.items, Equipment.MAX_CAPE.items))) {
+        if (equipment.equipped(Equipment.SKILLING_CAPE.items)) {
             coalBag.setMaxCoal(36);
         } else {
             coalBag.setMaxCoal(27);

@@ -5,35 +5,35 @@ import com.toofifty.easyblastfurnace.utils.CoalPer;
 import com.toofifty.easyblastfurnace.utils.Strings;
 import net.runelite.api.gameval.ItemID;
 
-public class RuniteHybridMethod extends GoldHybridMethod
+public class MithrilSilverHybridMethod extends SilverHybridMethod
 {
     @Override
     protected MethodStep[] withdrawOre()
     {
-        return withdrawRuniteOre;
+        return withdrawMithrilOre;
     }
 
     @Override
     public int oreItem()
     {
-        return ItemID.RUNITE_ORE;
+        return ItemID.MITHRIL_ORE;
     }
 
     @Override
     protected int barItem()
     {
-        return ItemID.RUNITE_BAR;
+        return ItemID.MITHRIL_BAR;
     }
 
     @Override
     protected int coalPer()
     {
-        return CoalPer.RUNITE.getValue();
+        return CoalPer.MITHRIL.getValue();
     }
 
     @Override
     public String getName()
     {
-        return Strings.RUNITEHYBRID;
+        return Strings.MITHRIL_SILVER_HYBRID;
     }
 }

@@ -53,24 +53,43 @@ public class MethodHandler
     {
         // ensure method doesn't reset after gold/metal has been removed from inventory
         if (method instanceof GoldHybridMethod) return null;
+		if (method instanceof SilverHybridMethod) return null;
 
         if (inInventory(ItemID.GOLD_ORE) ||
-            method instanceof GoldBarMethod) {
+			(method instanceof GoldBarMethod && !inInventory(ItemID.SILVER_ORE))) {
 
             if (inInventory(ItemID.MITHRIL_ORE) ||
                 method instanceof MithrilBarMethod)
-                return new MithrilHybridMethod();
+                return new MithrilGoldHybridMethod();
 
             if (inInventory(ItemID.ADAMANTITE_ORE) ||
                 method instanceof AdamantiteBarMethod)
-                return new AdamantiteHybridMethod();
+                return new AdamantiteGoldHybridMethod();
 
             if (inInventory(ItemID.RUNITE_ORE) ||
                 method instanceof RuniteBarMethod)
-                return new RuniteHybridMethod();
+                return new RuniteGoldHybridMethod();
 
             return new GoldBarMethod();
         }
+
+		if (inInventory(ItemID.SILVER_ORE) ||
+				method instanceof SilverBarMethod) {
+
+			if (inInventory(ItemID.MITHRIL_ORE) ||
+					method instanceof MithrilBarMethod)
+				return new MithrilSilverHybridMethod();
+
+			if (inInventory(ItemID.ADAMANTITE_ORE) ||
+					method instanceof AdamantiteBarMethod)
+				return new AdamantiteSilverHybridMethod();
+
+			if (inInventory(ItemID.RUNITE_ORE) ||
+					method instanceof RuniteBarMethod)
+				return new RuniteSilverHybridMethod();
+
+			return new SilverBarMethod();
+		}
 
         if (inInventory(ItemID.IRON_ORE)) return new SteelBarMethod();
         if (inInventory(ItemID.MITHRIL_ORE)) return new MithrilBarMethod();
