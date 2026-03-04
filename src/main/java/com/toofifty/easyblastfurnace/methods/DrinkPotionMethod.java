@@ -28,10 +28,10 @@ public class DrinkPotionMethod extends Method
 	private final MethodStep[] getMoreStrangeFruit = new MethodStep[] { new ItemStep(Strings.GET_MORE_STRANGE_FRUIT, ItemID.COAL_BAG) };
 
     private final MethodStep[] drinkEnergyMix = new MethodStep[] { new ItemStep(Strings.DRINK_ENERGY_MIX, ItemID.BRUTAL_1DOSE1ENERGY, ItemID.BRUTAL_2DOSE1ENERGY) };
-    private final MethodStep[] getMoreEnergyMix = new MethodStep[] { new ItemStep(Strings.GET_MORE_ENERGY_MIX, ItemID.COAL_BAG) };
+    private final MethodStep[] getMoreEnergyMix = new MethodStep[] { new ItemStep(Strings.GET_MORE_ENERGY_MIXES, ItemID.COAL_BAG) };
 
     private final MethodStep[] drinkSuperEnergyMix = new MethodStep[] { new ItemStep(Strings.DRINK_SUPER_ENERGY_MIX, ItemID.BRUTAL_1DOSE2ENERGY, ItemID.BRUTAL_2DOSE2ENERGY) };
-    private final MethodStep[] getMoreSuperEnergyMix = new MethodStep[] { new ItemStep(Strings.GET_MORE_SUPER_ENERGY_MIX, ItemID.COAL_BAG) };
+    private final MethodStep[] getMoreSuperEnergyMix = new MethodStep[] { new ItemStep(Strings.GET_MORE_SUPER_ENERGY_MIXES, ItemID.COAL_BAG) };
 
 
     @Override
@@ -83,7 +83,7 @@ public class DrinkPotionMethod extends Method
         return getMethodStep(state, itemIds, drinkSuperEnergyMix, Strings.WITHDRAW_SUPER_ENERGY_MIX, depositSuperEnergyMix, getMoreSuperEnergyMix);
     }
 
-	private MethodStep[] getMethodStep(BlastFurnaceState state, int[] itemIds, MethodStep[] consumeStep, String withdrawStep, MethodStep depositStep[], MethodStep[] getMoreStep)
+	private MethodStep[] getMethodStep(BlastFurnaceState state, int[] itemIds, MethodStep[] consumeStep, String withdrawStep, MethodStep[] depositStep, MethodStep[] getMoreStep)
 	{
 		boolean hasDosesInInventory = Arrays.stream(itemIds).anyMatch(id -> state.getInventory().has(id));
 

@@ -18,8 +18,8 @@ public class Strings {
     public static String DEPOSIT_STAMINA_POTIONS = "Deposit stamina potions";
     public static String DEPOSIT_SUPER_ENERGY_POTIONS = "Deposit Super Energy potions";
     public static String DEPOSIT_ENERGY_POTIONS = "Deposit Energy potions";
-    public static String DEPOSIT_ENERGY_MIX = "Deposit Energy mixes";
-    public static String DEPOSIT_SUPER_ENERGY_MIX = "Deposit Super Energy mix";
+    public static String DEPOSIT_ENERGY_MIXES = "Deposit Energy mixes";
+    public static String DEPOSIT_SUPER_ENERGY_MIXES = "Deposit Super Energy mix";
 	public static String DEPOSIT_STRANGE_FRUIT = "Deposit Strange Fruit";
     public static String WITHDRAW_ICE_OR_SMITHS_GLOVES = "Withdraw ice gloves or smiths gloves (i)";
     public static String EQUIP_ICE_OR_SMITHS_GLOVES = "Equip ice gloves or smiths gloves (i)";
@@ -80,11 +80,11 @@ public class Strings {
 
     public static String WITHDRAW_ENERGY_MIX = "Withdraw Energy mix";
     public static String DRINK_ENERGY_MIX = "Drink Energy mix";
-    public static String GET_MORE_ENERGY_MIX = "Get more Energy mixes! Check settings to disable this";
+    public static String GET_MORE_ENERGY_MIXES = "Get more Energy mixes! Check settings to disable this";
 
     public static String WITHDRAW_SUPER_ENERGY_MIX = "Withdraw Super energy mix";
     public static String DRINK_SUPER_ENERGY_MIX = "Drink Super energy mix";
-    public static String GET_MORE_SUPER_ENERGY_MIX = "Get more Super energy mixes! Check settings to disable this";
+    public static String GET_MORE_SUPER_ENERGY_MIXES = "Get more Super energy mixes! Check settings to disable this";
 
 	public static String WITHDRAW_STRANGE_FRUIT = "Withdraw Strange Fruit";
 	public static String EAT_STRANGE_FRUIT = "Eat Strange Fruit";

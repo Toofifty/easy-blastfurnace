@@ -38,8 +38,8 @@ public abstract class Method
     protected final MethodStep[] depositSuperEnergyPotions = new MethodStep[] { new ItemStep(Strings.DEPOSIT_SUPER_ENERGY_POTIONS, ItemID.VIAL_EMPTY, ItemID._1DOSE2ENERGY, ItemID._2DOSE2ENERGY, ItemID._3DOSE2ENERGY, ItemID._4DOSE2ENERGY) };
     protected final MethodStep[] depositEnergyPotions = new MethodStep[] { new ItemStep(Strings.DEPOSIT_ENERGY_POTIONS, ItemID.VIAL_EMPTY, ItemID._1DOSE1ENERGY, ItemID._2DOSE1ENERGY, ItemID._3DOSE1ENERGY, ItemID._4DOSE1ENERGY) };
 	protected final MethodStep[] depositStrangeFruit = new MethodStep[] { new ItemStep(Strings.DEPOSIT_STRANGE_FRUIT, ItemID.MACRO_TRIFFIDFRUIT) };
-    protected final MethodStep[] depositEnergyMix = new MethodStep[] { new ItemStep(Strings.DEPOSIT_ENERGY_MIX, ItemID.VIAL_EMPTY, ItemID.BRUTAL_1DOSE1ENERGY, ItemID.BRUTAL_2DOSE1ENERGY) };
-    protected final MethodStep[] depositSuperEnergyMix = new MethodStep[] { new ItemStep(Strings.DEPOSIT_SUPER_ENERGY_MIX, ItemID.VIAL_EMPTY, ItemID.BRUTAL_1DOSE2ENERGY, ItemID.BRUTAL_2DOSE2ENERGY) };
+    protected final MethodStep[] depositEnergyMix = new MethodStep[] { new ItemStep(Strings.DEPOSIT_ENERGY_MIXES, ItemID.VIAL_EMPTY, ItemID.BRUTAL_1DOSE1ENERGY, ItemID.BRUTAL_2DOSE1ENERGY) };
+    protected final MethodStep[] depositSuperEnergyMix = new MethodStep[] { new ItemStep(Strings.DEPOSIT_SUPER_ENERGY_MIXES, ItemID.VIAL_EMPTY, ItemID.BRUTAL_1DOSE2ENERGY, ItemID.BRUTAL_2DOSE2ENERGY) };
 
     // objects
     protected final MethodStep[] depositInventory = new MethodStep[] { new WidgetStep(Strings.DEPOSIT_INVENTORY, InterfaceID.BANKMAIN, InterfaceID.Bankmain.DEPOSITINV), new ObjectStep(Strings.OPEN_BANK, EasyBlastFurnacePlugin.BANK_CHEST) };

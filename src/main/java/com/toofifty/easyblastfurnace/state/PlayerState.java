@@ -1,11 +1,11 @@
 package com.toofifty.easyblastfurnace.state;
 
 import com.toofifty.easyblastfurnace.EasyBlastFurnaceConfig;
-import com.toofifty.easyblastfurnace.config.PotionOverlaySetting;
 import com.toofifty.easyblastfurnace.utils.StaminaHelper;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
@@ -13,6 +13,7 @@ import net.runelite.api.coords.WorldPoint;
 import javax.inject.Inject;
 import java.util.Arrays;
 
+@Slf4j
 public class PlayerState
 {
     private static final WorldPoint LOAD_POSITION = new WorldPoint(1942, 4967, 0);
@@ -63,6 +64,9 @@ public class PlayerState
         double energyPercentage = client.getEnergy() / 100.0;
         if (!config.staminaPotionEnable()) {
             return true;
+        }
+        if (energyPercentage <= config.requireStaminaThreshold()) {
+            return false;
         }
         switch(config.potionOverlayMode()) {
             case STAMINA:
