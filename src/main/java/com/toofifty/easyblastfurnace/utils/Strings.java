@@ -14,9 +14,12 @@ public class Strings {
     public static String WITHDRAW_ADAMANTITE_ORE = "Withdraw adamantite ore";
     public static String WITHDRAW_RUNITE_ORE = "Withdraw runite ore";
     public static String DEPOSIT_BARS_AND_ORES = "Deposit bars/ore";
+    public static String DEPOSIT_EXTENDED_STAMINA_POTIONS = "Deposit stamina potions";
     public static String DEPOSIT_STAMINA_POTIONS = "Deposit stamina potions";
     public static String DEPOSIT_SUPER_ENERGY_POTIONS = "Deposit Super Energy potions";
     public static String DEPOSIT_ENERGY_POTIONS = "Deposit Energy potions";
+    public static String DEPOSIT_ENERGY_MIX = "Deposit Energy mixes";
+    public static String DEPOSIT_SUPER_ENERGY_MIX = "Deposit Super Energy mix";
 	public static String DEPOSIT_STRANGE_FRUIT = "Deposit Strange Fruit";
     public static String WITHDRAW_ICE_OR_SMITHS_GLOVES = "Withdraw ice gloves or smiths gloves (i)";
     public static String EQUIP_ICE_OR_SMITHS_GLOVES = "Equip ice gloves or smiths gloves (i)";
@@ -58,18 +61,30 @@ public class Strings {
     public static String DRINK = "Drink";
 
     // Stamina
-    public static String WITHDRAW_STAMINA_POTION = "Withdraw stamina potion";
+    public static String WITHDRAW_STAMINA_POTION = "Withdraw Stamina potion";
 	public static String WITHDRAW_FROM_POTION_STORAGE = " from potion storage";
-    public static String DRINK_STAMINA_POTION = "Drink stamina potion";
-    public static String GET_MORE_STAMINA_POTIONS = "Get more stamina potions! Check settings to disable this";
+    public static String DRINK_STAMINA_POTION = "Drink Stamina potion";
+    public static String GET_MORE_STAMINA_POTIONS = "Get more Stamina potions! Check settings to disable this";
 
-    public static String WITHDRAW_SUPER_ENERGY_POTION = "Withdraw Super Energy potion";
-    public static String DRINK_SUPER_ENERGY_POTION = "Drink Super Energy potion";
-    public static String GET_MORE_SUPER_ENERGY_POTIONS = "Get more Super Energy potions! Check settings to disable this";
+    public static String WITHDRAW_EXTENDED_STAMINA_POTION = "Withdraw Extended stamina potion";
+    public static String DRINK_EXTENDED_STAMINA_POTION = "Drink Extended stamina potion";
+    public static String GET_MORE_EXTENDED_STAMINA_POTIONS = "Get more Extended stamina potions! Check settings to disable this";
+
+    public static String WITHDRAW_SUPER_ENERGY_POTION = "Withdraw Super energy potion";
+    public static String DRINK_SUPER_ENERGY_POTION = "Drink Super energy potion";
+    public static String GET_MORE_SUPER_ENERGY_POTIONS = "Get more Super energy potions! Check settings to disable this";
 
     public static String WITHDRAW_ENERGY_POTION = "Withdraw Energy potion";
     public static String DRINK_ENERGY_POTION = "Drink Energy potion";
     public static String GET_MORE_ENERGY_POTIONS = "Get more Energy potions! Check settings to disable this";
+
+    public static String WITHDRAW_ENERGY_MIX = "Withdraw Energy mix";
+    public static String DRINK_ENERGY_MIX = "Drink Energy mix";
+    public static String GET_MORE_ENERGY_MIX = "Get more Energy mixes! Check settings to disable this";
+
+    public static String WITHDRAW_SUPER_ENERGY_MIX = "Withdraw Super energy mix";
+    public static String DRINK_SUPER_ENERGY_MIX = "Drink Super energy mix";
+    public static String GET_MORE_SUPER_ENERGY_MIX = "Get more Super energy mixes! Check settings to disable this";
 
 	public static String WITHDRAW_STRANGE_FRUIT = "Withdraw Strange Fruit";
 	public static String EAT_STRANGE_FRUIT = "Eat Strange Fruit";

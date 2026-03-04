@@ -60,48 +60,25 @@ public class PlayerState
 
     public boolean hasEnoughEnergy()
     {
+        double energyPercentage = client.getEnergy() / 100.0;
         if (!config.staminaPotionEnable()) {
             return true;
         }
-        // Handles Stamina
-        if (config.potionOverlayMode() == PotionOverlaySetting.STAMINA) {
-            return (client.getEnergy() / 100.0 - staminaHelper.getEnergyNeededForNextRun()) > config.requireStaminaThreshold();
+        switch(config.potionOverlayMode()) {
+            case STAMINA:
+            case EXTENDED_STAMINA:
+                return (energyPercentage - staminaHelper.getEnergyNeededForNextRun()) > config.requireStaminaThreshold();
+            case STRANGE_FRUIT:
+                return (energyPercentage) >= 70;
+            case SUPER_ENERGY:
+            case SUPER_ENERGY_MIX:
+                return (energyPercentage) >= 80;
+            case ENERGY:
+            case ENERGY_MIX:
+                return (energyPercentage) >= 90;
+            default:
+                return true;
         }
-
-		// Handles requiring more than one consume step
-        if ((client.getEnergy() / 100.0) <= config.requireStaminaThreshold() && !needsToIngest) {
-            needsToIngest = true;
-            return false;
-        }
-
-        // Checks If the player needs to drink more super energy potions
-        if(config.potionOverlayMode() == PotionOverlaySetting.SUPER_ENERGY && needsToIngest) {
-            if ((client.getEnergy() / 100.0) >= 80) {
-                needsToIngest = false;
-            } else {
-                return false;
-            }
-        }
-
-        // Checks If the player needs to drink more energy potions
-        if(config.potionOverlayMode() == PotionOverlaySetting.ENERGY && needsToIngest) {
-            if ((client.getEnergy() / 100.0) >= 90) {
-                needsToIngest = false;
-            } else {
-                return false;
-            }
-        }
-
-		// Checks If the player needs to eat a strange fruit
-		if(config.potionOverlayMode() == PotionOverlaySetting.STRANGE_FRUIT && needsToIngest) {
-			if ((client.getEnergy() / 100.0) >= 70) {
-				needsToIngest = false;
-			} else {
-				return false;
-			}
-		}
-
-        return true;
     }
 
     public boolean isOnBlastFurnaceWorld()
