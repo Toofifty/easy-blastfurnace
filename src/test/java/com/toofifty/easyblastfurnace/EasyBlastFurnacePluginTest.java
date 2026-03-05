@@ -32,6 +32,8 @@ import com.google.inject.testing.fieldbinder.Bind;
 
 import javax.inject.Inject;
 
+import java.util.Arrays;
+
 import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -284,191 +286,210 @@ public class EasyBlastFurnacePluginTest {
     @Test
     public void drinkStaminaMethod()
     {
-        when(easyBlastFurnaceConfig.staminaPotionEnable()).thenReturn(false);
-        assertTrue(state.getPlayer().hasEnoughEnergy());
+        prepareEnergyRestoreMethod(PotionOverlaySetting.STAMINA);
+        assertPotionDeposit(50, 6400, ItemID.VIAL_EMPTY, Strings.DEPOSIT_STAMINA_POTIONS);
+        assertDepositBarsAndOresAndPickUpGold(4900);
 
-        // setup
-        when(easyBlastFurnaceConfig.staminaPotionEnable()).thenReturn(true);
-        when(client.getWeight()).thenReturn(54);
-        when(client.getBoostedSkillLevel(Skill.AGILITY)).thenReturn(35);
         setInventoryItems(new Item[0]);
-        setEquipmentCount(Equipment.SMITHING_CAPE.items[0], 1);
+        assertPotionTransitions(
+            Strings.DRINK_STAMINA_POTION,
+            transition(ItemID._4DOSESTAMINA, ItemID._1DOSESTAMINA),
+            transition(ItemID._1DOSESTAMINA, ItemID._2DOSESTAMINA),
+            transition(ItemID._2DOSESTAMINA, ItemID._3DOSESTAMINA),
+            transition(ItemID._3DOSESTAMINA, ItemID._4DOSESTAMINA)
+        );
+        assertPotionTransitions(
+            Strings.WITHDRAW_STAMINA_POTION,
+            transition(ItemID._4DOSESTAMINA, ItemID._1DOSESTAMINA),
+            transition(ItemID._1DOSESTAMINA, ItemID._2DOSESTAMINA),
+            transition(ItemID._2DOSESTAMINA, ItemID._3DOSESTAMINA),
+            transition(ItemID._3DOSESTAMINA, ItemID._4DOSESTAMINA)
+        );
 
-        checkStaminaHelper(); // Check energy calculation
-
-        // deposit inventory
-        when(easyBlastFurnaceConfig.requireStaminaThreshold()).thenReturn(50);
-        when(client.getEnergy()).thenReturn(6400);
-        setInventoryCount(ItemID.VIAL_EMPTY, 1);
-        assertStepTooltip(Strings.DEPOSIT_STAMINA_POTIONS);
-
-        // Second deposit Inventory
-        when(client.getEnergy()).thenReturn(4900);
-        Item[] gold = new Item[28];
-        for (int i = 0; i < 28; i++) {
-            gold[i] = new Item(ItemID.GOLD_ORE, 1);
-        }
-        setInventoryItems(gold);
-        assertStepTooltip(Strings.DEPOSIT_BARS_AND_ORES);
-
-        // drink/withdraw stamina potions
-        setInventoryItems(new Item[0]);
-        checkStaminaPotion(ItemID._4DOSESTAMINA, ItemID._1DOSESTAMINA, Strings.DRINK_STAMINA_POTION);
-        checkStaminaPotion(ItemID._1DOSESTAMINA, ItemID._2DOSESTAMINA, Strings.DRINK_STAMINA_POTION);
-        checkStaminaPotion(ItemID._2DOSESTAMINA, ItemID._3DOSESTAMINA, Strings.DRINK_STAMINA_POTION);
-        checkStaminaPotion(ItemID._3DOSESTAMINA, ItemID._4DOSESTAMINA, Strings.DRINK_STAMINA_POTION);
-        checkStaminaPotion(ItemID._4DOSESTAMINA, ItemID._1DOSESTAMINA, Strings.WITHDRAW_STAMINA_POTION);
-        checkStaminaPotion(ItemID._1DOSESTAMINA, ItemID._2DOSESTAMINA, Strings.WITHDRAW_STAMINA_POTION);
-        checkStaminaPotion(ItemID._2DOSESTAMINA, ItemID._3DOSESTAMINA, Strings.WITHDRAW_STAMINA_POTION);
-        checkStaminaPotion(ItemID._3DOSESTAMINA, ItemID._4DOSESTAMINA, Strings.WITHDRAW_STAMINA_POTION);
-
-        // getMoreStaminaPotions
         setBankCount(ItemID._4DOSESTAMINA, 0);
         assertStepTooltip(Strings.GET_MORE_STAMINA_POTIONS);
     }
 
     @Test
+    public void drinkExtendedStaminaMethod()
+    {
+        prepareEnergyRestoreMethod(PotionOverlaySetting.EXTENDED_STAMINA);
+        assertPotionDeposit(50, 6400, ItemID.VIAL_EMPTY, Strings.DEPOSIT_EXTENDED_STAMINA_POTIONS);
+        assertDepositBarsAndOresAndPickUpGold(4900);
+
+        setInventoryItems(new Item[0]);
+        assertPotionTransitions(
+            Strings.DRINK_EXTENDED_STAMINA_POTION,
+            transition(ItemID._4DOSE2STAMINA, ItemID._1DOSE2STAMINA),
+            transition(ItemID._1DOSE2STAMINA, ItemID._2DOSE2STAMINA),
+            transition(ItemID._2DOSE2STAMINA, ItemID._3DOSE2STAMINA),
+            transition(ItemID._3DOSE2STAMINA, ItemID._4DOSE2STAMINA)
+        );
+        assertPotionTransitions(
+            Strings.WITHDRAW_EXTENDED_STAMINA_POTION,
+            transition(ItemID._4DOSE2STAMINA, ItemID._1DOSE2STAMINA),
+            transition(ItemID._1DOSE2STAMINA, ItemID._2DOSE2STAMINA),
+            transition(ItemID._2DOSE2STAMINA, ItemID._3DOSE2STAMINA),
+            transition(ItemID._3DOSE2STAMINA, ItemID._4DOSE2STAMINA)
+        );
+
+        setBankCount(ItemID._4DOSE2STAMINA, 0);
+        assertStepTooltip(Strings.GET_MORE_EXTENDED_STAMINA_POTIONS);
+    }
+
+    @Test
     public void drinkSuperEnergyMethod()
     {
-        when(easyBlastFurnaceConfig.staminaPotionEnable()).thenReturn(false);
-        assertTrue(state.getPlayer().hasEnoughEnergy());
-
-        // setup
-        when(easyBlastFurnaceConfig.staminaPotionEnable()).thenReturn(true);
-        when(client.getWeight()).thenReturn(54);
-        when(client.getBoostedSkillLevel(Skill.AGILITY)).thenReturn(35);
-        when(easyBlastFurnaceConfig.potionOverlayMode()).thenReturn(PotionOverlaySetting.SUPER_ENERGY);
-        setInventoryItems(new Item[0]);
-        setEquipmentCount(Equipment.SMITHING_CAPE.items[0], 1);
-
-        checkStaminaHelper();
-
-        when(easyBlastFurnaceConfig.requireStaminaThreshold()).thenReturn(20);
-        when(client.getEnergy()).thenReturn(8400);
-        setInventoryCount(ItemID.VIAL_EMPTY, 1);
-        assertStepTooltip(Strings.DEPOSIT_SUPER_ENERGY_POTIONS);
+        prepareEnergyRestoreMethod(PotionOverlaySetting.SUPER_ENERGY);
+        assertPotionDeposit(20, 8400, ItemID.VIAL_EMPTY, Strings.DEPOSIT_SUPER_ENERGY_POTIONS);
+        assertDepositBarsAndOresAndPickUpGold(1200);
 
         setInventoryItems(new Item[0]);
-        // Second deposit Inventory
-        when(client.getEnergy()).thenReturn(1200);
-        Item[] gold = new Item[28];
-        for (int i = 0; i < 28; i++) {
-            gold[i] = new Item(ItemID.GOLD_ORE, 1);
-        }
-        setInventoryItems(gold);
-        assertStepTooltip(Strings.DEPOSIT_BARS_AND_ORES);
-
-        // drink/withdraw stamina potions
-        setInventoryItems(new Item[0]);
-        checkStaminaPotion(ItemID._4DOSE2ENERGY, ItemID._1DOSE2ENERGY, Strings.DRINK_SUPER_ENERGY_POTION);
-        checkStaminaPotion(ItemID._1DOSE2ENERGY, ItemID._2DOSE2ENERGY, Strings.DRINK_SUPER_ENERGY_POTION);
-        checkStaminaPotion(ItemID._2DOSE2ENERGY, ItemID._3DOSE2ENERGY, Strings.DRINK_SUPER_ENERGY_POTION);
-        checkStaminaPotion(ItemID._3DOSE2ENERGY, ItemID._4DOSE2ENERGY, Strings.DRINK_SUPER_ENERGY_POTION);
-        checkStaminaPotion(ItemID._4DOSE2ENERGY, ItemID._1DOSE2ENERGY, Strings.WITHDRAW_SUPER_ENERGY_POTION);
-        checkStaminaPotion(ItemID._1DOSE2ENERGY, ItemID._2DOSE2ENERGY, Strings.WITHDRAW_SUPER_ENERGY_POTION);
-        checkStaminaPotion(ItemID._2DOSE2ENERGY, ItemID._3DOSE2ENERGY, Strings.WITHDRAW_SUPER_ENERGY_POTION);
-        checkStaminaPotion(ItemID._3DOSE2ENERGY, ItemID._4DOSE2ENERGY, Strings.WITHDRAW_SUPER_ENERGY_POTION);
+        assertPotionTransitions(
+            Strings.DRINK_SUPER_ENERGY_POTION,
+            transition(ItemID._4DOSE2ENERGY, ItemID._1DOSE2ENERGY),
+            transition(ItemID._1DOSE2ENERGY, ItemID._2DOSE2ENERGY),
+            transition(ItemID._2DOSE2ENERGY, ItemID._3DOSE2ENERGY),
+            transition(ItemID._3DOSE2ENERGY, ItemID._4DOSE2ENERGY)
+        );
+        assertPotionTransitions(
+            Strings.WITHDRAW_SUPER_ENERGY_POTION,
+            transition(ItemID._4DOSE2ENERGY, ItemID._1DOSE2ENERGY),
+            transition(ItemID._1DOSE2ENERGY, ItemID._2DOSE2ENERGY),
+            transition(ItemID._2DOSE2ENERGY, ItemID._3DOSE2ENERGY),
+            transition(ItemID._3DOSE2ENERGY, ItemID._4DOSE2ENERGY)
+        );
 
         when(easyBlastFurnaceConfig.potionOverlayMode()).thenReturn(PotionOverlaySetting.SUPER_ENERGY);
-
-        setBankCount(ItemID._1DOSE2ENERGY, 0);
-        setBankCount(ItemID._2DOSE2ENERGY, 0);
-        setBankCount(ItemID._3DOSE2ENERGY, 1);
-        setBankCount(ItemID._4DOSE2ENERGY, 0);
-        assertStepTooltip(Strings.WITHDRAW_SUPER_ENERGY_POTION);
-        setBankCount(ItemID._1DOSE2ENERGY, 0);
-        setBankCount(ItemID._2DOSE2ENERGY, 1);
-        setBankCount(ItemID._3DOSE2ENERGY, 0);
-        setBankCount(ItemID._4DOSE2ENERGY, 0);
-        assertStepTooltip(Strings.WITHDRAW_SUPER_ENERGY_POTION);
-        setBankCount(ItemID._1DOSE2ENERGY, 1);
-        setBankCount(ItemID._2DOSE2ENERGY, 0);
-        setBankCount(ItemID._3DOSE2ENERGY, 0);
-        setBankCount(ItemID._4DOSE2ENERGY, 0);
-        assertStepTooltip(Strings.WITHDRAW_SUPER_ENERGY_POTION);
-        setBankCount(ItemID._1DOSE2ENERGY, 1);
-        setBankCount(ItemID._2DOSE2ENERGY, 1);
-        setBankCount(ItemID._3DOSE2ENERGY, 1);
-        setBankCount(ItemID._4DOSE2ENERGY, 1);
-        assertStepTooltip(Strings.WITHDRAW_SUPER_ENERGY_POTION);
-        // getMoreStaminaPotions
-        setBankCount(ItemID._1DOSE2ENERGY, 0);
-        setBankCount(ItemID._2DOSE2ENERGY, 0);
-        setBankCount(ItemID._3DOSE2ENERGY, 0);
-        setBankCount(ItemID._4DOSE2ENERGY, 0);
-        assertStepTooltip(Strings.GET_MORE_SUPER_ENERGY_POTIONS);
+        assertWithdrawAcrossBankStates(
+            new int[]{ItemID._1DOSE2ENERGY, ItemID._2DOSE2ENERGY, ItemID._3DOSE2ENERGY, ItemID._4DOSE2ENERGY},
+            new int[][]{
+                {ItemID._3DOSE2ENERGY},
+                {ItemID._2DOSE2ENERGY},
+                {ItemID._1DOSE2ENERGY},
+                {ItemID._1DOSE2ENERGY, ItemID._2DOSE2ENERGY, ItemID._3DOSE2ENERGY, ItemID._4DOSE2ENERGY}
+            },
+            Strings.WITHDRAW_SUPER_ENERGY_POTION,
+            Strings.GET_MORE_SUPER_ENERGY_POTIONS
+        );
     }
 
     @Test
     public void drinkEnergyMethod()
     {
-        when(easyBlastFurnaceConfig.staminaPotionEnable()).thenReturn(false);
-        assertTrue(state.getPlayer().hasEnoughEnergy());
-
-        // setup
-        when(easyBlastFurnaceConfig.staminaPotionEnable()).thenReturn(true);
-        when(client.getWeight()).thenReturn(54);
-        when(client.getBoostedSkillLevel(Skill.AGILITY)).thenReturn(35);
-        when(easyBlastFurnaceConfig.potionOverlayMode()).thenReturn(PotionOverlaySetting.ENERGY);
-        setInventoryItems(new Item[0]);
-        setEquipmentCount(Equipment.SMITHING_CAPE.items[0], 1);
-
-        checkStaminaHelper();
-
-        when(easyBlastFurnaceConfig.requireStaminaThreshold()).thenReturn(20);
-        when(client.getEnergy()).thenReturn(9400);
-        setInventoryCount(ItemID.VIAL_EMPTY, 1);
-        assertStepTooltip(Strings.DEPOSIT_ENERGY_POTIONS);
+        prepareEnergyRestoreMethod(PotionOverlaySetting.ENERGY);
+        assertPotionDeposit(20, 9400, ItemID.VIAL_EMPTY, Strings.DEPOSIT_ENERGY_POTIONS);
+        assertDepositBarsAndOresAndPickUpGold(1200);
 
         setInventoryItems(new Item[0]);
-        // Second deposit Inventory
-        when(client.getEnergy()).thenReturn(1200);
-        Item[] gold = new Item[28];
-        for (int i = 0; i < 28; i++) {
-            gold[i] = new Item(ItemID.GOLD_ORE, 1);
-        }
-        setInventoryItems(gold);
-        assertStepTooltip(Strings.DEPOSIT_BARS_AND_ORES);
-
-        // drink/withdraw stamina potions
-        setInventoryItems(new Item[0]);
-        checkStaminaPotion(ItemID._1DOSE1ENERGY, ItemID._1DOSE1ENERGY, Strings.DRINK_ENERGY_POTION);
-        checkStaminaPotion(ItemID._1DOSE1ENERGY, ItemID._2DOSE1ENERGY, Strings.DRINK_ENERGY_POTION);
-        checkStaminaPotion(ItemID._2DOSE1ENERGY, ItemID._3DOSE1ENERGY, Strings.DRINK_ENERGY_POTION);
-        checkStaminaPotion(ItemID._3DOSE1ENERGY, ItemID._4DOSE1ENERGY, Strings.DRINK_ENERGY_POTION);
-        checkStaminaPotion(ItemID._4DOSE1ENERGY, ItemID._1DOSE1ENERGY, Strings.WITHDRAW_ENERGY_POTION);
-        checkStaminaPotion(ItemID._1DOSE1ENERGY, ItemID._2DOSE1ENERGY, Strings.WITHDRAW_ENERGY_POTION);
-        checkStaminaPotion(ItemID._2DOSE1ENERGY, ItemID._3DOSE1ENERGY, Strings.WITHDRAW_ENERGY_POTION);
-        checkStaminaPotion(ItemID._3DOSE1ENERGY, ItemID._4DOSE1ENERGY, Strings.WITHDRAW_ENERGY_POTION);
+        assertPotionTransitions(
+            Strings.DRINK_ENERGY_POTION,
+            transition(ItemID._1DOSE1ENERGY, ItemID._1DOSE1ENERGY),
+            transition(ItemID._1DOSE1ENERGY, ItemID._2DOSE1ENERGY),
+            transition(ItemID._2DOSE1ENERGY, ItemID._3DOSE1ENERGY),
+            transition(ItemID._3DOSE1ENERGY, ItemID._4DOSE1ENERGY)
+        );
+        assertPotionTransitions(
+            Strings.WITHDRAW_ENERGY_POTION,
+            transition(ItemID._4DOSE1ENERGY, ItemID._1DOSE1ENERGY),
+            transition(ItemID._1DOSE1ENERGY, ItemID._2DOSE1ENERGY),
+            transition(ItemID._2DOSE1ENERGY, ItemID._3DOSE1ENERGY),
+            transition(ItemID._3DOSE1ENERGY, ItemID._4DOSE1ENERGY)
+        );
 
         when(easyBlastFurnaceConfig.potionOverlayMode()).thenReturn(PotionOverlaySetting.ENERGY);
+        assertWithdrawAcrossBankStates(
+            new int[]{ItemID._1DOSE1ENERGY, ItemID._2DOSE1ENERGY, ItemID._3DOSE1ENERGY, ItemID._4DOSE1ENERGY},
+            new int[][]{
+                {ItemID._3DOSE1ENERGY},
+                {ItemID._2DOSE1ENERGY},
+                {ItemID._1DOSE1ENERGY},
+                {ItemID._1DOSE1ENERGY, ItemID._2DOSE1ENERGY, ItemID._3DOSE1ENERGY, ItemID._4DOSE1ENERGY}
+            },
+            Strings.WITHDRAW_ENERGY_POTION,
+            Strings.GET_MORE_ENERGY_POTIONS
+        );
+    }
 
-        setBankCount(ItemID._1DOSE1ENERGY, 0);
-        setBankCount(ItemID._2DOSE1ENERGY, 0);
-        setBankCount(ItemID._3DOSE1ENERGY, 1);
-        setBankCount(ItemID._4DOSE1ENERGY, 0);
-        assertStepTooltip(Strings.WITHDRAW_ENERGY_POTION);
-        setBankCount(ItemID._1DOSE1ENERGY, 0);
-        setBankCount(ItemID._2DOSE1ENERGY, 1);
-        setBankCount(ItemID._3DOSE1ENERGY, 0);
-        setBankCount(ItemID._4DOSE1ENERGY, 0);
-        assertStepTooltip(Strings.WITHDRAW_ENERGY_POTION);
-        setBankCount(ItemID._1DOSE1ENERGY, 1);
-        setBankCount(ItemID._2DOSE1ENERGY, 0);
-        setBankCount(ItemID._3DOSE1ENERGY, 0);
-        setBankCount(ItemID._4DOSE1ENERGY, 0);
-        assertStepTooltip(Strings.WITHDRAW_ENERGY_POTION);
-        setBankCount(ItemID._1DOSE1ENERGY, 1);
-        setBankCount(ItemID._2DOSE1ENERGY, 1);
-        setBankCount(ItemID._3DOSE1ENERGY, 1);
-        setBankCount(ItemID._4DOSE1ENERGY, 1);
-        assertStepTooltip(Strings.WITHDRAW_ENERGY_POTION);
-        // getMoreStaminaPotions
-        setBankCount(ItemID._1DOSE1ENERGY, 0);
-        setBankCount(ItemID._2DOSE1ENERGY, 0);
-        setBankCount(ItemID._3DOSE1ENERGY, 0);
-        setBankCount(ItemID._4DOSE1ENERGY, 0);
-        assertStepTooltip(Strings.GET_MORE_ENERGY_POTIONS);
+    @Test
+    public void drinkEnergyMixMethod()
+    {
+        prepareEnergyRestoreMethod(PotionOverlaySetting.ENERGY_MIX);
+        assertPotionDeposit(20, 9400, ItemID.VIAL_EMPTY, Strings.DEPOSIT_ENERGY_MIXES);
+        assertDepositBarsAndOresAndPickUpGold(1200);
+
+        setInventoryItems(new Item[0]);
+        assertPotionTransitions(
+            Strings.DRINK_ENERGY_MIX,
+            transition(ItemID.BRUTAL_1DOSE1ENERGY, ItemID.BRUTAL_1DOSE1ENERGY),
+            transition(ItemID.BRUTAL_1DOSE1ENERGY, ItemID.BRUTAL_2DOSE1ENERGY)
+        );
+
+        when(easyBlastFurnaceConfig.potionOverlayMode()).thenReturn(PotionOverlaySetting.ENERGY_MIX);
+        setInventoryCount(ItemID.BRUTAL_2DOSE1ENERGY, 0);
+        assertWithdrawAcrossBankStates(
+            new int[]{ItemID.BRUTAL_1DOSE1ENERGY, ItemID.BRUTAL_2DOSE1ENERGY},
+            new int[][]{
+                {ItemID.BRUTAL_1DOSE1ENERGY},
+                {ItemID.BRUTAL_2DOSE1ENERGY},
+                {ItemID.BRUTAL_2DOSE1ENERGY},
+                {ItemID.BRUTAL_1DOSE1ENERGY, ItemID.BRUTAL_2DOSE1ENERGY}
+            },
+            Strings.WITHDRAW_ENERGY_MIX,
+            Strings.GET_MORE_ENERGY_MIXES
+        );
+    }
+
+    @Test
+    public void drinkSuperEnergyMixMethod()
+    {
+        prepareEnergyRestoreMethod(PotionOverlaySetting.SUPER_ENERGY_MIX);
+        assertPotionDeposit(20, 9400, ItemID.VIAL_EMPTY, Strings.DEPOSIT_SUPER_ENERGY_MIXES);
+        assertDepositBarsAndOresAndPickUpGold(1200);
+
+        setInventoryItems(new Item[0]);
+        assertPotionTransitions(
+            Strings.DRINK_SUPER_ENERGY_MIX,
+            transition(ItemID.BRUTAL_1DOSE2ENERGY, ItemID.BRUTAL_1DOSE2ENERGY),
+            transition(ItemID.BRUTAL_1DOSE2ENERGY, ItemID.BRUTAL_2DOSE2ENERGY)
+        );
+
+        when(easyBlastFurnaceConfig.potionOverlayMode()).thenReturn(PotionOverlaySetting.SUPER_ENERGY_MIX);
+        setInventoryCount(ItemID.BRUTAL_2DOSE2ENERGY, 0);
+        assertWithdrawAcrossBankStates(
+            new int[]{ItemID.BRUTAL_1DOSE2ENERGY, ItemID.BRUTAL_2DOSE2ENERGY},
+            new int[][]{
+                {ItemID.BRUTAL_1DOSE2ENERGY},
+                {ItemID.BRUTAL_2DOSE2ENERGY},
+                {ItemID.BRUTAL_2DOSE2ENERGY},
+                {ItemID.BRUTAL_1DOSE2ENERGY, ItemID.BRUTAL_2DOSE2ENERGY}
+            },
+            Strings.WITHDRAW_SUPER_ENERGY_MIX,
+            Strings.GET_MORE_SUPER_ENERGY_MIXES
+        );
+    }
+
+    @Test
+    public void eatStrangeFruitMethod()
+    {
+        prepareEnergyRestoreMethod(PotionOverlaySetting.STRANGE_FRUIT);
+        assertPotionDeposit(90, 9100, ItemID.MACRO_TRIFFIDFRUIT, Strings.DEPOSIT_STRANGE_FRUIT);
+
+        setInventoryCount(ItemID.MACRO_TRIFFIDFRUIT, 0);
+        assertDepositBarsAndOresAndPickUpGold(1200);
+
+        setInventoryItems(new Item[0]);
+        assertPotionTransitions(
+            Strings.EAT_STRANGE_FRUIT,
+            transition(ItemID.MACRO_TRIFFIDFRUIT, ItemID.MACRO_TRIFFIDFRUIT)
+        );
+        setInventoryCount(ItemID.MACRO_TRIFFIDFRUIT, 0);
+        assertWithdrawAcrossBankStates(
+            new int[]{ItemID.MACRO_TRIFFIDFRUIT},
+            new int[][]{{ItemID.MACRO_TRIFFIDFRUIT}},
+            Strings.WITHDRAW_STRANGE_FRUIT,
+            Strings.GET_MORE_STRANGE_FRUIT
+        );
     }
 
     private void goldMethodTickPerfect()
@@ -631,6 +652,80 @@ public class EasyBlastFurnacePluginTest {
         assertStepTooltip(Strings.WITHDRAW_GOLD_ORE);
     }
 
+    private void prepareEnergyRestoreMethod(PotionOverlaySetting potionOverlaySetting)
+    {
+        when(easyBlastFurnaceConfig.staminaPotionEnable()).thenReturn(false);
+        assertTrue(state.getPlayer().hasEnoughEnergy());
+
+        when(easyBlastFurnaceConfig.staminaPotionEnable()).thenReturn(true);
+        when(client.getWeight()).thenReturn(54);
+        when(client.getBoostedSkillLevel(Skill.AGILITY)).thenReturn(35);
+        when(easyBlastFurnaceConfig.potionOverlayMode()).thenReturn(potionOverlaySetting);
+        setInventoryItems(new Item[0]);
+        setEquipmentCount(Equipment.SMITHING_CAPE.items[0], 1);
+
+        checkStaminaHelper();
+    }
+
+    private void assertPotionDeposit(int threshold, int energy, int itemID, String expectedStep)
+    {
+        when(easyBlastFurnaceConfig.requireStaminaThreshold()).thenReturn(threshold);
+        when(client.getEnergy()).thenReturn(energy);
+        setInventoryCount(itemID, 1);
+        assertStepTooltip(expectedStep);
+    }
+
+    private void assertDepositBarsAndOresAndPickUpGold(int energy)
+    {
+        when(client.getEnergy()).thenReturn(energy);
+        setInventoryItems(fullInventoryOfGold());
+        assertStepTooltip(Strings.DEPOSIT_BARS_AND_ORES);
+    }
+
+    private Item[] fullInventoryOfGold()
+    {
+        Item[] items = new Item[28];
+		Arrays.fill(items, new Item(ItemID.GOLD_ORE, 1));
+        return items;
+    }
+
+    private int[] transition(int fromItemID, int toItemID)
+    {
+        return new int[]{fromItemID, toItemID};
+    }
+
+    private void assertPotionTransitions(String methodStep, int[]... transitions)
+    {
+        for (int[] transition : transitions)
+        {
+            checkStaminaPotion(transition[0], transition[1], methodStep);
+        }
+    }
+
+    private void assertWithdrawAcrossBankStates(int[] trackedItems, int[][] bankStates, String withdrawStep, String getMoreStep)
+    {
+        for (int[] bankState : bankStates)
+        {
+            clearBankCounts(trackedItems);
+            for (int itemID : bankState)
+            {
+                setBankCount(itemID, 1);
+            }
+            assertStepTooltip(withdrawStep);
+        }
+
+        clearBankCounts(trackedItems);
+        assertStepTooltip(getMoreStep);
+    }
+
+    private void clearBankCounts(int[] itemIDs)
+    {
+        for (int itemID : itemIDs)
+        {
+            setBankCount(itemID, 0);
+        }
+    }
+
     private void checkStaminaPotion(int staminaPotionA, int staminaPotionB, String methodStep)
     {
         setInventoryCount(staminaPotionA, 0);
@@ -642,28 +737,27 @@ public class EasyBlastFurnacePluginTest {
 
     private void checkStaminaHelper()
     {
-        // Check StaminaHelper works for all methods: coal and ore runs. This catches issues with strings changing too.
         when(client.getVarbitValue(BarsOres.COAL.getVarbit())).thenReturn(254);
         when(configManager.getRSProfileConfiguration("runenergy", "ringOfEnduranceCharges", Integer.class)).thenReturn(500);
         setEquipmentCount(ItemID.RING_OF_ENDURANCE, 1);
-        runThroughBarMethods(ItemID.IRON_ORE,ItemID.MITHRIL_ORE,ItemID.ADAMANTITE_ORE,ItemID.RUNITE_ORE);
+        runThroughBarMethods();
         assertFalse(state.getFurnace().isCoalRunNext(CoalPer.getValueFromString(methodHandler.getMethod().toString())));
         assertEquals(14, (int) staminaHelper.getEnergyNeededForNextRun());
 
         when(client.getVarbitValue(VarbitID.STAMINA_DURATION)).thenReturn(1);
         when(client.getVarbitValue(BarsOres.COAL.getVarbit())).thenReturn(0);
-        runThroughBarMethods(ItemID.IRON_ORE,ItemID.MITHRIL_ORE,ItemID.ADAMANTITE_ORE,ItemID.RUNITE_ORE);
+        runThroughBarMethods();
         assertTrue(state.getFurnace().isCoalRunNext(CoalPer.getValueFromString(methodHandler.getMethod().toString())));
         assertEquals(10, (int) staminaHelper.getEnergyNeededForNextRun());
     }
 
-    private void runThroughBarMethods(int ...ores)
+    private void runThroughBarMethods()
     {
-        for (int i = 0; i < ores.length; i++) {
+        for (int i = 0; i < new int[]{ItemID.IRON_ORE, ItemID.MITHRIL_ORE, ItemID.ADAMANTITE_ORE, ItemID.RUNITE_ORE}.length; i++) {
             resetMethod();
-            setInventoryCount(ores[i], 1);
+            setInventoryCount(new int[]{ItemID.IRON_ORE, ItemID.MITHRIL_ORE, ItemID.ADAMANTITE_ORE, ItemID.RUNITE_ORE}[i], 1);
             setInventoryCount(ItemID.GOLD_ORE, 1);
-            if (i != 0) setInventoryCount(ores[i - 1], 0);
+            if (i != 0) setInventoryCount(new int[]{ItemID.IRON_ORE, ItemID.MITHRIL_ORE, ItemID.ADAMANTITE_ORE, ItemID.RUNITE_ORE}[i - 1], 0);
             resetMethod();
             setInventoryCount(ItemID.GOLD_ORE, 0);
         }
@@ -1304,7 +1398,6 @@ public class EasyBlastFurnacePluginTest {
 
     private void setCoalBag(String emptyOrFillText)
     {
-        // Empty coal bag to get Wait for bars step
         tickCount = tickCount + 1;
         when(client.getTickCount()).thenReturn(tickCount);
         ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Bob", emptyOrFillText, null, 0);

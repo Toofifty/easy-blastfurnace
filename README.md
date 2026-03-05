@@ -16,7 +16,7 @@ Helps you train at the blast furnace more efficiently
 - Shows coal bag contents
 - Prompts to drink a stamina dose when required
     - Can be disabled in the plugin settings
-    - Can configure to use Super Energy or Energy Potions, or Strange fruit
+    - Can configure to use Stamina potions, Extended stamina potions, Energy Potions, Super energy potions, Energy mixes, Super Energy mixes & Strange fruit.
 
 ## Requirements
 

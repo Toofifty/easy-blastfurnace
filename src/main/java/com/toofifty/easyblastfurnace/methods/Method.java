@@ -33,10 +33,13 @@ public abstract class Method
     protected final MethodStep[] equipSkillingCape = new MethodStep[] { new ItemStep(Strings.EQUIP_SKILLING_CAPE, Equipment.SKILLING_CAPE.items) };
     protected final MethodStep[] addDummyItemToInventory = new MethodStep[] { new BankItemStep(Strings.ADD_DUMMY_ITEM, ItemID.HAMMER, ItemID.CHISEL, ItemID.SPADE, ItemID.RAKE, ItemID.BUCKET_EMPTY, ItemID.BUCKET_WATER), new ItemStep(Strings.ADD_ITEM_EXPLANATION) };
     protected final MethodStep[] depositBarsAndOres = new MethodStep[] { new ItemStep(Strings.DEPOSIT_BARS_AND_ORES, BarsOres.getAllIds()), new ObjectStep(Strings.OPEN_BANK, EasyBlastFurnacePlugin.BANK_CHEST) };
+    protected final MethodStep[] depositExtendedStaminaPotions = new MethodStep[] { new ItemStep(Strings.DEPOSIT_EXTENDED_STAMINA_POTIONS, ItemID.VIAL_EMPTY, ItemID._1DOSE2STAMINA, ItemID._2DOSE2STAMINA, ItemID._3DOSE2STAMINA, ItemID._4DOSE2STAMINA) };
     protected final MethodStep[] depositStaminaPotions = new MethodStep[] { new ItemStep(Strings.DEPOSIT_STAMINA_POTIONS, ItemID.VIAL_EMPTY, ItemID._1DOSESTAMINA, ItemID._2DOSESTAMINA, ItemID._3DOSESTAMINA, ItemID._4DOSESTAMINA) };
     protected final MethodStep[] depositSuperEnergyPotions = new MethodStep[] { new ItemStep(Strings.DEPOSIT_SUPER_ENERGY_POTIONS, ItemID.VIAL_EMPTY, ItemID._1DOSE2ENERGY, ItemID._2DOSE2ENERGY, ItemID._3DOSE2ENERGY, ItemID._4DOSE2ENERGY) };
     protected final MethodStep[] depositEnergyPotions = new MethodStep[] { new ItemStep(Strings.DEPOSIT_ENERGY_POTIONS, ItemID.VIAL_EMPTY, ItemID._1DOSE1ENERGY, ItemID._2DOSE1ENERGY, ItemID._3DOSE1ENERGY, ItemID._4DOSE1ENERGY) };
 	protected final MethodStep[] depositStrangeFruit = new MethodStep[] { new ItemStep(Strings.DEPOSIT_STRANGE_FRUIT, ItemID.MACRO_TRIFFIDFRUIT) };
+    protected final MethodStep[] depositEnergyMix = new MethodStep[] { new ItemStep(Strings.DEPOSIT_ENERGY_MIXES, ItemID.VIAL_EMPTY, ItemID.BRUTAL_1DOSE1ENERGY, ItemID.BRUTAL_2DOSE1ENERGY) };
+    protected final MethodStep[] depositSuperEnergyMix = new MethodStep[] { new ItemStep(Strings.DEPOSIT_SUPER_ENERGY_MIXES, ItemID.VIAL_EMPTY, ItemID.BRUTAL_1DOSE2ENERGY, ItemID.BRUTAL_2DOSE2ENERGY) };
 
     // objects
     protected final MethodStep[] depositInventory = new MethodStep[] { new WidgetStep(Strings.DEPOSIT_INVENTORY, InterfaceID.BANKMAIN, InterfaceID.Bankmain.DEPOSITINV), new ObjectStep(Strings.OPEN_BANK, EasyBlastFurnacePlugin.BANK_CHEST) };

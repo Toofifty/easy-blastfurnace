@@ -12,22 +12,27 @@ import java.util.Arrays;
 
 public class DrinkPotionMethod extends Method
 {
-
-	// Stamina
 	private final MethodStep[] drinkStaminaPotion = new MethodStep[] { new ItemStep(Strings.DRINK_STAMINA_POTION, ItemID._1DOSESTAMINA, ItemID._2DOSESTAMINA, ItemID._3DOSESTAMINA, ItemID._4DOSESTAMINA) };
 	private final MethodStep[] getMoreStaminaPotions = new MethodStep[] { new ItemStep(Strings.GET_MORE_STAMINA_POTIONS, ItemID.COAL_BAG) };
 
-	// Super Energy
+    private final MethodStep[] drinkExtendedStaminaPotion = new MethodStep[] { new ItemStep(Strings.DRINK_EXTENDED_STAMINA_POTION, ItemID._1DOSE2STAMINA, ItemID._2DOSE2STAMINA, ItemID._3DOSE2STAMINA, ItemID._4DOSE2STAMINA) };
+    private final MethodStep[] getMoreExtendedStaminaPotions = new MethodStep[] { new ItemStep(Strings.GET_MORE_EXTENDED_STAMINA_POTIONS, ItemID.COAL_BAG) };
+
 	private final MethodStep[] drinkSuperEnergyPotion = new MethodStep[] { new ItemStep(Strings.DRINK_SUPER_ENERGY_POTION, ItemID._1DOSE2ENERGY, ItemID._2DOSE2ENERGY, ItemID._3DOSE2ENERGY, ItemID._4DOSE2ENERGY) };
 	private final MethodStep[] getMoreSuperEnergyPotions = new MethodStep[] { new ItemStep(Strings.GET_MORE_SUPER_ENERGY_POTIONS, ItemID.COAL_BAG) };
 
-	// Energy
 	private final MethodStep[] drinkEnergyPotion = new MethodStep[] { new ItemStep(Strings.DRINK_ENERGY_POTION, ItemID._1DOSE1ENERGY, ItemID._2DOSE1ENERGY, ItemID._3DOSE1ENERGY, ItemID._4DOSE1ENERGY) };
 	private final MethodStep[] getMoreEnergyPotions = new MethodStep[] { new ItemStep(Strings.GET_MORE_ENERGY_POTIONS, ItemID.COAL_BAG) };
 
-	// Strange fruit
 	private final MethodStep[] eatStrangeFruit = new MethodStep[] { new ItemStep(Strings.EAT_STRANGE_FRUIT, ItemID.MACRO_TRIFFIDFRUIT) };
 	private final MethodStep[] getMoreStrangeFruit = new MethodStep[] { new ItemStep(Strings.GET_MORE_STRANGE_FRUIT, ItemID.COAL_BAG) };
+
+    private final MethodStep[] drinkEnergyMix = new MethodStep[] { new ItemStep(Strings.DRINK_ENERGY_MIX, ItemID.BRUTAL_1DOSE1ENERGY, ItemID.BRUTAL_2DOSE1ENERGY) };
+    private final MethodStep[] getMoreEnergyMix = new MethodStep[] { new ItemStep(Strings.GET_MORE_ENERGY_MIXES, ItemID.COAL_BAG) };
+
+    private final MethodStep[] drinkSuperEnergyMix = new MethodStep[] { new ItemStep(Strings.DRINK_SUPER_ENERGY_MIX, ItemID.BRUTAL_1DOSE2ENERGY, ItemID.BRUTAL_2DOSE2ENERGY) };
+    private final MethodStep[] getMoreSuperEnergyMix = new MethodStep[] { new ItemStep(Strings.GET_MORE_SUPER_ENERGY_MIXES, ItemID.COAL_BAG) };
+
 
     @Override
     public MethodStep[] next(BlastFurnaceState state)
@@ -36,14 +41,22 @@ public class DrinkPotionMethod extends Method
 			case SUPER_ENERGY: return getSuperEnergyStep(state);
 			case ENERGY: return getEnergyStep(state);
 			case STRANGE_FRUIT: return getStrangeFruitStep(state);
+            case EXTENDED_STAMINA: return getExtendedStaminaStep(state);
+            case ENERGY_MIX: return getEnergyMixStep(state);
+            case SUPER_ENERGY_MIX: return getSuperEnergyMixStep(state);
 			default: return getStaminaStep(state);
 		}
     }
 
-	private MethodStep[] getStaminaStep(BlastFurnaceState state) {
+    private MethodStep[] getStaminaStep(BlastFurnaceState state) {
 		int[] itemIds = new int[]{ItemID._1DOSESTAMINA, ItemID._2DOSESTAMINA, ItemID._3DOSESTAMINA, ItemID._4DOSESTAMINA};
-		return getMethodStep(state, itemIds, drinkStaminaPotion, Strings.WITHDRAW_STAMINA_POTION, depositStaminaPotions, getMoreStaminaPotions);
+        return getMethodStep(state, itemIds, drinkStaminaPotion, Strings.WITHDRAW_STAMINA_POTION, depositStaminaPotions, getMoreStaminaPotions);
 	}
+
+    private MethodStep[] getExtendedStaminaStep(BlastFurnaceState state) {
+        int[] itemIds = new int[]{ItemID._1DOSE2STAMINA, ItemID._2DOSE2STAMINA, ItemID._3DOSE2STAMINA, ItemID._4DOSE2STAMINA};
+        return getMethodStep(state, itemIds, drinkExtendedStaminaPotion, Strings.WITHDRAW_EXTENDED_STAMINA_POTION, depositExtendedStaminaPotions, getMoreExtendedStaminaPotions);
+    }
 
 	private MethodStep[] getEnergyStep(BlastFurnaceState state) {
 		int[] itemIds = new int[]{ItemID._1DOSE1ENERGY, ItemID._2DOSE1ENERGY, ItemID._3DOSE1ENERGY, ItemID._4DOSE1ENERGY};
@@ -60,7 +73,17 @@ public class DrinkPotionMethod extends Method
 		return getMethodStep(state, itemIds, eatStrangeFruit, Strings.WITHDRAW_STRANGE_FRUIT, depositStrangeFruit, getMoreStrangeFruit);
 	}
 
-	private MethodStep[] getMethodStep(BlastFurnaceState state, int[] itemIds, MethodStep[] consumeStep, String withdrawStep, MethodStep depositStep[], MethodStep[] getMoreStep)
+    private MethodStep[] getEnergyMixStep(BlastFurnaceState state) {
+        int[] itemIds = new int[]{ItemID.BRUTAL_1DOSE1ENERGY, ItemID.BRUTAL_2DOSE1ENERGY};
+        return getMethodStep(state, itemIds, drinkEnergyMix, Strings.WITHDRAW_ENERGY_MIX, depositEnergyMix, getMoreEnergyMix);
+    }
+
+    private MethodStep[] getSuperEnergyMixStep(BlastFurnaceState state) {
+        int[] itemIds = new int[]{ItemID.BRUTAL_1DOSE2ENERGY, ItemID.BRUTAL_2DOSE2ENERGY};
+        return getMethodStep(state, itemIds, drinkSuperEnergyMix, Strings.WITHDRAW_SUPER_ENERGY_MIX, depositSuperEnergyMix, getMoreSuperEnergyMix);
+    }
+
+	private MethodStep[] getMethodStep(BlastFurnaceState state, int[] itemIds, MethodStep[] consumeStep, String withdrawStep, MethodStep[] depositStep, MethodStep[] getMoreStep)
 	{
 		boolean hasDosesInInventory = Arrays.stream(itemIds).anyMatch(id -> state.getInventory().has(id));
 
