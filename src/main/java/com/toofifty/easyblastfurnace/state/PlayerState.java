@@ -65,7 +65,7 @@ public class PlayerState
         if (!config.staminaPotionEnable()) {
             return true;
         }
-        if (energyPercentage <= config.requireStaminaThreshold()) {
+        if (energyPercentage < config.requireStaminaThreshold()) {
             return false;
         }
         switch(config.potionOverlayMode()) {
