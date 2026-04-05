@@ -44,7 +44,10 @@ public class PlayerState
     public boolean isAtConveyorBelt()
     {
         Player player = client.getLocalPlayer();
-        assert player != null;
+        if (player == null)
+		{
+			return false;
+		}
 
         WorldPoint location = player.getWorldLocation();
         return location.distanceTo(LOAD_POSITION) < 2;
@@ -53,7 +56,10 @@ public class PlayerState
     public boolean isAtBarDispenser()
     {
         Player player = client.getLocalPlayer();
-        assert player != null;
+        if (player == null)
+		{
+			return false;
+		}
 
         WorldPoint location = player.getWorldLocation();
         return location.distanceTo(COLLECT_POSITION) < 2;
